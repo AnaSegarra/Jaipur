@@ -1,3 +1,4 @@
+/* Common rules */
 * {
 	margin: 0;
 	padding: 0;
@@ -8,7 +9,9 @@ body {
 	background-repeat: no-repeat;
 	background-size: cover;
 }
-.home-page {
+
+/* HOME PAGE */
+#home-page {
 	display: flex;
 	flex-direction: column;
 	justify-content: center;
@@ -46,4 +49,19 @@ button {
 button:hover {
 	box-shadow: 0px 0px 0 #333;
 	transform: translate(.1em, .1em);
+}
+
+/* CARDS */
+.card-frame {
+	margin: 1em;
+	width: 6.5em;
+	height: 9.4em;
+	border: .05em solid #778899;
+	border-radius: .4em;
+	box-shadow: .3em .3em .2em #333;
+}
+
+/* testing */
+.card-frame:hover {
+	transform: translateY(-1em);
 }
