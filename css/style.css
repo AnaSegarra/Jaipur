@@ -52,16 +52,64 @@ button:hover {
 }
 
 /* CARDS */
-.card-frame {
+#player-hand {
+	display: flex;
+	position: absolute;
+	bottom: 2em;
+	left: 25%;
+}
+.card-container {
+	padding: .2em;
+	background-color: white;
+	box-shadow: .3em .3em .4em #333;
+	border-radius: .4em;
 	margin: 1em;
+}
+.card-frame {
 	width: 6.5em;
 	height: 9.4em;
 	border: .05em solid #778899;
 	border-radius: .4em;
-	box-shadow: .3em .3em .2em #333;
+}
+
+/* TOKENS */
+#token-container {
+	position: absolute;
+	top: 25%;
+	left: 3em;
+}
+.tokens {
+	margin: 1em;
+}
+.tokens > img {
+	width: 3em;
+	height: auto;
+	box-shadow: .3em .3em .4em #333;
+	border-radius: 50%;
+}
+
+.tokens img:nth-child(2) {
+	transform: translateX(-2em);
+}
+
+.tokens img:nth-child(3) {
+	transform: translateX(-4em);
+}
+
+.tokens img:nth-child(4) {
+	transform: translateX(-6em);
+}
+.tokens img:nth-child(5) {
+	transform: translateX(-8em);
+}
+.tokens img:nth-child(6) {
+	transform: translateX(-10em);
+}
+.tokens img:nth-child(7) {
+	transform: translateX(-12em);
 }
 
 /* testing */
-.card-frame:hover {
+.card-container:hover {
 	transform: translateY(-1em);
 }
