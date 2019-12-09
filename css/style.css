@@ -85,8 +85,41 @@ button:hover {
 	border-radius: .4em;
 }
 
+/* MARKET */
+#market {
+	display: flex;
+}
+
+/* PILES */
+.card-piles {
+	align-self: center;
+	margin-right: 4em;
+}
+.card-piles > div {
+	display: flex;
+}
+/* #deck div:nth-child(2) {
+	transform: translate(-8.8em, -.1em);
+}
+#deck div:nth-child(3) {
+	transform: translate(-17.6em, -.2em);
+}
+#deck div:nth-child(4) {
+	transform: translate(-26.4em, -.3em);
+}
+#deck div:nth-child(5) {
+	transform: translate(-35.2em, -.4em);
+}
+#deck div:nth-child(6) {
+	transform: translate(-44em, -.5em);
+}
+#deck div:nth-child(7) {
+	transform: translate(-52.8em, -.6em);
+} */
+
 /* TOKENS */
 #token-container {
+	align-self: center;
 	margin: 4em 3em;
 	width: 15%;
 }
@@ -95,7 +128,7 @@ button:hover {
 	margin: 1em;
 }
 .tokens > img {
-	width: 3em;
+	width: 3.2em;
 	height: auto;
 	box-shadow: .3em .3em .4em #333;
 	border-radius: 50%;
@@ -159,7 +192,8 @@ button:hover {
 #threeCards img:nth-child(7) {
 	transform: translate(-17.4em, -.5em);
 }
+
 /* testing */
-.card-container:hover {
+/* .card-container:hover {
 	transform: translateY(-1em);
-}
+} */

@@ -13,7 +13,7 @@ window.addEventListener('load', () => {
 		let playerHandDisplay = '';
 		playerHand.forEach(card => {
 			// console.log(card.name);
-			playerHandDisplay += `<div class="card-container">
+			playerHandDisplay += `<div class="card-container" data-card="${card.name}">
 										<div class="card-frame" style="background-image:url('images/goodsCards/${card.img}')"></div>
 								  </div>`;
 		});
@@ -21,14 +21,34 @@ window.addEventListener('load', () => {
 		let machineHand = cards.dealCards();
 		let machineHandDisplay = '';
 		machineHand.forEach(card => {
-			machineHandDisplay += `<div class="card-container">
+			machineHandDisplay += `<div class="card-container" data-card="${card.name}">
 										<div class="card-frame" style="background-image: url('/images/card-back.png');">
 										</div>
                     				</div>`;
 		});
 
+		let market = cards.dealCards();
+		let marketDisplay = '';
+		market.forEach(card => {
+			marketDisplay += `<div class="card-container" data-card="${card.name}">
+								<div class="card-frame" style="background-image: url('/images/goodsCards/${card.img}');">
+								</div>
+							</div>`;
+		});
+
+		// let deckPile = cards.elements;
+		// let deckPileDisplay = '';
+		// deckPile.forEach(card => {
+		// 	deckPileDisplay += `<div class="card-container" data-card="${card.name}">
+		// 	<div class="card-frame" style="background-image: url('/images/card-back.png');">
+		// 	</div>
+		// </div>`;
+		// });
+
 		document.getElementById('player-hand').innerHTML = playerHandDisplay;
 		document.getElementById('machine-hand').innerHTML = machineHandDisplay;
+		document.getElementById('market').innerHTML = marketDisplay;
+		// document.getElementById('deck').innerHTML = deckPileDisplay;
 
 		for (let key in goodsTokens) {
 			// console.log(key);
