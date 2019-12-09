@@ -3,14 +3,14 @@ class Deck {
 		this.elements = elements;
 	}
 
-	shuffle() {
-		for (let i = 0; i < this.elements.length; i++) {
+	shuffle(arr = this.elements) {
+		for (let i = 0; i < arr.length; i++) {
 			let j = Math.floor(Math.random() * i);
-			let card = this.elements[i];
-			this.elements[i] = this.elements[j];
-			this.elements[j] = card;
+			let card = arr[i];
+			arr[i] = arr[j];
+			arr[j] = card;
 		}
-		return this.elements;
+		return arr;
 	}
 
 	dealCards() {
