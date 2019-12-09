@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">
+        <title>Jaipur</title>
+        <link href="https://fonts.googleapis.com/css?family=Work+Sans:400,800&display=swap"
+            rel="stylesheet">
+        <link rel="stylesheet" href="./css/style.css">
+    </head>
+
+    <body>
+        <div id="home-page">
+            <h1>Let's play <span>jaipur</span></h1>
+            <button id="start-btn">Start</button>
+        </div>
+        <div id="game-board">
+            <div id="token-container">
+                <div id="threeCards" class="tokens">
+                    <!-- <img src="/images/token-bonus3.png" alt=""> -->
+                </div>
+                <div id="fourCards" class="tokens">
+                </div>
+                <div id="fiveCards" class="tokens">
+                </div>
+                <div id="diamonds" class="tokens">
+                    <!-- <img src="/images/goodsTokens/diamond-token5.png" alt=""> -->
+                </div>
+                <div id="gold" class="tokens"></div>
+                <div id="silver" class="tokens"></div>
+                <div id="cloth" class="tokens"></div>
+                <div id="spice" class="tokens"></div>
+                <div id="leather" class="tokens"></div>
+            </div>
+            <div class="cards">
+                <div id="machine-hand">
+                    <!-- <div class="card-container">
+                        <div class="card-frame"
+                            style="background-image: url('/images/card-back.png');">
+                        </div>
+                    </div> -->
+                </div>
+                <div id="market">
+                    <!-- <div class="card-container">
+                        <div class="card-frame"
+                            style="background-image: url('/images/card-back.png');">
+                        </div>
+                    </div> -->
+                </div>
+                <div id="player-hand"></div>
+            </div>
+            <div class="card-piles">
+                <div id="deck">
+                    <!-- <div class="card-container">
+                        <div class="card-frame"
+                            style="background-image: url('/images/card-back.png');">
+                        </div>
+                    </div> -->
+                    <!-- <div class="card-container">
+                        <div class="card-frame"
+                            style="background-image: url('/images/card-back.png');">
+                        </div>
+                    </div> -->
+                </div>
+                <div id="discard-pile">
+                    <!-- <div class="card-container">
+                        <div class="card-frame"
+                            style="background-image: url('/images/card-back.png');">
+                        </div>
+                    </div> -->
+                </div>
+            </div>
+        </div>
+
+        <script src="js/gameElements.js"></script>
+        <script src="js/deck.js"></script>
+        <script src="js/game.js"></script>
+    </body>
+
+</html>
