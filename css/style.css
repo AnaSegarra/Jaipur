@@ -52,11 +52,23 @@ button:hover {
 }
 
 /* CARDS */
+#game-board {
+	display: flex;
+	height: 100vh;
+}
+.cards {
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+	width: 80%;
+}
+#machine-hand {
+	display: flex;
+	margin-top: 1em;
+}
 #player-hand {
 	display: flex;
-	position: absolute;
-	bottom: 2em;
-	left: 25%;
+	margin-bottom: 1em;
 }
 .card-container {
 	padding: .2em;
@@ -64,6 +76,7 @@ button:hover {
 	box-shadow: .3em .3em .4em #333;
 	border-radius: .4em;
 	margin: 1em;
+	height: 9.4em;
 }
 .card-frame {
 	width: 6.5em;
@@ -75,8 +88,10 @@ button:hover {
 /* TOKENS */
 #token-container {
 	margin: 4em 3em;
+	width: 15%;
 }
 .tokens {
+	display: flex;
 	margin: 1em;
 }
 .tokens > img {

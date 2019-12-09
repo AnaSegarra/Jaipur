@@ -14,9 +14,21 @@ window.addEventListener('load', () => {
 		playerHand.forEach(card => {
 			// console.log(card.name);
 			playerHandDisplay += `<div class="card-container">
-		                    <div class="card-frame" style="background-image:url('images/goodsCards/${card.img}')"></div>
-		                </div>`;
+										<div class="card-frame" style="background-image:url('images/goodsCards/${card.img}')"></div>
+								  </div>`;
 		});
+
+		let machineHand = cards.dealCards();
+		let machineHandDisplay = '';
+		machineHand.forEach(card => {
+			machineHandDisplay += `<div class="card-container">
+										<div class="card-frame" style="background-image: url('/images/card-back.png');">
+										</div>
+                    				</div>`;
+		});
+
+		document.getElementById('player-hand').innerHTML = playerHandDisplay;
+		document.getElementById('machine-hand').innerHTML = machineHandDisplay;
 
 		for (let key in goodsTokens) {
 			// console.log(key);
@@ -38,8 +50,6 @@ window.addEventListener('load', () => {
 				document.getElementById(`${key}`).innerHTML = displayBonus;
 			});
 		}
-
-		document.getElementById('player-hand').innerHTML = playerHandDisplay;
 
 		document.getElementById('home-page').style.display = 'none';
 	});
