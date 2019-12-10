@@ -16,7 +16,7 @@ window.addEventListener('load', () => {
 		player.hand.forEach(card => {
 			// console.log(card.name);
 			playerHandDisplay += `<div class="card-container" data-card="${card.name}">
-										<div class="card-frame" style="background-image:url('images/goodsCards/${card.img}')"></div>
+										<div class="card-frame" style="background-image: url('images/goodsCards/${card.img}')"></div>
 								  </div>`;
 		});
 
@@ -24,7 +24,7 @@ window.addEventListener('load', () => {
 		let machineHandDisplay = '';
 		machine.hand.forEach(card => {
 			machineHandDisplay += `<div class="card-container" data-card="${card.name}">
-										<div class="card-frame" style="background-image: url('/images/card-back.png');">
+										<div class="card-frame" style="background-image: url('images/card-back.png');">
 										</div>
                     				</div>`;
 		});
@@ -33,7 +33,7 @@ window.addEventListener('load', () => {
 		let marketDisplay = '';
 		market.forEach(card => {
 			marketDisplay += `<div class="card-container" data-card="${card.name}">
-								<div class="card-frame" style="background-image: url('/images/goodsCards/${card.img}');">
+								<div class="card-frame" style="background-image: url('images/goodsCards/${card.img}');">
 								</div>
 							</div>`;
 		});
@@ -69,13 +69,14 @@ window.addEventListener('load', () => {
 			bonus.elements[key].forEach(bonus => {
 				// console.log(key);
 				// console.log(bonus);
-				displayBonus += `<img src="/images/${bonus.img}" alt="">`;
+				displayBonus += `<img src="images/${bonus.img}" alt="">`;
 				document.getElementById(`${key}`).innerHTML = displayBonus;
 			});
 		}
 		document.getElementById('player-btns').innerHTML = `<button id="take-btn">Take</button>
 		<button id="sell-btn">Sell</button>`;
-		player.setListeners();
+
+		player.setBtnListeners();
 
 		document.getElementById('game-board').style.display = 'flex';
 		document.getElementById('home-page').style.display = 'none';
