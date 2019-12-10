@@ -77,6 +77,7 @@ window.addEventListener('load', () => {
 		<button id="sell-btn">Sell</button>`;
 		player.setListeners();
 
+		document.getElementById('game-board').style.display = 'flex';
 		document.getElementById('home-page').style.display = 'none';
 	});
 });

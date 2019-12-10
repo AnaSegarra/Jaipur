@@ -53,7 +53,7 @@ button:hover {
 
 /* CARDS */
 #game-board {
-	display: flex;
+	display: none;
 	height: 100vh;
 }
 .cards {
