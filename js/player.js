@@ -3,53 +3,76 @@ class Player {
 		this.hand = hand;
 		this.pickedCards = [];
 		this.tokens = [];
-		this.sellBtn;
-		this.takeBtn;
+
+		this.cards;
+
 		this.activeSell = false;
+		this.activeTake = false;
 	}
 
-	setListeners() {
-		this.sellBtn = document.getElementById('sell-btn');
-		this.takeBtn = document.getElementById('take-btn');
-		this.sellBtn.addEventListener('click', () => {
-			this.sellBtn.classList.toggle('btn-clicked');
-			this.sellBtn.classList.contains('btn-clicked')
-				? ((this.takeBtn.style.pointerEvents = 'none'), (this.activeSell = true))
-				: ((this.takeBtn.style.pointerEvents = 'auto'), (this.activeSell = false));
+	setBtnListeners() {
+		let sellBtn = document.getElementById('sell-btn');
+		let takeBtn = document.getElementById('take-btn');
+
+		sellBtn.addEventListener('click', () => {
+			sellBtn.classList.toggle('btn-clicked');
+			sellBtn.classList.contains('btn-clicked')
+				? ((takeBtn.style.pointerEvents = 'none'), (this.activeSell = true))
+				: ((takeBtn.style.pointerEvents = 'auto'), (this.activeSell = false));
 			this.sellCards();
 		});
-		this.takeBtn.addEventListener('click', () => {
-			this.takeBtn.classList.toggle('btn-clicked');
-			this.takeBtn.classList.contains('btn-clicked')
-				? (this.sellBtn.style.pointerEvents = 'none')
-				: (this.sellBtn.style.pointerEvents = 'auto');
+
+		takeBtn.addEventListener('click', () => {
+			takeBtn.classList.toggle('btn-clicked');
+			takeBtn.classList.contains('btn-clicked')
+				? ((sellBtn.style.pointerEvents = 'none'), (this.activeTake = true))
+				: ((sellBtn.style.pointerEvents = 'auto'), (this.activeTake = false));
+			this.takeCards();
+		});
+	}
+
+	setCardsListeners() {
+		this.cards.forEach(card => {
+			card.addEventListener('mouseenter', this.playerIsChoosing);
+			card.addEventListener('mouseleave', this.playerIsChoosing);
+			card.addEventListener('click', this.cardChosen);
+		});
+	}
+
+	removeCardsListeners() {
+		this.cards.forEach(card => {
+			card.removeEventListener('mouseenter', this.playerIsChoosing);
+			card.removeEventListener('mouseleave', this.playerIsChoosing);
+			card.removeEventListener('click', this.cardChosen);
+			card.classList.remove('card-chosen');
 		});
 	}
 
 	playerIsChoosing(e) {
 		e.target.classList.toggle('card-hover');
+		// console.log(this);
 	}
+
 	cardChosen(e) {
 		e.target.parentElement.classList.toggle('card-chosen');
 	}
 
 	sellCards() {
-		let cards = document.querySelectorAll('#player-hand > div');
 		if (this.activeSell) {
-			console.log('okay, you can sell');
-			cards.forEach(card => {
-				card.addEventListener('mouseenter', this.playerIsChoosing);
-				card.addEventListener('mouseleave', this.playerIsChoosing);
-				card.addEventListener('click', this.cardChosen);
-			});
+			this.cards = document.querySelectorAll('#player-hand > div');
+			this.setCardsListeners();
 		} else {
-			console.log('you cannot sell');
-			cards.forEach(card => {
-				card.removeEventListener('mouseenter', this.playerIsChoosing);
-				card.removeEventListener('mouseleave', this.playerIsChoosing);
-				card.removeEventListener('click', this.cardChosen);
-				card.classList.remove('card-chosen');
-			});
+			this.removeCardsListeners();
+		}
+	}
+
+	takeCards() {
+		if (this.activeTake) {
+			this.cards = document.querySelectorAll('#market > div');
+			console.log(this.cards);
+			this.setCardsListeners();
+		} else {
+			this.removeCardsListeners();
 		}
 	}
 }
