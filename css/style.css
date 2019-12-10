@@ -60,7 +60,6 @@ button:hover {
 	display: flex;
 	flex-direction: column;
 	justify-content: space-between;
-	width: 80%;
 }
 #machine-hand {
 	display: flex;
@@ -88,6 +87,7 @@ button:hover {
 /* MARKET */
 #market {
 	display: flex;
+	margin: 5em 0;
 }
 
 /* PILES */
@@ -128,7 +128,7 @@ button:hover {
 	margin: 1em;
 }
 .tokens > img {
-	width: 3.2em;
+	width: 3em;
 	height: auto;
 	box-shadow: .3em .3em .4em #333;
 	border-radius: 50%;
@@ -193,7 +193,38 @@ button:hover {
 	transform: translate(-17.4em, -.5em);
 }
 
+/* PLAYER TURN */
+#player-btns {
+	align-self: center;
+}
+#take-btn {
+	font-size: 1rem;
+	background: #c09;
+	background: linear-gradient(#800060, #c09, #800060);
+}
+
+#sell-btn {
+	font-size: 1rem;
+	padding: .2em 1.3em;
+	background: #ff751a;
+	background: linear-gradient(#cc5200, #ff751a, #cc5200);
+}
+.btn-clicked {
+	box-shadow: none;
+	color: #ffd700;
+	transform: translate(.1em, .1em);
+}
+.card-hover,
+.card-chosen {
+	transform: translateY(-1em);
+	background-color: #ff0;
+}
+
 /* testing */
 /* .card-container:hover {
 	transform: translateY(-1em);
+	background-color: #ff0;
+} */
+/* .card-container:active {
+	background-color: #ffff00;
 } */

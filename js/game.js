@@ -1,5 +1,7 @@
 const cards = new Deck(gameCards);
 const bonus = new Deck(bonusTokens);
+const player = new Player();
+const machine = new Player();
 
 window.addEventListener('load', () => {
 	cards.shuffle();
@@ -8,19 +10,19 @@ window.addEventListener('load', () => {
 	}
 
 	document.getElementById('start-btn').addEventListener('click', () => {
-		let playerHand = cards.dealCards();
+		player.hand = cards.dealCards();
 		// console.log(hand);
 		let playerHandDisplay = '';
-		playerHand.forEach(card => {
+		player.hand.forEach(card => {
 			// console.log(card.name);
 			playerHandDisplay += `<div class="card-container" data-card="${card.name}">
 										<div class="card-frame" style="background-image:url('images/goodsCards/${card.img}')"></div>
 								  </div>`;
 		});
 
-		let machineHand = cards.dealCards();
+		machine.hand = cards.dealCards();
 		let machineHandDisplay = '';
-		machineHand.forEach(card => {
+		machine.hand.forEach(card => {
 			machineHandDisplay += `<div class="card-container" data-card="${card.name}">
 										<div class="card-frame" style="background-image: url('/images/card-back.png');">
 										</div>
@@ -48,6 +50,7 @@ window.addEventListener('load', () => {
 		document.getElementById('player-hand').innerHTML = playerHandDisplay;
 		document.getElementById('machine-hand').innerHTML = machineHandDisplay;
 		document.getElementById('market').innerHTML = marketDisplay;
+
 		// document.getElementById('deck').innerHTML = deckPileDisplay;
 
 		for (let key in goodsTokens) {
@@ -70,12 +73,15 @@ window.addEventListener('load', () => {
 				document.getElementById(`${key}`).innerHTML = displayBonus;
 			});
 		}
+		document.getElementById('player-btns').innerHTML = `<button id="take-btn">Take</button>
+		<button id="sell-btn">Sell</button>`;
+		player.setListeners();
 
 		document.getElementById('home-page').style.display = 'none';
 	});
 });
 
 // testing
-/* function showPage() {
-	document.getElementById('home-page').style.display = 'flex';
-} */
+// function showPage() {
+// 	document.getElementById('home-page').style.display = 'flex';
+// }
