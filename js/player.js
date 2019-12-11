@@ -45,16 +45,36 @@ class Player {
 			card.removeEventListener('mouseleave', this.playerIsChoosing);
 			card.removeEventListener('click', this.cardChosen);
 			card.classList.remove('card-chosen');
+			this.pickedCards = [];
 		});
 	}
 
 	playerIsChoosing(e) {
-		e.target.classList.toggle('card-hover');
 		// console.log(this);
+		e.target.classList.contains('card-frame')
+			? e.target.parentElement.classList.toggle('card-hover')
+			: e.target.classList.toggle('card-hover');
 	}
 
 	cardChosen(e) {
-		e.target.parentElement.classList.toggle('card-chosen');
+		// console.log(e.target);
+		if (
+			!e.target.parentElement.classList.contains('card-chosen') &&
+			player.isValidChoice(e.target.getAttribute('data-card'))
+		) {
+			e.target.classList.contains('card-frame')
+				? e.target.parentElement.classList.add('card-chosen')
+				: e.target.classList.add('card-chosen');
+			console.log('choosing', player.pickedCards);
+		} else {
+			if (e.target.classList.contains('card-frame') && e.target.parentElement.classList.contains('card-chosen')) {
+				e.target.parentElement.classList.remove('card-chosen');
+				e.target.classList.remove('card-chosen');
+				player.pickedCards.pop();
+			}
+
+			console.log('unchoosing already', player.pickedCards);
+		}
 	}
 
 	sellCards() {
@@ -69,10 +89,24 @@ class Player {
 	takeCards() {
 		if (this.activeTake) {
 			this.cards = document.querySelectorAll('#market > div');
-			console.log(this.cards);
+			// console.log(this.cards);
 			this.setCardsListeners();
 		} else {
+			console.log('removing listeners');
 			this.removeCardsListeners();
+		}
+	}
+
+	isValidChoice(cardType) {
+		if (this.pickedCards.length === 0) {
+			this.pickedCards.push(cardType);
+			return true;
+		} else if (this.pickedCards.includes(cardType)) {
+			this.pickedCards.push(cardType);
+			return true;
+		} else {
+			console.log('you cannot choose that card');
+			return false;
 		}
 	}
 }
