@@ -16,7 +16,7 @@ window.addEventListener('load', () => {
 		player.hand.forEach(card => {
 			// console.log(card.name);
 			playerHandDisplay += `<div class="card-container" data-card="${card.name}">
-										<div class="card-frame" style="background-image: url('images/goodsCards/${card.img}')"></div>
+										<div class="card-frame" data-card="${card.name}" style="background-image: url('images/goodsCards/${card.img}')"></div>
 								  </div>`;
 		});
 
@@ -33,7 +33,7 @@ window.addEventListener('load', () => {
 		let marketDisplay = '';
 		market.forEach(card => {
 			marketDisplay += `<div class="card-container" data-card="${card.name}">
-								<div class="card-frame" style="background-image: url('images/goodsCards/${card.img}');">
+								<div class="card-frame" data-card="${card.name}" style="background-image: url('images/goodsCards/${card.img}');">
 								</div>
 							</div>`;
 		});
@@ -74,12 +74,17 @@ window.addEventListener('load', () => {
 			});
 		}
 		document.getElementById('player-btns').innerHTML = `<button id="take-btn">Take</button>
-		<button id="sell-btn">Sell</button>`;
+		<button id="sell-btn">Sell</button><button id="confirm-btn">Ok!</button>`;
 
 		player.setBtnListeners();
 
 		document.getElementById('game-board').style.display = 'flex';
 		document.getElementById('home-page').style.display = 'none';
+
+		let discardPile = document.getElementById('discard-pile');
+		let playerHand = document.getElementById('player-hand');
+
+		document.getElementById('confirm-btn').addEventListener('click', cardExchange);
 	});
 });
 

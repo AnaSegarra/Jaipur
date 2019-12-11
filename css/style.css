@@ -98,7 +98,8 @@ button:hover {
 .card-piles > div {
 	display: flex;
 }
-/* #deck div:nth-child(2) {
+#deck div:nth-child(2),
+#discard-pile div:nth-child(2) {
 	transform: translate(-8.8em, -.1em);
 }
 #deck div:nth-child(3) {
@@ -115,7 +116,7 @@ button:hover {
 }
 #deck div:nth-child(7) {
 	transform: translate(-52.8em, -.6em);
-} */
+}
 
 /* TOKENS */
 #token-container {
@@ -208,6 +209,11 @@ button:hover {
 	padding: .2em 1.3em;
 	background: #ff751a;
 	background: linear-gradient(#cc5200, #ff751a, #cc5200);
+}
+#confirm-btn {
+	font-size: 1rem;
+	margin-left: .4em;
+	background: linear-gradient(#10a710, #2ff12f, #10a710);
 }
 .btn-clicked {
 	box-shadow: none;
