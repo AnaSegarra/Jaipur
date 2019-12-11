@@ -6,7 +6,9 @@ class Board {
 		player.cards.forEach(card => {
 			if (card.classList.contains('card-chosen')) cards.push(card);
 		});
+		// this.validateExchange();
 
+		// if (this.validateExchange()) {
 		cards.forEach(card => {
 			destination.appendChild(card);
 			card.classList.remove('card-chosen');
@@ -15,7 +17,32 @@ class Board {
 			card.removeEventListener('click', player.cardChosen);
 			player.pickedCards = [];
 		});
+		// this.tokenExchange();
+		// }
 	}
 
-	tokenExchange(goodType, player) {}
+	validateExchange() {
+		if (
+			(player.pickedCards[0] === 'diamonds' ||
+				player.pickedCards[0] === 'gold' ||
+				player.pickedCards[0] === 'silver') &&
+			player.pickedCards.length < 2
+		) {
+			console.log('you need more cards');
+			return false;
+		} else {
+			console.log('😄');
+			return true;
+		}
+	}
+
+	tokenExchange() {
+		let tokensPlayer = document.getElementById('player-tokens');
+		// console.log(player.pickedCards);
+		let tokens = document.getElementById(player.pickedCards[0]);
+		// console.log(tokens);
+		for (let i = 0; i < player.pickedCards.length; i++) {
+			tokensPlayer.appendChild(tokens.lastChild);
+		}
+	}
 }

@@ -2,6 +2,7 @@ const cards = new Deck(gameCards);
 const bonus = new Deck(bonusTokens);
 const player = new Player();
 const machine = new Player();
+const board = new Board();
 
 window.addEventListener('load', () => {
 	cards.shuffle();
@@ -23,7 +24,7 @@ window.addEventListener('load', () => {
 		machine.hand = cards.dealCards();
 		let machineHandDisplay = '';
 		machine.hand.forEach(card => {
-			machineHandDisplay += `<div class="card-container" data-card="${card.name}">
+			machineHandDisplay += `<div class="card-container back" data-card="${card.name}">
 										<div class="card-frame" style="background-image: url('images/card-back.png');">
 										</div>
                     				</div>`;
@@ -38,20 +39,19 @@ window.addEventListener('load', () => {
 							</div>`;
 		});
 
-		// let deckPile = cards.elements;
-		// let deckPileDisplay = '';
-		// deckPile.forEach(card => {
-		// 	deckPileDisplay += `<div class="card-container" data-card="${card.name}">
-		// 	<div class="card-frame" style="background-image: url('/images/card-back.png');">
-		// 	</div>
-		// </div>`;
-		// });
+		let deckPile = cards.elements;
+		let deckPileDisplay = '';
+		deckPile.forEach(card => {
+			deckPileDisplay += `<div class="card-container back" data-card="${card.name}">
+			<div class="card-frame" style="background-image: url('images/card-back.png');">
+			</div>
+		</div>`;
+		});
 
 		document.getElementById('player-hand').innerHTML = playerHandDisplay;
 		document.getElementById('machine-hand').innerHTML = machineHandDisplay;
 		document.getElementById('market').innerHTML = marketDisplay;
-
-		// document.getElementById('deck').innerHTML = deckPileDisplay;
+		document.getElementById('deck').innerHTML = deckPileDisplay;
 
 		for (let key in goodsTokens) {
 			// console.log(key);
@@ -84,7 +84,16 @@ window.addEventListener('load', () => {
 		let discardPile = document.getElementById('discard-pile');
 		let playerHand = document.getElementById('player-hand');
 
-		document.getElementById('confirm-btn').addEventListener('click', cardExchange);
+		document.getElementById('confirm-btn').addEventListener('click', () => {
+			if (player.activeSell && board.validateExchange()) {
+				console.log('valid change');
+				board.tokenExchange();
+				board.cardExchange(discardPile);
+			}
+			if (player.activeTake) {
+				board.cardExchange(playerHand);
+			}
+		});
 	});
 });
 
