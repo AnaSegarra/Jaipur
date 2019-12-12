@@ -60,6 +60,7 @@ button:hover {
 	display: flex;
 	flex-direction: column;
 	justify-content: space-between;
+	width: 50%;
 }
 #machine-hand {
 	display: flex;
@@ -179,6 +180,7 @@ button:hover {
 	height: auto;
 	box-shadow: .3em .3em .4em #333;
 	border-radius: 50%;
+	align-self: flex-start;
 }
 
 .tokens img:nth-child(2) {

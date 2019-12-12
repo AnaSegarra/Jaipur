@@ -91,7 +91,7 @@ window.addEventListener('load', () => {
 			if (player.activeTake && player.pickedCards.length > 1) {
 				board.cardExchange();
 				player.updateHand();
-			} else {
+			} else if (player.activeTake && player.pickedCards.length === 1) {
 				board.cardTake();
 			}
 		});

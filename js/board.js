@@ -76,7 +76,8 @@ class Board {
 
 		let CardType = deckPile.lastElementChild.getAttribute('data-card');
 		deckPile.lastElementChild.children[0].style.backgroundImage = `url(images/goodsCards/${CardType}.png)`;
-		deckPile.lastElementChild.style.backgroundColor = 'white';
+		deckPile.lastElementChild.classList.replace('back', 'card-container');
+		// deckPile.lastElementChild.style.backgroundColor = 'white';
 		marketCards.appendChild(deckPile.lastChild);
 	}
 
