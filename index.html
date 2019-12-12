@@ -49,10 +49,21 @@
                         </div>
                     </div> -->
                 </div>
-                <div id="player-hand"></div>
+                <div id="player-btns">
+                    <!-- <button id="take-btn">Take</button>
+                    <button id="sell-btn">Sell</button> -->
+                </div>
+                <div class="player" style="display: flex;">
+                    <div id="player-hand">
+                    </div>
+                    <div id="player-tokens" class="tokens">
+                        <!-- <img src="images/token-bonus3.png" alt=""> -->
+                    </div>
+                </div>
+
             </div>
             <div class="card-piles">
-                <div id="deck">
+                <div id="deck" class="pile">
                     <!-- <div class="card-container">
                         <div class="card-frame"
                             style="background-image: url('/images/card-back.png');">
@@ -64,7 +75,7 @@
                         </div>
                     </div> -->
                 </div>
-                <div id="discard-pile">
+                <div id="discard-pile" class="pile">
                     <!-- <div class="card-container">
                         <div class="card-frame"
                             style="background-image: url('/images/card-back.png');">
@@ -75,6 +86,8 @@
         </div>
 
         <script src="js/gameElements.js"></script>
+        <script src="js/player.js"></script>
+        <script src="js/board.js"></script>
         <script src="js/deck.js"></script>
         <script src="js/game.js"></script>
     </body>
