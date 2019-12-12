@@ -83,15 +83,20 @@ window.addEventListener('load', () => {
 
 		let discardPile = document.getElementById('discard-pile');
 		let playerHand = document.getElementById('player-hand');
+		let marketCards = document.getElementById('market');
 
 		document.getElementById('confirm-btn').addEventListener('click', () => {
-			if (player.activeSell && board.validateExchange()) {
-				console.log('valid change');
+			if (player.activeSell && board.validateSell()) {
+				// console.log('valid change');
 				board.tokenExchange();
 				board.cardExchange(discardPile);
+				player.updateHand();
 			}
 			if (player.activeTake) {
-				board.cardExchange(playerHand);
+				// board.cardExchange(playerHand);
+				board.cardTake();
+				// board.cardExchange(marketCards);
+				player.updateHand();
 			}
 		});
 	});
