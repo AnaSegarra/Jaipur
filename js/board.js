@@ -1,14 +1,15 @@
 class Board {
 	constructor() {}
-	cardExchange(destination) {
+	cardSell() {
 		let cards = [];
+
+		let discardPile = document.getElementById('discard-pile');
 
 		player.eligibleCards.forEach(card => {
 			if (card.classList.contains('card-chosen')) cards.push(card);
 		});
-
 		cards.forEach(card => {
-			destination.appendChild(card);
+			discardPile.appendChild(card);
 			card.classList.remove('card-chosen');
 			card.removeEventListener('mouseenter', player.playerIsChoosing);
 			card.removeEventListener('mouseleave', player.playerIsChoosing);
@@ -17,7 +18,7 @@ class Board {
 		});
 	}
 
-	cardTake() {
+	cardExchange() {
 		let playerCards = [];
 		let marketCards = [];
 		player.eligibleCards.forEach(card => {
@@ -40,21 +41,43 @@ class Board {
 			playerCards.forEach(card => {
 				playerHand.appendChild(card);
 				card.classList.remove('card-chosen');
-				card.removeEventListener('mouseenter', player.playerIsChoosing);
-				card.removeEventListener('mouseleave', player.playerIsChoosing);
-				card.removeEventListener('click', player.cardChosen);
+				// card.removeEventListener('mouseenter', player.playerIsChoosing);
+				// card.removeEventListener('mouseleave', player.playerIsChoosing);
+				// card.removeEventListener('click', player.cardChosen);
+				player.removeCardsListeners();
 				player.pickedCards = [];
 			});
 
 			marketCards.forEach(card => {
 				marketCardsDisplay.appendChild(card);
 				card.classList.remove('card-chosen');
-				card.removeEventListener('mouseenter', player.playerIsChoosing);
-				card.removeEventListener('mouseleave', player.playerIsChoosing);
-				card.removeEventListener('click', player.cardChosen);
+				// card.removeEventListener('mouseenter', player.playerIsChoosing);
+				// card.removeEventListener('mouseleave', player.playerIsChoosing);
+				// card.removeEventListener('click', player.cardChosen);
+				player.removeCardsListeners();
 				player.pickedCards = [];
 			});
 		}
+	}
+
+	cardTake() {
+		let chosenCard;
+		let playerHand = document.getElementById('player-hand');
+		let deckPile = document.getElementById('deck');
+		let marketCards = document.getElementById('market');
+
+		player.eligibleCards.forEach(card => {
+			if (card.classList.contains('card-chosen') && card.parentNode.id === 'market') chosenCard = card;
+		});
+		playerHand.appendChild(chosenCard);
+		player.removeCardsListeners();
+		chosenCard.classList.remove('card-chosen');
+		player.pickedCards = [];
+
+		let CardType = deckPile.lastElementChild.getAttribute('data-card');
+		deckPile.lastElementChild.children[0].style.backgroundImage = `url(images/goodsCards/${CardType}.png)`;
+		deckPile.lastElementChild.style.backgroundColor = 'white';
+		marketCards.appendChild(deckPile.lastChild);
 	}
 
 	validateSell() {
