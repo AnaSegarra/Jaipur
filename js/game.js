@@ -88,11 +88,14 @@ window.addEventListener('load', () => {
 				board.cardSell();
 				player.updateHand();
 			}
-			if (player.activeTake && player.pickedCards.length > 1) {
-				board.cardExchange();
-				player.updateHand();
-			} else if (player.activeTake && player.pickedCards.length === 1) {
-				board.cardTake();
+
+			if (player.activeTake && player.pickedCards.length !== 0) {
+				if (player.pickedCards.length > 1) {
+					board.cardExchange();
+					player.updateHand();
+				} else {
+					board.cardTake();
+				}
 			}
 		});
 	});

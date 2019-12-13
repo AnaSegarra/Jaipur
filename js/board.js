@@ -65,20 +65,24 @@ class Board {
 		let playerHand = document.getElementById('player-hand');
 		let deckPile = document.getElementById('deck');
 		let marketCards = document.getElementById('market');
-
 		player.eligibleCards.forEach(card => {
 			if (card.classList.contains('card-chosen') && card.parentNode.id === 'market') chosenCard = card;
 		});
-		playerHand.appendChild(chosenCard);
-		player.removeCardsListeners();
-		chosenCard.classList.remove('card-chosen');
-		player.pickedCards = [];
+		if (playerHand.children.length + 1 <= 7) {
+			console.log('you can take cards');
+			playerHand.appendChild(chosenCard);
+			player.removeCardsListeners();
+			chosenCard.classList.remove('card-chosen');
+			player.pickedCards = [];
 
-		let CardType = deckPile.lastElementChild.getAttribute('data-card');
-		deckPile.lastElementChild.children[0].style.backgroundImage = `url(images/goodsCards/${CardType}.png)`;
-		deckPile.lastElementChild.classList.replace('back', 'card-container');
-		// deckPile.lastElementChild.style.backgroundColor = 'white';
-		marketCards.appendChild(deckPile.lastChild);
+			let CardType = deckPile.lastElementChild.getAttribute('data-card');
+			deckPile.lastElementChild.children[0].style.backgroundImage = `url(images/goodsCards/${CardType}.png)`;
+			deckPile.lastElementChild.classList.replace('back', 'card-container');
+			// deckPile.lastElementChild.style.backgroundColor = 'white';
+			marketCards.appendChild(deckPile.lastChild);
+		} else {
+			console.log('you have too many cards');
+		}
 	}
 
 	validateSell() {
