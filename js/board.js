@@ -69,20 +69,21 @@ class Board {
 			if (card.classList.contains('card-chosen') && card.parentNode.id === 'market') chosenCard = card;
 		});
 		if (playerHand.children.length + 1 <= 7) {
-			console.log('you can take cards');
+			// console.log('you can take cards');
 			playerHand.appendChild(chosenCard);
 			player.removeCardsListeners();
 			chosenCard.classList.remove('card-chosen');
 			player.pickedCards = [];
 
-			let CardType = deckPile.lastElementChild.getAttribute('data-card');
-			deckPile.lastElementChild.children[0].style.backgroundImage = `url(images/goodsCards/${CardType}.png)`;
+			let cardType = deckPile.lastElementChild.getAttribute('data-card');
+			deckPile.lastElementChild.children[0].style.backgroundImage = `url(images/goodsCards/${cardType}.png)`;
 			deckPile.lastElementChild.classList.replace('back', 'card-container');
-			// deckPile.lastElementChild.style.backgroundColor = 'white';
+			deckPile.lastElementChild.firstElementChild.setAttribute('data-card', cardType);
 			marketCards.appendChild(deckPile.lastChild);
-		} else {
-			console.log('you have too many cards');
 		}
+		// else {
+		// 	console.log('you have too many cards');
+		// }
 	}
 
 	validateSell() {
@@ -105,6 +106,7 @@ class Board {
 		// console.log(player.pickedCards);
 		let tokens = document.getElementById(player.pickedCards[0]);
 		// console.log(tokens);
+		// console.log(tokens.lastChild);
 		for (let i = 0; i < player.pickedCards.length; i++) {
 			tokensPlayer.appendChild(tokens.lastChild);
 		}

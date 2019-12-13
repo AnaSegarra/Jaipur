@@ -107,6 +107,7 @@ class Player {
 			return true;
 		} else if (this.activeSell && this.pickedCards.length > 0) {
 			// console.log('you need to check the type of good');
+			// console.log(cardType);
 			return this.pickedCards.includes(cardType) ? (this.pickedCards.push(cardType), true) : false;
 		}
 	}
