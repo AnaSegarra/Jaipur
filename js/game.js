@@ -1,7 +1,7 @@
 const cards = new Deck(gameCards);
 const bonus = new Deck(bonusTokens);
 const player = new Player();
-const machine = new Player();
+const machine = new Machine();
 const board = new Board();
 
 window.addEventListener('load', () => {
@@ -25,7 +25,7 @@ window.addEventListener('load', () => {
 		let machineHandDisplay = '';
 		machine.hand.forEach(card => {
 			machineHandDisplay += `<div class="card-container back" data-card="${card.name}">
-										<div class="card-frame" style="background-image: url('images/card-back.png');">
+										<div class="card-frame" style="background-image: url('images/goodsCards/${card.img}');">
 										</div>
                     				</div>`;
 		});
