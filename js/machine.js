@@ -59,6 +59,7 @@ class Machine {
 			discardPile.appendChild(card);
 		});
 		this.tokenExchange();
+		this.sellingGoods = undefined;
 	}
 
 	tokenExchange() {
@@ -73,12 +74,13 @@ class Machine {
 
 	takeCard() {
 		let machineDisplay = document.getElementById('machine-hand');
-		let marketCards = document.getElementById('market');
+		let marketDisplay = document.getElementById('market');
 		let deckPile = document.getElementById('deck');
 
+		let marketCards = [ ...marketDisplay.children ];
 		let randomGood;
 
-		let bestGoods = [ ...marketCards.children ].filter(card => {
+		let bestGoods = marketCards.filter(card => {
 			return (
 				card.getAttribute('data-card') === 'diamonds' ||
 				card.getAttribute('data-card') === 'gold' ||
@@ -92,6 +94,7 @@ class Machine {
 		} else {
 			console.log('choosing a random good');
 			randomGood = marketCards[Math.floor(Math.random() * bestGoods.length)];
+			// console.log(randomGood);
 			machineDisplay.appendChild(randomGood);
 		}
 
@@ -100,6 +103,57 @@ class Machine {
 		deckPile.lastElementChild.children[0].style.backgroundImage = `url(images/goodsCards/${cardType}.png)`;
 		deckPile.lastElementChild.classList.replace('back', 'card-container');
 		deckPile.lastElementChild.firstElementChild.setAttribute('data-card', cardType);
-		marketCards.appendChild(deckPile.lastChild);
+		marketDisplay.appendChild(deckPile.lastChild);
+	}
+
+	cardsExchange() {
+		let marketDisplay = document.getElementById('market');
+		let machineDisplay = document.getElementById('machine-hand');
+		let marketCards = [ ...marketDisplay.children ];
+		let machineCards = [ ...machineDisplay.children ];
+
+		let cardsToTake = marketCards.filter(card => {
+			return (
+				card.getAttribute('data-card') === 'diamonds' ||
+				card.getAttribute('data-card') === 'gold' ||
+				card.getAttribute('data-card') === 'silver'
+			);
+		});
+		let cardsToSell = machineCards.filter(card => {
+			return (
+				card.getAttribute('data-card') === 'spice' ||
+				card.getAttribute('data-card') === 'leather' ||
+				card.getAttribute('data-card') === 'cloth'
+			);
+		});
+		console.log(cardsToSell, cardsToTake);
+		if (cardsToSell.length >= 2) {
+			if (cardsToSell.length > cardsToTake.length) {
+				let num = cardsToSell.length - cardsToTake.length;
+				cardsToSell.splice(0, num);
+				console.log(num);
+			} else if (cardsToTake.length > cardsToSell.length) {
+				let num = cardsToTake.length - cardsToSell.length;
+				cardsToTake.splice(0, num);
+				console.log(num);
+			} else {
+				console.log('same number of cards');
+			}
+		} else {
+			console.log('not enough cards');
+		}
+		// console.log('after splicing', cardsToSell, cardsToTake);
+		if (cardsToSell.length === cardsToTake.length) {
+			let tempArr = cardsToSell;
+			cardsToSell = cardsToTake;
+			cardsToTake = tempArr;
+
+			cardsToSell.forEach(card => {
+				machineDisplay.appendChild(card);
+			});
+			cardsToTake.forEach(card => {
+				marketDisplay.appendChild(card);
+			});
+		}
 	}
 }
