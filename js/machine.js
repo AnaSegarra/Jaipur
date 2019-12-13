@@ -70,4 +70,36 @@ class Machine {
 			tokensMachine.appendChild(tokens.lastChild);
 		}
 	}
+
+	takeCard() {
+		let machineDisplay = document.getElementById('machine-hand');
+		let marketCards = document.getElementById('market');
+		let deckPile = document.getElementById('deck');
+
+		let randomGood;
+
+		let bestGoods = [ ...marketCards.children ].filter(card => {
+			return (
+				card.getAttribute('data-card') === 'diamonds' ||
+				card.getAttribute('data-card') === 'gold' ||
+				card.getAttribute('data-card') === 'silver'
+			);
+		});
+		if (bestGoods.length !== 0) {
+			console.log('taking one of the best');
+			randomGood = bestGoods[Math.floor(Math.random() * bestGoods.length)];
+			machineDisplay.appendChild(randomGood);
+		} else {
+			console.log('choosing a random good');
+			randomGood = marketCards[Math.floor(Math.random() * bestGoods.length)];
+			machineDisplay.appendChild(randomGood);
+		}
+
+		let cardType = deckPile.lastElementChild.getAttribute('data-card');
+
+		deckPile.lastElementChild.children[0].style.backgroundImage = `url(images/goodsCards/${cardType}.png)`;
+		deckPile.lastElementChild.classList.replace('back', 'card-container');
+		deckPile.lastElementChild.firstElementChild.setAttribute('data-card', cardType);
+		marketCards.appendChild(deckPile.lastChild);
+	}
 }
