@@ -1,14 +1,14 @@
 class Player {
-	constructor(hand) {
-		this.hand = hand;
-
+	constructor() {
 		this.pickedCards = [];
-		this.tokens = [];
+		// this.tokens = [];
 
 		this.eligibleCards;
 
 		this.activeSell = false;
 		this.activeTake = false;
+
+		this.score = 0;
 	}
 
 	setBtnListeners() {
@@ -128,5 +128,12 @@ class Player {
 				return goodsArr.includes(card.name);
 			});
 		}
+	}
+	calculateScore() {
+		let tokens = [ ...document.getElementById('player-tokens').children ];
+
+		tokens.forEach(token => {
+			this.score += Number(token.getAttribute('data-value'));
+		});
 	}
 }

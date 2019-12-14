@@ -4,6 +4,7 @@ class Machine {
 		this.sellingGoods;
 		this.cards;
 		// this.randomGood;
+		this.score;
 	}
 
 	checkCards() {
@@ -88,11 +89,11 @@ class Machine {
 			);
 		});
 		if (bestGoods.length !== 0) {
-			console.log('taking one of the best');
+			// console.log('taking one of the best');
 			randomGood = bestGoods[Math.floor(Math.random() * bestGoods.length)];
 			machineDisplay.appendChild(randomGood);
 		} else {
-			console.log('choosing a random good');
+			// console.log('choosing a random good');
 			randomGood = marketCards[Math.floor(Math.random() * bestGoods.length)];
 			// console.log(randomGood);
 			machineDisplay.appendChild(randomGood);
@@ -155,5 +156,11 @@ class Machine {
 				marketDisplay.appendChild(card);
 			});
 		}
+	}
+
+	calculateScore() {
+		let tokens = [ ...document.getElementById('machine-tokens').children ];
+		this.score = tokens.map(token => Number(token.getAttribute('data-value'))).reduce((acc, cur) => acc + cur, 0);
+		// console.log(tokens);
 	}
 }
