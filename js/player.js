@@ -10,7 +10,7 @@ class Player {
 
 		this.activePlayer = true;
 
-		this.score = 0;
+		this.score;
 	}
 
 	setBtnListeners() {
@@ -112,12 +112,5 @@ class Player {
 			// console.log(cardType);
 			return this.pickedCards.includes(cardType) ? (this.pickedCards.push(cardType), true) : false;
 		}
-	}
-	calculateScore() {
-		let tokens = [ ...document.getElementById('player-tokens').children ];
-
-		tokens.forEach(token => {
-			this.score += Number(token.getAttribute('data-value'));
-		});
 	}
 }

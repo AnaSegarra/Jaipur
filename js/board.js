@@ -28,6 +28,11 @@ class Board {
 
 		console.log(`displayHand method on board used for ${player.id}`);
 	}
+	calculateScore(player, tokens) {
+		player.score = [ ...tokens.children ]
+			.map(token => Number(token.getAttribute('data-value')))
+			.reduce((acc, cur) => acc + cur, 0);
+	}
 
 	cardSell() {
 		let cards = [];
@@ -173,15 +178,10 @@ class Board {
 	}
 
 	checkWinner() {
-		machine.calculateScore();
-		player.calculateScore();
-		if (player.score > machine.score) {
-			console.log('you won');
-		} else if (player.score < machine.score) {
-			console.log('you lost');
-		} else {
-			console.log('you tied');
-		}
-		// return player.score > machine.score;
+		this.calculateScore(player, this.domElements.playerTokens);
+		this.calculateScore(machine, this.domElements.machineTokens);
+		player.score > machine.score
+			? console.log('you won! 😸')
+			: player.score < machine.score ? console.log('you lost 😿') : console.log('you tied 🙀');
 	}
 }

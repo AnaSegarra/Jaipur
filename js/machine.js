@@ -189,11 +189,4 @@ class Machine {
 			? this.sell()
 			: randomAction === 'cardsExchange' ? this.cardsExchange() : this.takeCard();
 	}
-
-	calculateScore() {
-		let tokens = [ ...document.getElementById('machine-tokens').children ];
-
-		this.score = tokens.map(token => Number(token.getAttribute('data-value'))).reduce((acc, cur) => acc + cur, 0);
-		// console.log(tokens);
-	}
 }
