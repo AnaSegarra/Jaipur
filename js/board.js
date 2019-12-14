@@ -57,9 +57,10 @@ class Board {
 				player.removeCardsListeners();
 				player.pickedCards = [];
 			});
-		} else {
-			console.log('you need to choose more cards');
 		}
+		// else {
+		// 	console.log('you need to choose more cards');
+		// }
 	}
 
 	cardTake() {
@@ -110,9 +111,10 @@ class Board {
 		for (let i = 0; i < player.pickedCards.length; i++) {
 			if (tokens.children.length > 0) {
 				tokensPlayer.appendChild(tokens.lastChild);
-			} else {
-				console.log('not enough tokens');
 			}
+			//else {
+			// 	console.log('not enough tokens');
+			// }
 		}
 		// console.log(tokensPlayer);
 	}
@@ -126,7 +128,29 @@ class Board {
 			}
 		}
 		let deck = document.getElementById('deck').children.length;
-		console.log(deck, empty);
+		// console.log(deck, empty);
 		return empty === 3 || deck === 0;
+	}
+
+	changeActivePlayer() {
+		let playerBtns = document.getElementById('player-btns');
+		if (player.activePlayer) {
+			player.activePlayer = false;
+			playerBtns.style.display = 'none';
+		} else {
+			player.activePlayer = true;
+			playerBtns.style.display = 'initial';
+		}
+	}
+
+	checkWinner() {
+		if (player.score > machine.score) {
+			console.log('you won');
+		} else if (player.score < machine.score) {
+			console.log('you lost');
+		} else {
+			console.log('you tied');
+		}
+		// return player.score > machine.score;
 	}
 }
