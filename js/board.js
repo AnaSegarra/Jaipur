@@ -1,5 +1,30 @@
 class Board {
-	constructor() {}
+	constructor() {
+		this.domElements = {
+			playerHand: document.getElementById('player-hand'),
+			machineHand: document.getElementById('machine-hand'),
+			market: document.getElementById('market'),
+			deckPile: document.getElementById('deck')
+		};
+	}
+	displayCards(player, cards) {
+		let display = '';
+		let imgSrc, backClass;
+		cards.forEach(card => {
+			// console.log(card.name);
+			player !== this.domElements.machineHand && player !== this.domElements.deckPile
+				? ((imgSrc = `goodsCards/${card.img}`), (backClass = ''))
+				: ((imgSrc = `card-back.png`), (backClass = 'back'));
+			display += `<div class="card-container ${backClass}" data-card="${card.name}">
+										<div class="card-frame" data-card="${card.name}" style="background-image: url('images/${imgSrc}')"></div>
+								  </div>`;
+		});
+
+		player.innerHTML = display;
+
+		console.log(`displayHand method on board used for ${player.id}`);
+	}
+
 	cardSell() {
 		let cards = [];
 
