@@ -57,14 +57,16 @@ class Machine {
 
 	sell() {
 		this.checkCards();
-		let discardPile = document.getElementById('discard-pile');
-		// console.log(this.cards);
+		if (this.sellingGoods.length !== 0) {
+			let discardPile = document.getElementById('discard-pile');
+			// console.log(this.cards);
 
-		this.sellingGoods.forEach(card => {
-			discardPile.appendChild(card);
-		});
-		this.tokenExchange();
-		this.sellingGoods = undefined;
+			this.sellingGoods.forEach(card => {
+				discardPile.appendChild(card);
+			});
+			this.tokenExchange();
+			this.sellingGoods = undefined;
+		}
 	}
 
 	tokenExchange() {
@@ -164,12 +166,19 @@ class Machine {
 			cardsToTake.forEach(card => {
 				marketDisplay.appendChild(card);
 			});
-
 			// console.log('exchanging cards');
 		}
 		// else {
 		// 	console.log('change not possible');
 		// }
+	}
+
+	isValidAction() {
+		if (this.sellingGoods.length !== 0) {
+			return true;
+		} else {
+			return false;
+		}
 	}
 
 	chooseAction() {
