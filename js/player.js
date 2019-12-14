@@ -8,6 +8,8 @@ class Player {
 		this.activeSell = false;
 		this.activeTake = false;
 
+		this.activePlayer = true;
+
 		this.score = 0;
 	}
 
