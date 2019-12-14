@@ -30,7 +30,7 @@ class Board {
 				}
 			}
 		});
-		if (playerCards.length === marketCards.length) {
+		if (playerCards.length === marketCards.length && playerCards.length >= 2) {
 			let tempArr = [ ...playerCards ];
 			playerCards = [ ...marketCards ];
 			marketCards = [ ...tempArr ];
@@ -57,6 +57,8 @@ class Board {
 				player.removeCardsListeners();
 				player.pickedCards = [];
 			});
+		} else {
+			console.log('you need to choose more cards');
 		}
 	}
 
@@ -105,10 +107,26 @@ class Board {
 		let tokensPlayer = document.getElementById('player-tokens');
 		// console.log(player.pickedCards);
 		let tokens = document.getElementById(player.pickedCards[0]);
-		// console.log(tokens);
-		// console.log(tokens.lastChild);
 		for (let i = 0; i < player.pickedCards.length; i++) {
-			tokensPlayer.appendChild(tokens.lastChild);
+			if (tokens.children.length > 0) {
+				tokensPlayer.appendChild(tokens.lastChild);
+			} else {
+				console.log('not enough tokens');
+			}
 		}
+		// console.log(tokensPlayer);
+	}
+
+	checkGameOver() {
+		let empty = 0;
+		for (let key in goodsTokens) {
+			let tokenContainer = document.getElementById(key).children;
+			if (tokenContainer.length === 0) {
+				empty++;
+			}
+		}
+		let deck = document.getElementById('deck').children.length;
+		console.log(deck, empty);
+		return empty === 3 || deck === 0;
 	}
 }
