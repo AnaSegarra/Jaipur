@@ -1,7 +1,7 @@
 const cards = new Deck(gameCards);
 const bonus = new Deck(bonusTokens);
 const player = new Player();
-const machine = new Player();
+const machine = new Machine();
 const board = new Board();
 
 window.addEventListener('load', () => {
@@ -25,9 +25,9 @@ window.addEventListener('load', () => {
 		let machineHandDisplay = '';
 		machine.hand.forEach(card => {
 			machineHandDisplay += `<div class="card-container back" data-card="${card.name}">
-										<div class="card-frame" style="background-image: url('images/card-back.png');">
+										<div class="card-frame" style="background-image: url('images/goodsCards/${card.img}');">
 										</div>
-                    				</div>`;
+		            				</div>`;
 		});
 
 		let market = cards.dealCards();
@@ -57,8 +57,8 @@ window.addEventListener('load', () => {
 			// console.log(key);
 			let displayTokens = '';
 			goodsTokens[key].forEach(token => {
-				// console.log(token.img, key);
-				displayTokens += `<img src="images/goodsTokens/${token.img}" alt="">`;
+				// console.log(token.points, key);
+				displayTokens += `<img src="images/goodsTokens/${token.img}" data-value="${token.points}" alt="">`;
 				document.getElementById(`${key}`).innerHTML = displayTokens;
 			});
 		}
@@ -73,8 +73,8 @@ window.addEventListener('load', () => {
 				document.getElementById(`${key}`).innerHTML = displayBonus;
 			});
 		}
-		document.getElementById('player-btns').innerHTML = `<button id="take-btn">Take</button>
-		<button id="sell-btn">Sell</button><button id="confirm-btn">Ok!</button>`;
+		// document.getElementById('player-btns').innerHTML = `<button id="take-btn">Take</button>
+		// <button id="sell-btn">Sell</button><button id="confirm-btn">Ok!</button>`;
 
 		player.setBtnListeners();
 
@@ -88,12 +88,35 @@ window.addEventListener('load', () => {
 				board.cardSell();
 				player.updateHand();
 			}
-			if (player.activeTake && player.pickedCards.length > 1) {
-				board.cardExchange();
-				player.updateHand();
-			} else if (player.activeTake && player.pickedCards.length === 1) {
-				board.cardTake();
+
+			if (player.activeTake && player.pickedCards.length !== 0) {
+				if (player.pickedCards.length > 1) {
+					board.cardExchange();
+					player.updateHand();
+				} else {
+					board.cardTake();
+				}
 			}
+
+			[ ...document.getElementById('player-btns').children ].forEach(btn => {
+				btn.classList.remove('btn-clicked');
+				btn.style.pointerEvents = 'auto';
+				player.activeSell = false;
+				player.activeTake = false;
+			});
+
+			board.changeActivePlayer();
+
+			if (board.checkGameOver()) {
+				board.checkWinner();
+			}
+
+			setTimeout(() => {
+				machine.chooseAction();
+				// document.getElementById('player-btns').style.display = 'initial';
+				board.changeActivePlayer();
+			}, 5000);
+			console.log('machine is playing');
 		});
 	});
 });

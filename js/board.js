@@ -30,7 +30,7 @@ class Board {
 				}
 			}
 		});
-		if (playerCards.length === marketCards.length) {
+		if (playerCards.length === marketCards.length && playerCards.length >= 2) {
 			let tempArr = [ ...playerCards ];
 			playerCards = [ ...marketCards ];
 			marketCards = [ ...tempArr ];
@@ -58,6 +58,9 @@ class Board {
 				player.pickedCards = [];
 			});
 		}
+		// else {
+		// 	console.log('you need to choose more cards');
+		// }
 	}
 
 	cardTake() {
@@ -65,20 +68,25 @@ class Board {
 		let playerHand = document.getElementById('player-hand');
 		let deckPile = document.getElementById('deck');
 		let marketCards = document.getElementById('market');
-
 		player.eligibleCards.forEach(card => {
 			if (card.classList.contains('card-chosen') && card.parentNode.id === 'market') chosenCard = card;
 		});
-		playerHand.appendChild(chosenCard);
-		player.removeCardsListeners();
-		chosenCard.classList.remove('card-chosen');
-		player.pickedCards = [];
+		if (playerHand.children.length + 1 <= 7) {
+			// console.log('you can take cards');
+			playerHand.appendChild(chosenCard);
+			player.removeCardsListeners();
+			chosenCard.classList.remove('card-chosen');
+			player.pickedCards = [];
 
-		let CardType = deckPile.lastElementChild.getAttribute('data-card');
-		deckPile.lastElementChild.children[0].style.backgroundImage = `url(images/goodsCards/${CardType}.png)`;
-		deckPile.lastElementChild.classList.replace('back', 'card-container');
-		// deckPile.lastElementChild.style.backgroundColor = 'white';
-		marketCards.appendChild(deckPile.lastChild);
+			let cardType = deckPile.lastElementChild.getAttribute('data-card');
+			deckPile.lastElementChild.children[0].style.backgroundImage = `url(images/goodsCards/${cardType}.png)`;
+			deckPile.lastElementChild.classList.replace('back', 'card-container');
+			deckPile.lastElementChild.firstElementChild.setAttribute('data-card', cardType);
+			marketCards.appendChild(deckPile.lastChild);
+		}
+		// else {
+		// 	console.log('you have too many cards');
+		// }
 	}
 
 	validateSell() {
@@ -100,9 +108,49 @@ class Board {
 		let tokensPlayer = document.getElementById('player-tokens');
 		// console.log(player.pickedCards);
 		let tokens = document.getElementById(player.pickedCards[0]);
-		// console.log(tokens);
 		for (let i = 0; i < player.pickedCards.length; i++) {
-			tokensPlayer.appendChild(tokens.lastChild);
+			if (tokens.children.length > 0) {
+				tokensPlayer.appendChild(tokens.lastChild);
+			}
+			//else {
+			// 	console.log('not enough tokens');
+			// }
 		}
+		// console.log(tokensPlayer);
+	}
+
+	checkGameOver() {
+		let empty = 0;
+		for (let key in goodsTokens) {
+			let tokenContainer = document.getElementById(key).children;
+			if (tokenContainer.length === 0) {
+				empty++;
+			}
+		}
+		let deck = document.getElementById('deck').children.length;
+		// console.log(deck, empty);
+		return empty === 3 || deck === 0;
+	}
+
+	changeActivePlayer() {
+		let playerBtns = document.getElementById('player-btns');
+		if (player.activePlayer) {
+			player.activePlayer = false;
+			playerBtns.style.display = 'none';
+		} else {
+			player.activePlayer = true;
+			playerBtns.style.display = 'initial';
+		}
+	}
+
+	checkWinner() {
+		if (player.score > machine.score) {
+			console.log('you won');
+		} else if (player.score < machine.score) {
+			console.log('you lost');
+		} else {
+			console.log('you tied');
+		}
+		// return player.score > machine.score;
 	}
 }

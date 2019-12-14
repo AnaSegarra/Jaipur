@@ -1,14 +1,16 @@
 class Player {
-	constructor(hand) {
-		this.hand = hand;
-
+	constructor() {
 		this.pickedCards = [];
-		this.tokens = [];
+		// this.tokens = [];
 
 		this.eligibleCards;
 
 		this.activeSell = false;
 		this.activeTake = false;
+
+		this.activePlayer = true;
+
+		this.score = 0;
 	}
 
 	setBtnListeners() {
@@ -107,6 +109,7 @@ class Player {
 			return true;
 		} else if (this.activeSell && this.pickedCards.length > 0) {
 			// console.log('you need to check the type of good');
+			// console.log(cardType);
 			return this.pickedCards.includes(cardType) ? (this.pickedCards.push(cardType), true) : false;
 		}
 	}
@@ -127,5 +130,12 @@ class Player {
 				return goodsArr.includes(card.name);
 			});
 		}
+	}
+	calculateScore() {
+		let tokens = [ ...document.getElementById('player-tokens').children ];
+
+		tokens.forEach(token => {
+			this.score += Number(token.getAttribute('data-value'));
+		});
 	}
 }
