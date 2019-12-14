@@ -113,24 +113,6 @@ class Player {
 			return this.pickedCards.includes(cardType) ? (this.pickedCards.push(cardType), true) : false;
 		}
 	}
-
-	updateHand() {
-		let handDisplay = document.getElementById('player-hand').children;
-		let goodsArr = [];
-		for (let i = 0; i < handDisplay.length; i++) {
-			goodsArr.push(handDisplay[i].getAttribute('data-card'));
-		}
-
-		if (goodsArr.length > this.hand.length) {
-			for (let i = 0; i < goodsArr.length; i++) {
-				if (player.hand[i] === undefined) player.hand.push({ name: goodsArr[i], img: `${goodsArr[i]}.png` });
-			}
-		} else {
-			this.hand = this.hand.filter(card => {
-				return goodsArr.includes(card.name);
-			});
-		}
-	}
 	calculateScore() {
 		let tokens = [ ...document.getElementById('player-tokens').children ];
 

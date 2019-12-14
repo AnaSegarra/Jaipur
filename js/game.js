@@ -11,10 +11,13 @@ window.addEventListener('load', () => {
 	}
 
 	document.getElementById('start-btn').addEventListener('click', () => {
-		board.displayHand(board.domElements.playerHand, cards.dealCards());
-		board.displayHand(board.domElements.machineHand, cards.dealCards());
-		board.displayHand(board.domElements.market, cards.dealCards());
-		board.displayHand(board.domElements.deckPile, cards.elements);
+		document.getElementById('home-page').style.display = 'none';
+		document.getElementById('game-board').style.display = 'flex';
+
+		board.displayCards(board.domElements.playerHand, cards.dealCards());
+		board.displayCards(board.domElements.machineHand, cards.dealCards());
+		board.displayCards(board.domElements.market, cards.dealCards());
+		board.displayCards(board.domElements.deckPile, cards.elements);
 
 		for (let key in goodsTokens) {
 			// console.log(key);
@@ -41,21 +44,16 @@ window.addEventListener('load', () => {
 
 		player.setBtnListeners();
 
-		document.getElementById('game-board').style.display = 'flex';
-		document.getElementById('home-page').style.display = 'none';
-
 		document.getElementById('confirm-btn').addEventListener('click', () => {
 			if (player.activeSell && board.validateSell()) {
 				// console.log('valid change');
 				board.tokenExchange();
 				board.cardSell();
-				player.updateHand();
 			}
 
 			if (player.activeTake && player.pickedCards.length !== 0) {
 				if (player.pickedCards.length > 1) {
 					board.cardExchange();
-					player.updateHand();
 				} else {
 					board.cardTake();
 				}
@@ -72,14 +70,14 @@ window.addEventListener('load', () => {
 
 			if (board.checkGameOver()) {
 				board.checkWinner();
+			} else {
+				setTimeout(() => {
+					machine.chooseAction();
+					// document.getElementById('player-btns').style.display = 'initial';
+					board.changeActivePlayer();
+				}, 5000);
+				console.log('machine is playing');
 			}
-
-			setTimeout(() => {
-				machine.chooseAction();
-				// document.getElementById('player-btns').style.display = 'initial';
-				board.changeActivePlayer();
-			}, 5000);
-			console.log('machine is playing');
 		});
 	});
 });

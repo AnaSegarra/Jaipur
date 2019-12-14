@@ -2,7 +2,9 @@ class Board {
 	constructor() {
 		this.domElements = {
 			playerHand: document.getElementById('player-hand'),
+			playerTokens: document.getElementById('player-tokens'),
 			machineHand: document.getElementById('machine-hand'),
+			machineTokens: document.getElementById('machine-tokens'),
 			market: document.getElementById('market'),
 			deckPile: document.getElementById('deck')
 		};
@@ -12,9 +14,11 @@ class Board {
 		let imgSrc, backClass;
 		cards.forEach(card => {
 			// console.log(card.name);
-			player !== this.domElements.machineHand && player !== this.domElements.deckPile
-				? ((imgSrc = `goodsCards/${card.img}`), (backClass = ''))
-				: ((imgSrc = `card-back.png`), (backClass = 'back'));
+			imgSrc = `goodsCards/${card.img}`; // testing
+			backClass = ''; // testing
+			// player !== this.domElements.machineHand && player !== this.domElements.deckPile
+			// 	? ((imgSrc = `goodsCards/${card.img}`), (backClass = ''))
+			// 	: ((imgSrc = `card-back.png`), (backClass = 'back'));
 			display += `<div class="card-container ${backClass}" data-card="${card.name}">
 										<div class="card-frame" data-card="${card.name}" style="background-image: url('images/${imgSrc}')"></div>
 								  </div>`;
@@ -169,6 +173,8 @@ class Board {
 	}
 
 	checkWinner() {
+		machine.calculateScore();
+		player.calculateScore();
 		if (player.score > machine.score) {
 			console.log('you won');
 		} else if (player.score < machine.score) {
