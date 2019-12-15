@@ -46,7 +46,7 @@ window.addEventListener('load', () => {
 
 		document.getElementById('confirm-btn').addEventListener('click', () => {
 			if (player.activeSell && board.validateSell()) {
-				console.log('valid change');
+				// console.log('valid change');
 				// board.tokenExchange();
 				board.cardSell();
 			}
@@ -72,7 +72,7 @@ window.addEventListener('load', () => {
 				board.checkWinner();
 			} else {
 				setTimeout(() => {
-					machine.chooseAction();
+					machine.chooseAction(machine.actions);
 					// document.getElementById('player-btns').style.display = 'initial';
 					if (board.checkGameOver()) {
 						board.checkWinner();
