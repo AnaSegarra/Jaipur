@@ -37,10 +37,10 @@ class Board {
 			playerChoice = playerChoice.filter(card => !card.classList.contains('card-container'));
 		}
 
-		console.log(playerChoice);
+		// console.log(playerChoice);
 		for (let i = 0; i < playerChoice.length; i++) {
 			if (tokens.children.length > 0) {
-				destination.appendChild(tokens.lastChild);
+				destination.appendChild(tokens.lastElementChild);
 			}
 			// else {
 			// 	console.log('not enough tokens');
@@ -49,9 +49,16 @@ class Board {
 		// console.log(tokens);
 	}
 
+	bonusRetrieval(bonusType, player) {
+		let token = document.getElementById(bonusType);
+		if (token.children.length > 0) {
+			player.appendChild(token.lastElementChild);
+		}
+	}
+
 	calculateScore(player, tokens) {
 		player.score = [ ...tokens.children ]
-			.map(token => Number(token.getAttribute('data-value')))
+			.map(token => Number(token.getAttribute('data-value') || token.getAttribute('data-bonus')))
 			.reduce((acc, cur) => acc + cur, 0);
 	}
 
@@ -65,6 +72,14 @@ class Board {
 		});
 
 		this.tokenExchange(player.pickedCards, this.domElements.playerTokens);
+
+		if (cards.length >= 3) {
+			cards.length === 3
+				? this.bonusRetrieval('threeCards', this.domElements.playerTokens)
+				: cards.length === 4
+					? this.bonusRetrieval('fourCards', this.domElements.playerTokens)
+					: this.bonusRetrieval('fiveCards', this.domElements.playerTokens);
+		}
 
 		cards.forEach(card => {
 			discardPile.appendChild(card);
@@ -142,6 +157,7 @@ class Board {
 			deckPile.lastElementChild.firstElementChild.setAttribute('data-card', cardType);
 			marketCards.appendChild(deckPile.lastChild);
 		}
+
 		// else {
 		// 	console.log('you have too many cards');
 		// }

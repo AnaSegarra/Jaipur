@@ -35,7 +35,7 @@ window.addEventListener('load', () => {
 			bonus.elements[key].forEach(bonus => {
 				// console.log(key);
 				// console.log(bonus);
-				displayBonus += `<img src="images/${bonus.img}" alt="">`;
+				displayBonus += `<img src="images/${bonus.img}" alt="" data-bonus="${bonus.points}">`;
 				document.getElementById(`${key}`).innerHTML = displayBonus;
 			});
 		}
@@ -74,7 +74,11 @@ window.addEventListener('load', () => {
 				setTimeout(() => {
 					machine.chooseAction();
 					// document.getElementById('player-btns').style.display = 'initial';
-					board.changeActivePlayer();
+					if (board.checkGameOver()) {
+						board.checkWinner();
+					} else {
+						board.changeActivePlayer();
+					}
 				}, 5000);
 				console.log('machine is playing');
 			}

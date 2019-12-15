@@ -60,22 +60,26 @@ class Player {
 	}
 
 	cardChosen(e) {
-		// console.log(e.target.getAttribute('data-card'));
+		// console.log(e.target, e.target.classList);
 		if (
 			!e.target.parentElement.classList.contains('card-chosen') &&
+			!e.target.classList.contains('card-chosen') &&
 			player.isValidChoice(e.target.getAttribute('data-card'), e.target)
 		) {
 			e.target.classList.contains('card-frame')
 				? e.target.parentElement.classList.add('card-chosen')
 				: e.target.classList.add('card-chosen');
-			console.log('choosing', player.pickedCards);
+			// console.log('choosing', player.pickedCards);
 		} else {
-			if (e.target.classList.contains('card-frame') && e.target.parentElement.classList.contains('card-chosen')) {
+			if (
+				(e.target.classList.contains('card-frame') &&
+					e.target.parentElement.classList.contains('card-chosen')) ||
+				e.target.classList.contains('card-chosen')
+			) {
 				e.target.parentElement.classList.remove('card-chosen');
 				e.target.classList.remove('card-chosen');
 				player.pickedCards.pop();
 			}
-
 			// console.log('unchoosing already', player.pickedCards);
 		}
 	}
@@ -105,13 +109,24 @@ class Player {
 
 	isValidChoice(cardType, card) {
 		if (this.pickedCards.length === 0 || this.activeTake) {
-			this.pickedCards.push(card);
+			card.classList.contains('card-container')
+				? this.pickedCards.push(card.children[0])
+				: this.pickedCards.push(card);
 			return true;
-		} else if (this.activeSell && this.pickedCards.length > 0) {
+		}
+
+		if (this.activeSell && this.pickedCards.length > 0) {
 			// console.log('you need to check the type of good');
-			return this.pickedCards.every(card => card.getAttribute('data-card') === cardType)
-				? this.pickedCards.push(card)
-				: false;
+			let chosenGood = this.pickedCards[0].getAttribute('data-card');
+			// console.log(chosenGood);
+			if (cardType === chosenGood) {
+				card.classList.contains('card-container')
+					? this.pickedCards.push(card.children[0])
+					: this.pickedCards.push(card);
+				return true;
+			} else {
+				return false;
+			}
 		}
 	}
 }
