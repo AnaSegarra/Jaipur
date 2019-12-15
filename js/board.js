@@ -28,6 +28,27 @@ class Board {
 
 		console.log(`displayHand method on board used for ${player.id}`);
 	}
+
+	tokenExchange(playerChoice, destination) {
+		// console.log(playerChoice, player.pickedCards);
+		let tokens = document.getElementById(playerChoice[0].getAttribute('data-card'));
+
+		if (destination === this.domElements.playerTokens) {
+			playerChoice = playerChoice.filter(card => !card.classList.contains('card-container'));
+		}
+
+		console.log(playerChoice);
+		for (let i = 0; i < playerChoice.length; i++) {
+			if (tokens.children.length > 0) {
+				destination.appendChild(tokens.lastChild);
+			}
+			// else {
+			// 	console.log('not enough tokens');
+			// }
+		}
+		// console.log(tokens);
+	}
+
 	calculateScore(player, tokens) {
 		player.score = [ ...tokens.children ]
 			.map(token => Number(token.getAttribute('data-value')))
@@ -42,6 +63,9 @@ class Board {
 		player.eligibleCards.forEach(card => {
 			if (card.classList.contains('card-chosen')) cards.push(card);
 		});
+
+		this.tokenExchange(player.pickedCards, this.domElements.playerTokens);
+
 		cards.forEach(card => {
 			discardPile.appendChild(card);
 			card.classList.remove('card-chosen');
@@ -124,10 +148,12 @@ class Board {
 	}
 
 	validateSell() {
+		player.pickedCards = player.pickedCards.filter(card => !card.classList.contains('card-container'));
+
 		if (
-			(player.pickedCards[0] === 'diamonds' ||
-				player.pickedCards[0] === 'gold' ||
-				player.pickedCards[0] === 'silver') &&
+			(player.pickedCards[0].getAttribute('data-card') === 'diamonds' ||
+				player.pickedCards[0].getAttribute('data-card') === 'gold' ||
+				player.pickedCards[0].getAttribute('data-card') === 'silver') &&
 			player.pickedCards.length < 2
 		) {
 			// console.log('you need more cards');
@@ -136,21 +162,6 @@ class Board {
 			// console.log('😄');
 			return true;
 		}
-	}
-
-	tokenExchange() {
-		let tokensPlayer = document.getElementById('player-tokens');
-		// console.log(player.pickedCards);
-		let tokens = document.getElementById(player.pickedCards[0]);
-		for (let i = 0; i < player.pickedCards.length; i++) {
-			if (tokens.children.length > 0) {
-				tokensPlayer.appendChild(tokens.lastChild);
-			}
-			//else {
-			// 	console.log('not enough tokens');
-			// }
-		}
-		// console.log(tokensPlayer);
 	}
 
 	checkGameOver() {

@@ -4,7 +4,6 @@ class Machine {
 
 		this.sellingGoods;
 		this.cards;
-		// this.randomGood;
 
 		this.activePlayer = false;
 		this.score;
@@ -64,18 +63,8 @@ class Machine {
 			this.sellingGoods.forEach(card => {
 				discardPile.appendChild(card);
 			});
-			this.tokenExchange();
+			board.tokenExchange(this.sellingGoods, board.domElements.machineTokens);
 			this.sellingGoods = undefined;
-		}
-	}
-
-	tokenExchange() {
-		let tokensMachine = document.getElementById('machine-tokens');
-		// console.log(this.sellingGoods);
-		let tokens = document.getElementById(this.sellingGoods[0].getAttribute('data-card'));
-		// console.log(tokens.lastChild);
-		for (let i = 0; i < this.sellingGoods.length; i++) {
-			tokensMachine.appendChild(tokens.lastChild);
 		}
 	}
 

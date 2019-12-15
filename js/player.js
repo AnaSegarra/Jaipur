@@ -60,15 +60,15 @@ class Player {
 	}
 
 	cardChosen(e) {
-		// console.log(e.target);
+		// console.log(e.target.getAttribute('data-card'));
 		if (
 			!e.target.parentElement.classList.contains('card-chosen') &&
-			player.isValidChoice(e.target.getAttribute('data-card'))
+			player.isValidChoice(e.target.getAttribute('data-card'), e.target)
 		) {
 			e.target.classList.contains('card-frame')
 				? e.target.parentElement.classList.add('card-chosen')
 				: e.target.classList.add('card-chosen');
-			// console.log('choosing', player.pickedCards);
+			console.log('choosing', player.pickedCards);
 		} else {
 			if (e.target.classList.contains('card-frame') && e.target.parentElement.classList.contains('card-chosen')) {
 				e.target.parentElement.classList.remove('card-chosen');
@@ -103,14 +103,15 @@ class Player {
 		}
 	}
 
-	isValidChoice(cardType) {
+	isValidChoice(cardType, card) {
 		if (this.pickedCards.length === 0 || this.activeTake) {
-			this.pickedCards.push(cardType);
+			this.pickedCards.push(card);
 			return true;
 		} else if (this.activeSell && this.pickedCards.length > 0) {
 			// console.log('you need to check the type of good');
-			// console.log(cardType);
-			return this.pickedCards.includes(cardType) ? (this.pickedCards.push(cardType), true) : false;
+			return this.pickedCards.every(card => card.getAttribute('data-card') === cardType)
+				? this.pickedCards.push(card)
+				: false;
 		}
 	}
 }

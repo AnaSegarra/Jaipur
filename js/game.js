@@ -46,8 +46,8 @@ window.addEventListener('load', () => {
 
 		document.getElementById('confirm-btn').addEventListener('click', () => {
 			if (player.activeSell && board.validateSell()) {
-				// console.log('valid change');
-				board.tokenExchange();
+				console.log('valid change');
+				// board.tokenExchange();
 				board.cardSell();
 			}
 
