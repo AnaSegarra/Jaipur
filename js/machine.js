@@ -62,8 +62,13 @@ class Machine {
 		// if (this.sellingGoods.length !== 0) {
 		let discardPile = document.getElementById('discard-pile');
 		// console.log(this.cards);
-		// console.log('selling this cards', this.sellingGoods);
+		console.log('selling this cards', this.sellingGoods);
 		this.sellingGoods.forEach(card => {
+			let cardType = card.getAttribute('data-card');
+
+			card.firstElementChild.style.backgroundImage = `url(images/goodsCards/${cardType}.png)`;
+			card.classList.remove('back');
+
 			discardPile.appendChild(card);
 		});
 		board.tokenExchange(this.sellingGoods, board.domElements.machineTokens);
@@ -99,19 +104,24 @@ class Machine {
 			if (bestGoods.length !== 0) {
 				// console.log('taking one of the best');
 				randomGood = bestGoods[Math.floor(Math.random() * bestGoods.length)];
+
+				randomGood.firstElementChild.style.backgroundImage = 'url(images/card-back.png)';
+				randomGood.classList.add('back');
 				machineDisplay.appendChild(randomGood);
 			} else {
 				// console.log('choosing a random good');
 				randomGood = marketCards[Math.floor(Math.random() * bestGoods.length)];
 				// console.log(randomGood);
+				randomGood.firstElementChild.style.backgroundImage = 'url(images/card-back.png)';
+				randomGood.classList.add('back');
 				machineDisplay.appendChild(randomGood);
 			}
-			// console.log('took this good', randomGood);
+			console.log('took this good', randomGood);
 
 			let cardType = deckPile.lastElementChild.getAttribute('data-card');
 
 			deckPile.lastElementChild.children[0].style.backgroundImage = `url(images/goodsCards/${cardType}.png)`;
-			deckPile.lastElementChild.classList.replace('back', 'card-container');
+			deckPile.lastElementChild.classList.remove('back');
 			deckPile.lastElementChild.firstElementChild.setAttribute('data-card', cardType);
 			marketDisplay.appendChild(deckPile.lastChild);
 		}
@@ -124,7 +134,7 @@ class Machine {
 		let marketDisplay = document.getElementById('market');
 		let machineDisplay = document.getElementById('machine-hand');
 
-		// console.log('exchangin this cards', this.cardsToSell, this.cardsToTake);
+		console.log('exchangin this cards', this.cardsToSell, this.cardsToTake);
 
 		if (this.cardsToSell.length === this.cardsToTake.length && this.cardsToSell.length >= 2) {
 			let tempArr = this.cardsToSell;
@@ -132,10 +142,17 @@ class Machine {
 			this.cardsToTake = tempArr;
 
 			this.cardsToSell.forEach(card => {
+				card.firstElementChild.style.backgroundImage = 'url(images/card-back.png)';
+				card.classList.add('back');
+
 				machineDisplay.appendChild(card);
 			});
 
 			this.cardsToTake.forEach(card => {
+				let cardType = card.getAttribute('data-card');
+				card.firstElementChild.style.backgroundImage = `url(images/goodsCards/${cardType}.png)`;
+				card.classList.remove('back');
+
 				marketDisplay.appendChild(card);
 			});
 			// console.log('exchanging cards');
@@ -191,9 +208,8 @@ class Machine {
 
 	chooseAction(choices) {
 		let randomAction = choices[Math.floor(Math.random() * choices.length)];
-		// console.log(randomAction, choices);
+		console.log(randomAction, choices);
 
-		// console.log(randomAction, choices);
 		if (choices.length === 0) {
 			console.log('pass');
 			return;
@@ -201,33 +217,33 @@ class Machine {
 		if (randomAction === 'sell') {
 			this.checkCards();
 			if (this.sellingGoods.length !== 0) {
-				// console.log('selling');
+				console.log('selling');
 				this.sell();
 			} else {
-				// console.log('choosing again');
+				console.log('choosing again');
 				let tempArr = choices.filter(choice => choice !== 'sell');
-				// console.log(tempArr);
+				console.log(tempArr);
 				this.chooseAction(tempArr);
 			}
 		} else if (randomAction === 'cardsExchange') {
 			this.prepareExchange();
-			if (this.cardsToTake.length === this.cardsToSell.length) {
-				// console.log('changing cards');
+			if (this.cardsToTake.length === this.cardsToSell.length && this.cardsToTake.length !== 0) {
+				console.log('changing cards');
 				this.cardsExchange();
 			} else {
-				// console.log('choosing again');
+				console.log('choosing again');
 				let tempArr = choices.filter(choice => choice !== 'cardsExchange');
-				// console.log(tempArr);
+				console.log(tempArr);
 				this.chooseAction(tempArr);
 			}
 		} else {
 			if (document.getElementById('machine-hand').children.length + 1 <= 7) {
-				// console.log('taking one');
+				console.log('taking one');
 				this.takeCard();
 			} else {
-				// console.log('choosing again');
+				console.log('choosing again');
 				let tempArr = choices.filter(choice => choice !== 'takeCard');
-				// console.log(tempArr);
+				console.log(tempArr);
 				this.chooseAction(tempArr);
 			}
 		}
