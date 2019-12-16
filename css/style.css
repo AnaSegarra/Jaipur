@@ -88,8 +88,22 @@ button:hover {
 	display: none;
 	height: 100vh;
 }
-.game-played{
-    display: flex
+.game-played {
+	display: flex;
+}
+.active-player {
+	border: .05em solid #ff9f9f;
+	border-radius: .5em;
+	background-color: rgba(255, 159, 159, 0.5);
+}
+#player,
+#machine {
+	display: flex;
+	margin-top: 1.4em;
+	width: fit-content;
+}
+#player {
+	margin-top: 2em;
 }
 .cards {
 	display: flex;
@@ -99,11 +113,11 @@ button:hover {
 }
 #machine-hand {
 	display: flex;
-	margin-top: 1em;
+	/* margin-top: 1em; */
 }
 #player-hand {
 	display: flex;
-	margin-bottom: 1em;
+	padding: .2em;
 }
 .card-container {
 	padding: .2em;
@@ -115,7 +129,6 @@ button:hover {
 }
 .back {
 	background-color: #2e110b;
-	box-shadow: 0 .3em .4em #333;
 }
 .card-frame {
 	width: 6.5em;
@@ -134,10 +147,15 @@ button:hover {
 .card-piles {
 	align-self: center;
 	margin-left: 4em;
+	margin-top: 1.2em;
 	width: 20%;
 }
 .card-piles > div {
 	display: flex;
+}
+#discard-pile > .card-container,
+#deck > .card-container {
+	box-shadow: 0 .3em .4em #333;
 }
 .pile div:nth-child(2) {
 	transform: translate(-8.8em, -.1em);
@@ -198,6 +216,39 @@ button:hover {
 }
 .pile div:nth-child(21) {
 	transform: translate(-176em, -2em);
+}
+.pile div:nth-child(22) {
+	transform: translate(-184.8em, -2.1em);
+}
+.pile div:nth-child(23) {
+	transform: translate(-193.6em, -2.2em);
+}
+.pile div:nth-child(24) {
+	transform: translate(-202.4em, -2.3em);
+}
+.pile div:nth-child(25) {
+	transform: translate(-211.2em, -2.4em);
+}
+.pile div:nth-child(26) {
+	transform: translate(-220em, -2.5em);
+}
+.pile div:nth-child(27) {
+	transform: translate(-228.8em, -2.6em);
+}
+.pile div:nth-child(28) {
+	transform: translate(-237.6em, -2.7em);
+}
+.pile div:nth-child(29) {
+	transform: translate(-246.4em, -2.8em);
+}
+.pile div:nth-child(30) {
+	transform: translate(-255.2em, -2.9em);
+}
+.pile div:nth-child(31) {
+	transform: translate(-264em, -3em);
+}
+.pile div:nth-child(32) {
+	transform: translate(-272.8em, -3.1em);
 }
 
 /* TOKENS */

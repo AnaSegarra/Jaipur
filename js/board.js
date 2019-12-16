@@ -3,8 +3,10 @@ class Board {
 		this.domElements = {
 			playerHand: document.getElementById('player-hand'),
 			playerTokens: document.getElementById('player-tokens'),
+			player: document.getElementById('player'),
 			machineHand: document.getElementById('machine-hand'),
 			machineTokens: document.getElementById('machine-tokens'),
+			machine: document.getElementById('machine'),
 			market: document.getElementById('market'),
 			deckPile: document.getElementById('deck'),
 			winMessage: document.getElementById('win-msg'),
@@ -17,11 +19,11 @@ class Board {
 		let imgSrc, backClass;
 		cards.forEach(card => {
 			// console.log(card.name);
-			imgSrc = `goodsCards/${card.img}`; // testing
-			backClass = ''; // testing
-			// player !== this.domElements.machineHand && player !== this.domElements.deckPile
-			// 	? ((imgSrc = `goodsCards/${card.img}`), (backClass = ''))
-			// 	: ((imgSrc = `card-back.png`), (backClass = 'back'));
+			// imgSrc = `goodsCards/${card.img}`; // testing
+			// backClass = ''; // testing
+			player !== this.domElements.machineHand && player !== this.domElements.deckPile
+				? ((imgSrc = `goodsCards/${card.img}`), (backClass = ''))
+				: ((imgSrc = `card-back.png`), (backClass = 'back'));
 			display += `<div class="card-container ${backClass}" data-card="${card.name}">
 										<div class="card-frame" data-card="${card.name}" style="background-image: url('images/${imgSrc}')"></div>
 								  </div>`;
@@ -200,10 +202,18 @@ class Board {
 		let playerBtns = document.getElementById('player-btns');
 		if (player.activePlayer) {
 			player.activePlayer = false;
-			playerBtns.style.display = 'none';
+			machine.activePlayer = true;
+			playerBtns.style.visibility = 'hidden';
+
+			this.domElements.machine.classList.add('active-player');
+			this.domElements.player.classList.remove('active-player');
 		} else {
 			player.activePlayer = true;
-			playerBtns.style.display = 'initial';
+			machine.activePlayer = false;
+
+			playerBtns.style.visibility = 'visible';
+			this.domElements.player.classList.add('active-player');
+			this.domElements.machine.classList.remove('active-player');
 		}
 	}
 
@@ -212,6 +222,8 @@ class Board {
 		this.calculateScore(machine, this.domElements.machineTokens);
 		player.score > machine.score
 			? (console.log('you won! 😸'), (this.domElements.winMessage.style.display = 'block'))
-			: player.score < machine.score ? (console.log('you lost 😿'), (this.domElements.loseMessage.style.display = 'block')) : (console.log('you tied 🙀'), (this.domElements.drawMessage.style.display = 'block'));
+			: player.score < machine.score
+				? (console.log('you lost 😿'), (this.domElements.loseMessage.style.display = 'block'))
+				: (console.log('you tied 🙀'), (this.domElements.drawMessage.style.display = 'block'));
 	}
 }
