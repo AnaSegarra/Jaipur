@@ -8,9 +8,23 @@ class Player {
 		this.activeSell = false;
 		this.activeTake = false;
 
+		this.cardsToTake = [];
+		this.cardsToSell = [];
+
 		this.activePlayer = true;
 
 		this.score;
+	}
+	prepareExchange() {
+		this.eligibleCards.forEach(card => {
+			if (card.classList.contains('card-chosen')) {
+				if (card.parentNode.id === 'player-hand') {
+					this.cardsToSell.push(card);
+				} else {
+					this.cardsToTake.push(card);
+				}
+			}
+		});
 	}
 
 	setBtnListeners() {

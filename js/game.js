@@ -39,55 +39,30 @@ window.addEventListener('load', () => {
 				document.getElementById(`${key}`).innerHTML = displayBonus;
 			});
 		}
-		// document.getElementById('player-btns').innerHTML = `<button id="take-btn">Take</button>
-		// <button id="sell-btn">Sell</button><button id="confirm-btn">Ok!</button>`;
 
 		player.setBtnListeners();
 
 		document.getElementById('confirm-btn').addEventListener('click', () => {
 			if (player.activeSell && board.validateSell()) {
 				// console.log('valid change');
-				// board.tokenExchange();
 				board.cardSell();
+				board.gamePlay();
 			}
-
-			if (player.activeTake && player.pickedCards.length !== 0) {
-				if (player.pickedCards.length > 1) {
-					board.cardExchange();
-				} else {
+			if (player.activeTake) {
+				if (player.pickedCards.length === 1) {
 					board.cardTake();
+					board.gamePlay();
 				}
-			}
-
-			[ ...document.getElementById('player-btns').children ].forEach(btn => {
-				btn.classList.remove('btn-clicked');
-				btn.style.pointerEvents = 'auto';
-				player.activeSell = false;
-				player.activeTake = false;
-			});
-
-			board.changeActivePlayer();
-
-			if (board.checkGameOver()) {
-				document.getElementById('game-board').classList.replace('game-played', 'game-stopped');
-				document.getElementById('final-msg').style.display = 'flex';
-
-				board.checkWinner();
-			} else {
-				setTimeout(() => {
-					console.log(board.domElements.machineHand.children);
-					machine.chooseAction(machine.actions);
-					// document.getElementById('player-btns').style.display = 'initial';
-					if (board.checkGameOver()) {
-						document.getElementById('game-board').classList.replace('game-played', 'game-stopped');
-						document.getElementById('final-msg').style.display = 'flex';
-
-						board.checkWinner();
+				if (player.pickedCards.length >= 2) {
+					player.prepareExchange();
+					if (player.cardsToSell.length === player.cardsToTake.length && player.cardsToSell.length >= 2) {
+						board.cardExchange();
+						board.gamePlay();
 					} else {
-						board.changeActivePlayer();
+						player.cardsToSell = [];
+						player.cardsToTake = [];
 					}
-				}, 5000);
-				console.log('machine is playing');
+				}
 			}
 		});
 	});

@@ -97,45 +97,35 @@ class Board {
 	}
 
 	cardExchange() {
-		let playerCards = [];
-		let marketCards = [];
-		player.eligibleCards.forEach(card => {
-			if (card.classList.contains('card-chosen')) {
-				if (card.parentNode.id === 'player-hand') {
-					playerCards.push(card);
-				} else {
-					marketCards.push(card);
-				}
-			}
+		// console.log(player.cardsToSell, player.cardsToTake);
+		let tempArr = player.cardsToSell;
+		player.cardsToSell = player.cardsToTake;
+		player.cardsToTake = tempArr;
+
+		let playerHand = document.getElementById('player-hand');
+		let marketCardsDisplay = document.getElementById('market');
+
+		player.cardsToSell.forEach(card => {
+			playerHand.appendChild(card);
+			card.classList.remove('card-chosen');
+			// card.removeEventListener('mouseenter', player.playerIsChoosing);
+			// card.removeEventListener('mouseleave', player.playerIsChoosing);
+			// card.removeEventListener('click', player.cardChosen);
+			player.removeCardsListeners();
 		});
-		if (playerCards.length === marketCards.length && playerCards.length >= 2) {
-			let tempArr = [ ...playerCards ];
-			playerCards = [ ...marketCards ];
-			marketCards = [ ...tempArr ];
 
-			let playerHand = document.getElementById('player-hand');
-			let marketCardsDisplay = document.getElementById('market');
-
-			playerCards.forEach(card => {
-				playerHand.appendChild(card);
-				card.classList.remove('card-chosen');
-				// card.removeEventListener('mouseenter', player.playerIsChoosing);
-				// card.removeEventListener('mouseleave', player.playerIsChoosing);
-				// card.removeEventListener('click', player.cardChosen);
-				player.removeCardsListeners();
-				player.pickedCards = [];
-			});
-
-			marketCards.forEach(card => {
-				marketCardsDisplay.appendChild(card);
-				card.classList.remove('card-chosen');
-				// card.removeEventListener('mouseenter', player.playerIsChoosing);
-				// card.removeEventListener('mouseleave', player.playerIsChoosing);
-				// card.removeEventListener('click', player.cardChosen);
-				player.removeCardsListeners();
-				player.pickedCards = [];
-			});
-		}
+		player.cardsToTake.forEach(card => {
+			marketCardsDisplay.appendChild(card);
+			card.classList.remove('card-chosen');
+			// card.removeEventListener('mouseenter', player.playerIsChoosing);
+			// card.removeEventListener('mouseleave', player.playerIsChoosing);
+			// card.removeEventListener('click', player.cardChosen);
+			player.removeCardsListeners();
+		});
+		player.pickedCards = [];
+		player.cardsToSell = [];
+		player.cardsToTake = [];
+		// }
 		// else {
 		// 	console.log('you need to choose more cards');
 		// }
@@ -170,6 +160,7 @@ class Board {
 
 	validateSell() {
 		player.pickedCards = player.pickedCards.filter(card => !card.classList.contains('card-container'));
+		if (player.pickedCards.length === 0) return false;
 
 		if (
 			(player.pickedCards[0].getAttribute('data-card') === 'diamonds' ||
@@ -225,5 +216,38 @@ class Board {
 			: player.score < machine.score
 				? (console.log('you lost 😿'), (this.domElements.loseMessage.style.display = 'block'))
 				: (console.log('you tied 🙀'), (this.domElements.drawMessage.style.display = 'block'));
+	}
+
+	gamePlay() {
+		[ ...document.getElementById('player-btns').children ].forEach(btn => {
+			btn.classList.remove('btn-clicked');
+			btn.style.pointerEvents = 'auto';
+			player.activeSell = false;
+			player.activeTake = false;
+		});
+
+		board.changeActivePlayer();
+
+		if (board.checkGameOver()) {
+			document.getElementById('game-board').classList.replace('game-played', 'game-stopped');
+			document.getElementById('final-msg').style.display = 'flex';
+
+			board.checkWinner();
+		} else {
+			setTimeout(() => {
+				console.log(board.domElements.machineHand.children);
+				machine.chooseAction(machine.actions);
+				// document.getElementById('player-btns').style.display = 'initial';
+				if (board.checkGameOver()) {
+					document.getElementById('game-board').classList.replace('game-played', 'game-stopped');
+					document.getElementById('final-msg').style.display = 'flex';
+
+					board.checkWinner();
+				} else {
+					board.changeActivePlayer();
+				}
+			}, 5000);
+			console.log('machine is playing');
+		}
 	}
 }
