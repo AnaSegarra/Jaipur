@@ -16,7 +16,7 @@ body {
 	flex-direction: column;
 	justify-content: center;
 	align-items: center;
-	margin-top: 10em;
+	height: 100vh;
 }
 h1 {
 	font-weight: 800;
@@ -51,10 +51,45 @@ button:hover {
 	transform: translate(.1em, .1em);
 }
 
+/* FINAL MESSAGES */
+#final-msg {
+	font-size: 6rem;
+	height: 100vh;
+	display: none;
+	justify-content: center;
+	align-items: center;
+}
+#final-msg span {
+	text-shadow: none;
+}
+#win-msg,
+#lose-msg,
+#draw-msg {
+	background-color: rgba(255, 159, 159, 0.5);
+	border-radius: .5em;
+	padding: 1em;
+	display: none;
+}
+#win-msg {
+	color: #c09;
+	text-shadow: -.02em .02em 0 #fd87e0;
+}
+#lose-msg {
+	color: #001f4d;
+	text-shadow: -.02em .02em 0 #3686ff;
+}
+#draw-msg {
+	color: #a71010;
+	text-shadow: -.02em .02em 0 #ff4747;
+}
+
 /* CARDS */
-#game-board {
+.game-stopped {
 	display: none;
 	height: 100vh;
+}
+.game-played{
+    display: flex
 }
 .cards {
 	display: flex;

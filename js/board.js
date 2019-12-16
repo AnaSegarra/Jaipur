@@ -6,7 +6,10 @@ class Board {
 			machineHand: document.getElementById('machine-hand'),
 			machineTokens: document.getElementById('machine-tokens'),
 			market: document.getElementById('market'),
-			deckPile: document.getElementById('deck')
+			deckPile: document.getElementById('deck'),
+			winMessage: document.getElementById('win-msg'),
+			loseMessage: document.getElementById('lose-msg'),
+			drawMessage: document.getElementById('draw-msg')
 		};
 	}
 	displayCards(player, cards) {
@@ -208,7 +211,7 @@ class Board {
 		this.calculateScore(player, this.domElements.playerTokens);
 		this.calculateScore(machine, this.domElements.machineTokens);
 		player.score > machine.score
-			? console.log('you won! 😸')
-			: player.score < machine.score ? console.log('you lost 😿') : console.log('you tied 🙀');
+			? (console.log('you won! 😸'), (this.domElements.winMessage.style.display = 'block'))
+			: player.score < machine.score ? (console.log('you lost 😿'), (this.domElements.loseMessage.style.display = 'block')) : (console.log('you tied 🙀'), (this.domElements.drawMessage.style.display = 'block'));
 	}
 }

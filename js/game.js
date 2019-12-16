@@ -12,7 +12,7 @@ window.addEventListener('load', () => {
 
 	document.getElementById('start-btn').addEventListener('click', () => {
 		document.getElementById('home-page').style.display = 'none';
-		document.getElementById('game-board').style.display = 'flex';
+		document.getElementById('game-board').classList.replace('game-stopped', 'game-played')
 
 		board.displayCards(board.domElements.playerHand, cards.dealCards());
 		board.displayCards(board.domElements.machineHand, cards.dealCards());
@@ -69,12 +69,18 @@ window.addEventListener('load', () => {
 			board.changeActivePlayer();
 
 			if (board.checkGameOver()) {
+				document.getElementById('game-board').classList.replace('game-played', 'game-stopped')
+				document.getElementById('final-msg').style.display = 'flex';
+
 				board.checkWinner();
 			} else {
 				setTimeout(() => {
 					machine.chooseAction(machine.actions);
 					// document.getElementById('player-btns').style.display = 'initial';
 					if (board.checkGameOver()) {
+						document.getElementById('game-board').classList.replace('game-played', 'game-stopped')
+						document.getElementById('final-msg').style.display = 'flex';
+
 						board.checkWinner();
 					} else {
 						board.changeActivePlayer();
