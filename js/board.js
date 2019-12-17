@@ -1,24 +1,43 @@
 class Board {
 	constructor() {
-		this.domElements = {
-			playerHand: document.getElementById('player-hand'),
-			playerTokens: document.getElementById('player-tokens'),
-			player: document.getElementById('player'),
-			machineHand: document.getElementById('machine-hand'),
-			machineTokens: document.getElementById('machine-tokens'),
-			machine: document.getElementById('machine'),
-			market: document.getElementById('market'),
-			deckPile: document.getElementById('deck'),
-			winMessage: document.getElementById('win-msg'),
-			loseMessage: document.getElementById('lose-msg'),
-			drawMessage: document.getElementById('draw-msg')
-		};
+		this.cards = gameCards;
+		this.goodsTokens = goodsTokens;
+		this.bonusTokens = bonusTokens;
+
+		this.playerHand = document.getElementById('player-hand');
+		this.playerTokens = document.getElementById('player-tokens');
+		this.machineHand = document.getElementById('machine-hand');
+		this.machineTokens = document.getElementById('machine-tokens');
+		this.market = document.getElementById('market');
+		this.deckPile = document.getElementById('deck');
 	}
+
+	shuffle(arr) {
+		for (let i = 0; i < arr.length; i++) {
+			let j = Math.floor(Math.random() * i);
+			let card = arr[i];
+			arr[i] = arr[j];
+			arr[j] = card;
+		}
+		return arr;
+	}
+
+	dealCards() {
+		let tempArr = [];
+		for (let i = 0; i < 5; i++) {
+			tempArr.push(this.cards[i]);
+		}
+		this.cards = this.cards.filter((card, index) => {
+			return card !== tempArr[index];
+		});
+		return tempArr;
+	}
+
 	displayCards(player, cards) {
 		let display = '';
 		let imgSrc, backClass;
 		cards.forEach(card => {
-			player !== this.domElements.machineHand && player !== this.domElements.deckPile
+			player !== this.machineHand && player !== this.deckPile
 				? ((imgSrc = `goodsCards/${card.img}`), (backClass = ''))
 				: ((imgSrc = `card-back.png`), (backClass = 'back'));
 			display += `<div class="card-container ${backClass}" data-card="${card.name}">
@@ -29,10 +48,22 @@ class Board {
 		player.innerHTML = display;
 	}
 
+	displayTokens(tokens) {
+		let imgSrc;
+		for (let key in tokens) {
+			let display = '';
+			tokens[key].forEach(token => {
+				tokens === this.bonusTokens ? (imgSrc = `${token.img}`) : (imgSrc = `goodsTokens/${token.img}`);
+				display += `<img src="images/${imgSrc}" data-points="${token.points}" alt="">`;
+				document.getElementById(`${key}`).innerHTML = display;
+			});
+		}
+	}
+
 	tokenExchange(playerChoice, destination) {
 		let tokens = document.getElementById(playerChoice[0].getAttribute('data-card'));
 
-		if (destination === this.domElements.playerTokens) {
+		if (destination === this.playerTokens) {
 			playerChoice = playerChoice.filter(card => !card.classList.contains('card-container'));
 		}
 
@@ -54,100 +85,8 @@ class Board {
 
 	calculateScore(player, tokens) {
 		player.score = [ ...tokens.children ]
-			.map(token => Number(token.getAttribute('data-value') || token.getAttribute('data-bonus')))
+			.map(token => Number(token.getAttribute('data-points')))
 			.reduce((acc, cur) => acc + cur, 0);
-	}
-
-	cardSell() {
-		let cards = [];
-
-		let discardPile = document.getElementById('discard-pile');
-
-		player.eligibleCards.forEach(card => {
-			if (card.classList.contains('card-chosen')) cards.push(card);
-		});
-
-		this.tokenExchange(player.pickedCards, this.domElements.playerTokens);
-
-		if (cards.length >= 3) {
-			cards.length === 3
-				? this.bonusRetrieval('threeCards', this.domElements.playerTokens)
-				: cards.length === 4
-					? this.bonusRetrieval('fourCards', this.domElements.playerTokens)
-					: this.bonusRetrieval('fiveCards', this.domElements.playerTokens);
-		}
-
-		cards.forEach(card => {
-			discardPile.appendChild(card);
-			card.classList.remove('card-chosen');
-			player.pickedCards = [];
-		});
-
-		player.removeCardsListeners();
-	}
-
-	cardExchange() {
-		let tempArr = player.cardsToSell;
-		player.cardsToSell = player.cardsToTake;
-		player.cardsToTake = tempArr;
-
-		let playerHand = document.getElementById('player-hand');
-		let marketCardsDisplay = document.getElementById('market');
-
-		player.cardsToSell.forEach(card => {
-			playerHand.appendChild(card);
-			card.classList.remove('card-chosen');
-			player.removeCardsListeners();
-		});
-
-		player.cardsToTake.forEach(card => {
-			marketCardsDisplay.appendChild(card);
-			card.classList.remove('card-chosen');
-			player.removeCardsListeners();
-		});
-
-		player.pickedCards = [];
-		player.cardsToSell = [];
-		player.cardsToTake = [];
-	}
-
-	cardTake() {
-		let chosenCard;
-		let playerHand = document.getElementById('player-hand');
-		let deckPile = document.getElementById('deck');
-		let marketCards = document.getElementById('market');
-		player.eligibleCards.forEach(card => {
-			if (card.classList.contains('card-chosen') && card.parentNode.id === 'market') chosenCard = card;
-		});
-
-		if (playerHand.children.length + 1 <= 7 && chosenCard) {
-			playerHand.appendChild(chosenCard);
-			player.removeCardsListeners();
-			chosenCard.classList.remove('card-chosen');
-			player.pickedCards = [];
-
-			let cardType = deckPile.lastElementChild.getAttribute('data-card');
-			deckPile.lastElementChild.children[0].style.backgroundImage = `url(images/goodsCards/${cardType}.png)`;
-			deckPile.lastElementChild.classList.replace('back', 'card-container');
-			deckPile.lastElementChild.firstElementChild.setAttribute('data-card', cardType);
-			marketCards.appendChild(deckPile.lastChild);
-		}
-	}
-
-	validateSell() {
-		player.pickedCards = player.pickedCards.filter(card => !card.classList.contains('card-container'));
-		if (player.pickedCards.length === 0) return false;
-
-		if (
-			(player.pickedCards[0].getAttribute('data-card') === 'diamonds' ||
-				player.pickedCards[0].getAttribute('data-card') === 'gold' ||
-				player.pickedCards[0].getAttribute('data-card') === 'silver') &&
-			player.pickedCards.length < 2
-		) {
-			return false;
-		} else {
-			return true;
-		}
 	}
 
 	checkGameOver() {
@@ -170,26 +109,26 @@ class Board {
 			machine.activePlayer = true;
 			playerBtns.style.visibility = 'hidden';
 
-			this.domElements.machine.classList.add('active-player');
-			this.domElements.player.classList.remove('active-player');
+			document.getElementById('machine').classList.add('active-player');
+			document.getElementById('player').classList.remove('active-player');
 		} else {
 			player.activePlayer = true;
 			machine.activePlayer = false;
 
 			playerBtns.style.visibility = 'visible';
-			this.domElements.player.classList.add('active-player');
-			this.domElements.machine.classList.remove('active-player');
+			document.getElementById('player').classList.add('active-player');
+			document.getElementById('machine').classList.remove('active-player');
 		}
 	}
 
 	checkWinner() {
-		this.calculateScore(player, this.domElements.playerTokens);
-		this.calculateScore(machine, this.domElements.machineTokens);
+		this.calculateScore(player, this.playerTokens);
+		this.calculateScore(machine, this.machineTokens);
 		player.score > machine.score
-			? (this.domElements.winMessage.style.display = 'block')
+			? (document.getElementById('win-msg').style.display = 'block')
 			: player.score < machine.score
-				? (this.domElements.loseMessage.style.display = 'block')
-				: (this.domElements.drawMessage.style.display = 'block');
+				? (document.getElementById('lose-msg').style.display = 'block')
+				: (document.getElementById('draw-msg').style.display = 'block');
 	}
 
 	gamePlay() {
@@ -210,7 +149,6 @@ class Board {
 		} else {
 			setTimeout(() => {
 				machine.chooseAction(machine.actions);
-				// document.getElementById('player-btns').style.display = 'initial';
 				if (board.checkGameOver()) {
 					document.getElementById('game-board').classList.replace('game-played', 'game-stopped');
 					document.getElementById('final-msg').style.display = 'flex';
