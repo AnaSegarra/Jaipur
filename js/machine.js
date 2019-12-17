@@ -1,10 +1,12 @@
 class Machine {
 	constructor() {
-		this.actions = [ 'sell', 'takeCard', 'cardsExchange' ];
+		this.actions = [ 'takeCard', 'cardsExchange', 'sell' ];
 
 		this.sellingGoods;
 		this.cards;
-		// this.randomGood;
+
+		this.cardsToTake;
+		this.cardsToSell;
 
 		this.activePlayer = false;
 		this.score;
@@ -56,27 +58,31 @@ class Machine {
 	}
 
 	sell() {
-		this.checkCards();
-		if (this.sellingGoods.length !== 0) {
-			let discardPile = document.getElementById('discard-pile');
-			// console.log(this.cards);
+		// this.checkCards();
+		// if (this.sellingGoods.length !== 0) {
+		let discardPile = document.getElementById('discard-pile');
+		// console.log(this.cards);
+		console.log('selling this cards', this.sellingGoods);
+		this.sellingGoods.forEach(card => {
+			let cardType = card.getAttribute('data-card');
 
-			this.sellingGoods.forEach(card => {
-				discardPile.appendChild(card);
-			});
-			this.tokenExchange();
-			this.sellingGoods = undefined;
-		}
-	}
+			card.firstElementChild.style.backgroundImage = `url(images/goodsCards/${cardType}.png)`;
+			card.classList.remove('back');
 
-	tokenExchange() {
-		let tokensMachine = document.getElementById('machine-tokens');
-		// console.log(this.sellingGoods);
-		let tokens = document.getElementById(this.sellingGoods[0].getAttribute('data-card'));
-		// console.log(tokens.lastChild);
-		for (let i = 0; i < this.sellingGoods.length; i++) {
-			tokensMachine.appendChild(tokens.lastChild);
+			discardPile.appendChild(card);
+		});
+		board.tokenExchange(this.sellingGoods, board.domElements.machineTokens);
+
+		if (this.sellingGoods.length >= 3) {
+			this.sellingGoods.length === 3
+				? board.bonusRetrieval('threeCards', board.domElements.machineTokens)
+				: this.sellingGoods.length === 4
+					? board.bonusRetrieval('fourCards', board.domElements.machineTokens)
+					: board.bonusRetrieval('fiveCards', board.domElements.machineTokens);
 		}
+
+		this.sellingGoods = undefined;
+		// }
 	}
 
 	takeCard() {
@@ -98,17 +104,24 @@ class Machine {
 			if (bestGoods.length !== 0) {
 				// console.log('taking one of the best');
 				randomGood = bestGoods[Math.floor(Math.random() * bestGoods.length)];
+
+				randomGood.firstElementChild.style.backgroundImage = 'url(images/card-back.png)';
+				randomGood.classList.add('back');
 				machineDisplay.appendChild(randomGood);
 			} else {
 				// console.log('choosing a random good');
 				randomGood = marketCards[Math.floor(Math.random() * bestGoods.length)];
 				// console.log(randomGood);
+				randomGood.firstElementChild.style.backgroundImage = 'url(images/card-back.png)';
+				randomGood.classList.add('back');
 				machineDisplay.appendChild(randomGood);
 			}
+			console.log('took this good', randomGood);
+
 			let cardType = deckPile.lastElementChild.getAttribute('data-card');
 
 			deckPile.lastElementChild.children[0].style.backgroundImage = `url(images/goodsCards/${cardType}.png)`;
-			deckPile.lastElementChild.classList.replace('back', 'card-container');
+			deckPile.lastElementChild.classList.remove('back');
 			deckPile.lastElementChild.firstElementChild.setAttribute('data-card', cardType);
 			marketDisplay.appendChild(deckPile.lastChild);
 		}
@@ -120,10 +133,46 @@ class Machine {
 	cardsExchange() {
 		let marketDisplay = document.getElementById('market');
 		let machineDisplay = document.getElementById('machine-hand');
+
+		console.log('exchangin this cards', this.cardsToSell, this.cardsToTake);
+
+		if (this.cardsToSell.length === this.cardsToTake.length && this.cardsToSell.length >= 2) {
+			let tempArr = this.cardsToSell;
+			this.cardsToSell = this.cardsToTake;
+			this.cardsToTake = tempArr;
+
+			this.cardsToSell.forEach(card => {
+				card.firstElementChild.style.backgroundImage = 'url(images/card-back.png)';
+				card.classList.add('back');
+
+				machineDisplay.appendChild(card);
+			});
+
+			this.cardsToTake.forEach(card => {
+				let cardType = card.getAttribute('data-card');
+				card.firstElementChild.style.backgroundImage = `url(images/goodsCards/${cardType}.png)`;
+				card.classList.remove('back');
+
+				marketDisplay.appendChild(card);
+			});
+			// console.log('exchanging cards');
+		}
+
+		// else {
+		// 	console.log('change not possible');
+		// }
+
+		this.cardsToTake = [];
+		this.cardsToSell = [];
+	}
+
+	prepareExchange() {
+		let marketDisplay = document.getElementById('market');
+		let machineDisplay = document.getElementById('machine-hand');
 		let marketCards = [ ...marketDisplay.children ];
 		let machineCards = [ ...machineDisplay.children ];
 
-		let cardsToTake = marketCards.filter(card => {
+		this.cardsToTake = marketCards.filter(card => {
 			return (
 				card.getAttribute('data-card') === 'diamonds' ||
 				card.getAttribute('data-card') === 'gold' ||
@@ -131,69 +180,72 @@ class Machine {
 			);
 		});
 
-		let cardsToSell = machineCards.filter(card => {
+		this.cardsToSell = machineCards.filter(card => {
 			return (
 				card.getAttribute('data-card') === 'spice' ||
 				card.getAttribute('data-card') === 'leather' ||
 				card.getAttribute('data-card') === 'cloth'
 			);
 		});
-		// console.log({ cardsToSell, cardsToTake });
-		if (cardsToSell.length >= 2) {
-			if (cardsToSell.length > cardsToTake.length) {
-				let num = cardsToSell.length - cardsToTake.length;
-				cardsToSell.splice(0, num);
-				// console.log(num);
-			} else if (cardsToTake.length > cardsToSell.length) {
-				let num = cardsToTake.length - cardsToSell.length;
-				cardsToTake.splice(0, num);
-				// console.log(num);
+
+		if (this.cardsToSell.length >= 2) {
+			if (this.cardsToTake.length === 1) {
+				if (marketCards[0] !== this.cardsToTake[0]) {
+					this.cardsToTake.push(marketCards[0]);
+				} else {
+					this.cardsToTake.push(marketCards[1]);
+				}
 			}
-		} //else {
-		// 	console.log('not enough cards');
-		// }
-		// console.log('after splicing', cardsToSell, cardsToTake);
-
-		if (cardsToSell.length === cardsToTake.length && cardsToSell.length >= 2) {
-			let tempArr = cardsToSell;
-			cardsToSell = cardsToTake;
-			cardsToTake = tempArr;
-
-			cardsToSell.forEach(card => {
-				machineDisplay.appendChild(card);
-			});
-
-			cardsToTake.forEach(card => {
-				marketDisplay.appendChild(card);
-			});
-			// console.log('exchanging cards');
+			if (this.cardsToSell.length > this.cardsToTake.length) {
+				let num = this.cardsToSell.length - this.cardsToTake.length;
+				this.cardsToSell.splice(0, num);
+			} else {
+				let num = this.cardsToTake.length - this.cardsToSell.length;
+				this.cardsToTake.splice(0, num);
+			}
 		}
-		// else {
-		// 	console.log('change not possible');
-		// }
 	}
 
-	isValidAction() {
-		if (this.sellingGoods.length !== 0) {
-			return true;
+	chooseAction(choices) {
+		let randomAction = choices[Math.floor(Math.random() * choices.length)];
+		console.log(randomAction, choices);
+
+		if (choices.length === 0) {
+			console.log('pass');
+			return;
+		}
+		if (randomAction === 'sell') {
+			this.checkCards();
+			if (this.sellingGoods.length !== 0) {
+				console.log('selling');
+				this.sell();
+			} else {
+				console.log('choosing again');
+				let tempArr = choices.filter(choice => choice !== 'sell');
+				console.log(tempArr);
+				this.chooseAction(tempArr);
+			}
+		} else if (randomAction === 'cardsExchange') {
+			this.prepareExchange();
+			if (this.cardsToTake.length === this.cardsToSell.length && this.cardsToTake.length !== 0) {
+				console.log('changing cards');
+				this.cardsExchange();
+			} else {
+				console.log('choosing again');
+				let tempArr = choices.filter(choice => choice !== 'cardsExchange');
+				console.log(tempArr);
+				this.chooseAction(tempArr);
+			}
 		} else {
-			return false;
+			if (document.getElementById('machine-hand').children.length + 1 <= 7) {
+				console.log('taking one');
+				this.takeCard();
+			} else {
+				console.log('choosing again');
+				let tempArr = choices.filter(choice => choice !== 'takeCard');
+				console.log(tempArr);
+				this.chooseAction(tempArr);
+			}
 		}
-	}
-
-	chooseAction() {
-		let randomAction = this.actions[Math.floor(Math.random() * this.actions.length)];
-		console.log(randomAction);
-
-		randomAction === 'sell'
-			? this.sell()
-			: randomAction === 'cardsExchange' ? this.cardsExchange() : this.takeCard();
-	}
-
-	calculateScore() {
-		let tokens = [ ...document.getElementById('machine-tokens').children ];
-
-		this.score = tokens.map(token => Number(token.getAttribute('data-value'))).reduce((acc, cur) => acc + cur, 0);
-		// console.log(tokens);
 	}
 }

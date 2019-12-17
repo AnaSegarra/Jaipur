@@ -11,47 +11,13 @@ window.addEventListener('load', () => {
 	}
 
 	document.getElementById('start-btn').addEventListener('click', () => {
-		player.hand = cards.dealCards();
-		// console.log(hand);
-		let playerHandDisplay = '';
-		player.hand.forEach(card => {
-			// console.log(card.name);
-			playerHandDisplay += `<div class="card-container" data-card="${card.name}">
-										<div class="card-frame" data-card="${card.name}" style="background-image: url('images/goodsCards/${card.img}')"></div>
-								  </div>`;
-		});
+		document.getElementById('home-page').style.display = 'none';
+		document.getElementById('game-board').classList.replace('game-stopped', 'game-played');
 
-		machine.hand = cards.dealCards();
-		let machineHandDisplay = '';
-		machine.hand.forEach(card => {
-			machineHandDisplay += `<div class="card-container back" data-card="${card.name}">
-										<div class="card-frame" style="background-image: url('images/goodsCards/${card.img}');">
-										</div>
-		            				</div>`;
-		});
-
-		let market = cards.dealCards();
-		let marketDisplay = '';
-		market.forEach(card => {
-			marketDisplay += `<div class="card-container" data-card="${card.name}">
-								<div class="card-frame" data-card="${card.name}" style="background-image: url('images/goodsCards/${card.img}');">
-								</div>
-							</div>`;
-		});
-
-		let deckPile = cards.elements;
-		let deckPileDisplay = '';
-		deckPile.forEach(card => {
-			deckPileDisplay += `<div class="card-container back" data-card="${card.name}">
-			<div class="card-frame" style="background-image: url('images/card-back.png');">
-			</div>
-		</div>`;
-		});
-
-		document.getElementById('player-hand').innerHTML = playerHandDisplay;
-		document.getElementById('machine-hand').innerHTML = machineHandDisplay;
-		document.getElementById('market').innerHTML = marketDisplay;
-		document.getElementById('deck').innerHTML = deckPileDisplay;
+		board.displayCards(board.domElements.playerHand, cards.dealCards());
+		board.displayCards(board.domElements.machineHand, cards.dealCards());
+		board.displayCards(board.domElements.market, cards.dealCards());
+		board.displayCards(board.domElements.deckPile, cards.elements);
 
 		for (let key in goodsTokens) {
 			// console.log(key);
@@ -69,54 +35,38 @@ window.addEventListener('load', () => {
 			bonus.elements[key].forEach(bonus => {
 				// console.log(key);
 				// console.log(bonus);
-				displayBonus += `<img src="images/${bonus.img}" alt="">`;
+				displayBonus += `<img src="images/${bonus.img}" alt="" data-bonus="${bonus.points}">`;
 				document.getElementById(`${key}`).innerHTML = displayBonus;
 			});
 		}
-		// document.getElementById('player-btns').innerHTML = `<button id="take-btn">Take</button>
-		// <button id="sell-btn">Sell</button><button id="confirm-btn">Ok!</button>`;
 
 		player.setBtnListeners();
-
-		document.getElementById('game-board').style.display = 'flex';
-		document.getElementById('home-page').style.display = 'none';
 
 		document.getElementById('confirm-btn').addEventListener('click', () => {
 			if (player.activeSell && board.validateSell()) {
 				// console.log('valid change');
-				board.tokenExchange();
 				board.cardSell();
-				player.updateHand();
+				board.gamePlay();
 			}
-
-			if (player.activeTake && player.pickedCards.length !== 0) {
-				if (player.pickedCards.length > 1) {
-					board.cardExchange();
-					player.updateHand();
-				} else {
+			if (player.activeTake) {
+				if (
+					player.pickedCards.length === 1 &&
+					player.pickedCards[0].parentElement.parentNode.id !== 'player-hand'
+				) {
 					board.cardTake();
+					board.gamePlay();
+				}
+				if (player.pickedCards.length >= 2) {
+					player.prepareExchange();
+					if (player.cardsToSell.length === player.cardsToTake.length && player.cardsToSell.length >= 2) {
+						board.cardExchange();
+						board.gamePlay();
+					} else {
+						player.cardsToSell = [];
+						player.cardsToTake = [];
+					}
 				}
 			}
-
-			[ ...document.getElementById('player-btns').children ].forEach(btn => {
-				btn.classList.remove('btn-clicked');
-				btn.style.pointerEvents = 'auto';
-				player.activeSell = false;
-				player.activeTake = false;
-			});
-
-			board.changeActivePlayer();
-
-			if (board.checkGameOver()) {
-				board.checkWinner();
-			}
-
-			setTimeout(() => {
-				machine.chooseAction();
-				// document.getElementById('player-btns').style.display = 'initial';
-				board.changeActivePlayer();
-			}, 5000);
-			console.log('machine is playing');
 		});
 	});
 });
