@@ -14,23 +14,13 @@ class Deck {
 	}
 
 	dealCards() {
-		let tempArr = []; // player/machine hand of cards
+		let tempArr = [];
 		for (let i = 0; i < 5; i++) {
 			tempArr.push(this.elements[i]);
 		}
 		this.elements = this.elements.filter((card, index) => {
-			// console.log(card, tempArr[index], card === tempArr[index]);
 			return card !== tempArr[index];
 		});
 		return tempArr;
-		// let html = '';
-		// this.cards.forEach(card => {
-		// 	// console.log(card.name);
-		// 	html += `<div class="card-container">
-		//                     <div class="card-frame" style="background-image:url('images/${card.img}')"></div>
-		//                 </div>`;
-		// });
-
-		// document.getElementById('game-board').innerHTML = html;
 	}
 }

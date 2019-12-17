@@ -30,7 +30,6 @@ h1 > span {
 	font-size: 5rem;
 	display: block;
 }
-
 button {
 	margin-top: 1em;
 	font-size: 2rem;
@@ -259,7 +258,7 @@ button:hover {
 }
 #machine-tokens,
 #player-tokens {
-	margin: 1em 0;
+	margin: 1em .5em;
 }
 .tokens {
 	display: flex;
@@ -272,15 +271,12 @@ button:hover {
 	border-radius: 50%;
 	align-self: flex-start;
 }
-
 .tokens img:nth-child(2) {
 	transform: translateX(-2em);
 }
-
 .tokens img:nth-child(3) {
 	transform: translateX(-4em);
 }
-
 .tokens img:nth-child(4) {
 	transform: translateX(-6em);
 }
@@ -299,36 +295,26 @@ button:hover {
 .tokens img:nth-child(9) {
 	transform: translateX(-16em);
 }
-#threeCards > img,
-#fourCards > img,
-#fiveCards > img {
+
+.bonus > img {
 	box-shadow: none;
 }
-#threeCards img:nth-child(2),
-#fourCards img:nth-child(2),
-#fiveCards img:nth-child(2) {
+.bonus img:nth-child(2) {
 	transform: translate(-3.1em, -.05em);
 }
-#threeCards img:nth-child(3),
-#fourCards img:nth-child(3),
-#fiveCards img:nth-child(3) {
+.bonus img:nth-child(3) {
 	transform: translate(-6.2em, -.1em);
 }
-#threeCards img:nth-child(4),
-#fourCards img:nth-child(4),
-#fiveCards img:nth-child(4) {
+.bonus img:nth-child(4) {
 	transform: translate(-9.4em, -.15em);
 }
-#threeCards img:nth-child(5),
-#fourCards img:nth-child(5),
-#fiveCards img:nth-child(5) {
+.bonus img:nth-child(5) {
 	transform: translate(-12.5em, -.2em);
 }
-#threeCards img:nth-child(6),
-#fourCards img:nth-child(6) {
+.bonus img:nth-child(6) {
 	transform: translate(-15.6em, -.25em);
 }
-#threeCards img:nth-child(7) {
+.bonus img:nth-child(7) {
 	transform: translate(-18.7em, -.3em);
 }
 
@@ -341,7 +327,6 @@ button:hover {
 	background: #c09;
 	background: linear-gradient(#800060, #c09, #800060);
 }
-
 #sell-btn {
 	font-size: 1rem;
 	padding: .2em 1.3em;
@@ -363,12 +348,3 @@ button:hover {
 	transform: translateY(-1em);
 	background-color: #ff0;
 }
-
-/* testing */
-/* .card-container:hover {
-	transform: translateY(-1em);
-	background-color: #ff0;
-} */
-/* .card-container:active {
-	background-color: #ffff00;
-} */

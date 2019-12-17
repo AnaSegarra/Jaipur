@@ -20,10 +20,8 @@ window.addEventListener('load', () => {
 		board.displayCards(board.domElements.deckPile, cards.elements);
 
 		for (let key in goodsTokens) {
-			// console.log(key);
 			let displayTokens = '';
 			goodsTokens[key].forEach(token => {
-				// console.log(token.points, key);
 				displayTokens += `<img src="images/goodsTokens/${token.img}" data-value="${token.points}" alt="">`;
 				document.getElementById(`${key}`).innerHTML = displayTokens;
 			});
@@ -31,10 +29,7 @@ window.addEventListener('load', () => {
 
 		for (let key in bonus.elements) {
 			let displayBonus = '';
-			// console.log(bonus.elements[key]);
 			bonus.elements[key].forEach(bonus => {
-				// console.log(key);
-				// console.log(bonus);
 				displayBonus += `<img src="images/${bonus.img}" alt="" data-bonus="${bonus.points}">`;
 				document.getElementById(`${key}`).innerHTML = displayBonus;
 			});
@@ -44,7 +39,6 @@ window.addEventListener('load', () => {
 
 		document.getElementById('confirm-btn').addEventListener('click', () => {
 			if (player.activeSell && board.validateSell()) {
-				// console.log('valid change');
 				board.cardSell();
 				board.gamePlay();
 			}
@@ -70,8 +64,3 @@ window.addEventListener('load', () => {
 		});
 	});
 });
-
-// testing
-// function showPage() {
-// 	document.getElementById('home-page').style.display = 'flex';
-// }
