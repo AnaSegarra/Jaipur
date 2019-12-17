@@ -1,7 +1,6 @@
 class Player {
 	constructor() {
 		this.pickedCards = [];
-		// this.tokens = [];
 
 		this.eligibleCards;
 
@@ -67,14 +66,12 @@ class Player {
 	}
 
 	playerIsChoosing(e) {
-		// console.log(this);
 		e.target.classList.contains('card-frame')
 			? e.target.parentElement.classList.toggle('card-hover')
 			: e.target.classList.toggle('card-hover');
 	}
 
 	cardChosen(e) {
-		// console.log(e.target, e.target.classList);
 		if (
 			!e.target.parentElement.classList.contains('card-chosen') &&
 			!e.target.classList.contains('card-chosen') &&
@@ -83,7 +80,6 @@ class Player {
 			e.target.classList.contains('card-frame')
 				? e.target.parentElement.classList.add('card-chosen')
 				: e.target.classList.add('card-chosen');
-			// console.log('choosing', player.pickedCards);
 		} else {
 			if (
 				(e.target.classList.contains('card-frame') &&
@@ -94,7 +90,6 @@ class Player {
 				e.target.classList.remove('card-chosen');
 				player.pickedCards.pop();
 			}
-			// console.log('unchoosing already', player.pickedCards);
 		}
 	}
 
@@ -113,10 +108,8 @@ class Player {
 				...document.querySelectorAll('#market > div'),
 				...document.querySelectorAll('#player-hand > div')
 			];
-			// console.log(this.eligibleCards);
 			this.setCardsListeners();
 		} else {
-			// console.log('removing listeners');
 			this.removeCardsListeners();
 		}
 	}
@@ -130,9 +123,7 @@ class Player {
 		}
 
 		if (this.activeSell && this.pickedCards.length > 0) {
-			// console.log('you need to check the type of good');
 			let chosenGood = this.pickedCards[0].getAttribute('data-card');
-			// console.log(chosenGood);
 			if (cardType === chosenGood) {
 				card.classList.contains('card-container')
 					? this.pickedCards.push(card.children[0])
