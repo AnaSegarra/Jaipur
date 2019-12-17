@@ -41,10 +41,10 @@ class Board {
 		if (destination === this.domElements.playerTokens) {
 			playerChoice = playerChoice.filter(card => !card.classList.contains('card-container'));
 		}
-
 		// console.log(playerChoice);
 		for (let i = 0; i < playerChoice.length; i++) {
 			if (tokens.children.length > 0) {
+				tokens.lastElementChild.style.width = '2.5em';
 				destination.appendChild(tokens.lastElementChild);
 			}
 			// else {
@@ -57,6 +57,7 @@ class Board {
 	bonusRetrieval(bonusType, player) {
 		let token = document.getElementById(bonusType);
 		if (token.children.length > 0) {
+			token.lastElementChild.style.width = '2.5em';
 			player.appendChild(token.lastElementChild);
 		}
 	}
@@ -87,13 +88,15 @@ class Board {
 		}
 
 		cards.forEach(card => {
+			console.log(card);
 			discardPile.appendChild(card);
 			card.classList.remove('card-chosen');
-			card.removeEventListener('mouseenter', player.playerIsChoosing);
-			card.removeEventListener('mouseleave', player.playerIsChoosing);
-			card.removeEventListener('click', player.cardChosen);
+			// card.removeEventListener('mouseenter', player.playerIsChoosing);
+			// card.removeEventListener('mouseleave', player.playerIsChoosing);
+			// card.removeEventListener('click', player.cardChosen);
 			player.pickedCards = [];
 		});
+		player.removeCardsListeners();
 	}
 
 	cardExchange() {
@@ -139,7 +142,8 @@ class Board {
 		player.eligibleCards.forEach(card => {
 			if (card.classList.contains('card-chosen') && card.parentNode.id === 'market') chosenCard = card;
 		});
-		if (playerHand.children.length + 1 <= 7) {
+		console.log(chosenCard);
+		if (playerHand.children.length + 1 <= 7 && chosenCard) {
 			// console.log('you can take cards');
 			playerHand.appendChild(chosenCard);
 			player.removeCardsListeners();

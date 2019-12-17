@@ -49,7 +49,10 @@ window.addEventListener('load', () => {
 				board.gamePlay();
 			}
 			if (player.activeTake) {
-				if (player.pickedCards.length === 1) {
+				if (
+					player.pickedCards.length === 1 &&
+					player.pickedCards[0].parentElement.parentNode.id !== 'player-hand'
+				) {
 					board.cardTake();
 					board.gamePlay();
 				}
