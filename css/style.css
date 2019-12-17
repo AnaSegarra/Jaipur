@@ -254,15 +254,19 @@ button:hover {
 /* TOKENS */
 #token-container {
 	align-self: center;
-	margin: 4em 3em;
+	margin: 4em 2em;
 	width: 15%;
+}
+#machine-tokens,
+#player-tokens {
+	margin: 1em 0;
 }
 .tokens {
 	display: flex;
 	margin: 1em;
 }
 .tokens > img {
-	width: 3em;
+	width: 3.2em;
 	height: auto;
 	box-shadow: .3em .3em .4em #333;
 	border-radius: 50%;
@@ -303,29 +307,29 @@ button:hover {
 #threeCards img:nth-child(2),
 #fourCards img:nth-child(2),
 #fiveCards img:nth-child(2) {
-	transform: translate(-2.9em, -.05em);
+	transform: translate(-3.1em, -.05em);
 }
 #threeCards img:nth-child(3),
 #fourCards img:nth-child(3),
 #fiveCards img:nth-child(3) {
-	transform: translate(-5.8em, -.1em);
+	transform: translate(-6.2em, -.1em);
 }
 #threeCards img:nth-child(4),
 #fourCards img:nth-child(4),
 #fiveCards img:nth-child(4) {
-	transform: translate(-8.7em, -.2em);
+	transform: translate(-9.4em, -.15em);
 }
 #threeCards img:nth-child(5),
 #fourCards img:nth-child(5),
 #fiveCards img:nth-child(5) {
-	transform: translate(-11.6em, -.3em);
+	transform: translate(-12.5em, -.2em);
 }
 #threeCards img:nth-child(6),
 #fourCards img:nth-child(6) {
-	transform: translate(-14.5em, -.4em);
+	transform: translate(-15.6em, -.25em);
 }
 #threeCards img:nth-child(7) {
-	transform: translate(-17.4em, -.5em);
+	transform: translate(-18.7em, -.3em);
 }
 
 /* PLAYER TURN */
