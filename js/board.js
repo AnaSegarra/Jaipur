@@ -70,6 +70,7 @@ class Board {
 		for (let i = 0; i < playerChoice.length; i++) {
 			if (tokens.children.length > 0) {
 				tokens.lastElementChild.style.width = '2.5em';
+				tokens.lastElementChild.setAttribute('data-type', playerChoice[0].getAttribute('data-card'));
 				destination.appendChild(tokens.lastElementChild);
 			}
 			if (destination.children.length === 10) {
@@ -127,10 +128,6 @@ class Board {
 
 			document.getElementById('machine').classList.add('active-player');
 			document.getElementById('player').classList.remove('active-player');
-
-			this.playerHand.children.length > 5
-				? document.getElementById('player').classList.add('full-hand')
-				: document.getElementById('player').classList.remove('full-hand');
 		} else {
 			player.activePlayer = true;
 			machine.activePlayer = false;
@@ -138,11 +135,15 @@ class Board {
 			playerBtns.style.visibility = 'visible';
 			document.getElementById('player').classList.add('active-player');
 			document.getElementById('machine').classList.remove('active-player');
-
-			this.machineHand.children.length > 5
-				? document.getElementById('machine').classList.add('full-hand')
-				: document.getElementById('machine').classList.remove('full-hand');
 		}
+
+		this.machineHand.children.length > 5
+			? document.getElementById('machine').classList.add('full-hand')
+			: document.getElementById('machine').classList.remove('full-hand');
+
+		this.playerHand.children.length > 5
+			? document.getElementById('player').classList.add('full-hand')
+			: document.getElementById('player').classList.remove('full-hand');
 	}
 
 	checkWinner() {
@@ -153,11 +154,9 @@ class Board {
 			: player.score < machine.score
 				? (document.getElementById('lose-msg').style.display = 'block')
 				: (document.getElementById('draw-msg').style.display = 'block');
-	}
 
-	displayScore() {
 		document.getElementById('game-board').classList.replace('game-played', 'game-stopped');
-		document.getElementById('final-msg').style.display = 'flex';
+		document.getElementById('final-msg').style.display = 'block';
 	}
 
 	gamePlay() {
@@ -177,7 +176,6 @@ class Board {
 			setTimeout(() => {
 				machine.chooseAction(machine.actions);
 				if (this.checkGameOver()) {
-					this.displayScore();
 					this.checkWinner();
 				} else {
 					this.changeActivePlayer();

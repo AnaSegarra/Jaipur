@@ -109,13 +109,14 @@ class Machine {
 				randomGood.classList.add('back');
 				machineDisplay.appendChild(randomGood);
 			}
+			if (deckPile.children.length > 0) {
+				let cardType = deckPile.lastElementChild.getAttribute('data-card');
 
-			let cardType = deckPile.lastElementChild.getAttribute('data-card');
-
-			deckPile.lastElementChild.children[0].style.backgroundImage = `url(images/goodsCards/${cardType}.png)`;
-			deckPile.lastElementChild.classList.remove('back');
-			deckPile.lastElementChild.firstElementChild.setAttribute('data-card', cardType);
-			marketDisplay.appendChild(deckPile.lastChild);
+				deckPile.lastElementChild.children[0].style.backgroundImage = `url(images/goodsCards/${cardType}.png)`;
+				deckPile.lastElementChild.classList.remove('back');
+				deckPile.lastElementChild.firstElementChild.setAttribute('data-card', cardType);
+				marketDisplay.appendChild(deckPile.lastChild);
+			}
 		}
 	}
 
