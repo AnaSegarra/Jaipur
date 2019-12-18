@@ -67,14 +67,14 @@ class Machine {
 			discardPile.appendChild(card);
 		});
 
-		board.tokenExchange(this.sellingGoods, board.domElements.machineTokens);
+		board.tokenExchange(this.sellingGoods, board.machineTokens);
 
 		if (this.sellingGoods.length >= 3) {
 			this.sellingGoods.length === 3
-				? board.bonusRetrieval('threeCards', board.domElements.machineTokens)
+				? board.bonusRetrieval('threeCards', board.machineTokens)
 				: this.sellingGoods.length === 4
-					? board.bonusRetrieval('fourCards', board.domElements.machineTokens)
-					: board.bonusRetrieval('fiveCards', board.domElements.machineTokens);
+					? board.bonusRetrieval('fourCards', board.machineTokens)
+					: board.bonusRetrieval('fiveCards', board.machineTokens);
 		}
 
 		this.sellingGoods = undefined;

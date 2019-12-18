@@ -1,59 +1,45 @@
-const cards = new Deck(gameCards);
-const bonus = new Deck(bonusTokens);
 const player = new Player();
 const machine = new Machine();
 const board = new Board();
 
 window.addEventListener('load', () => {
-	cards.shuffle();
-	for (let key in bonus.elements) {
-		bonus.shuffle(bonus.elements[key]);
+	board.shuffle(board.cards);
+	for (let key in board.bonusTokens) {
+		board.shuffle(bonusTokens[key]);
 	}
 
 	document.getElementById('start-btn').addEventListener('click', () => {
 		document.getElementById('home-page').style.display = 'none';
 		document.getElementById('game-board').classList.replace('game-stopped', 'game-played');
 
-		board.displayCards(board.domElements.playerHand, cards.dealCards());
-		board.displayCards(board.domElements.machineHand, cards.dealCards());
-		board.displayCards(board.domElements.market, cards.dealCards());
-		board.displayCards(board.domElements.deckPile, cards.elements);
+		board.displayCards(board.playerHand, board.dealCards());
+		board.displayCards(board.machineHand, board.dealCards());
+		board.displayCards(board.market, board.dealCards());
+		board.displayCards(board.deckPile, board.cards);
 
-		for (let key in goodsTokens) {
-			let displayTokens = '';
-			goodsTokens[key].forEach(token => {
-				displayTokens += `<img src="images/goodsTokens/${token.img}" data-value="${token.points}" alt="">`;
-				document.getElementById(`${key}`).innerHTML = displayTokens;
-			});
-		}
-
-		for (let key in bonus.elements) {
-			let displayBonus = '';
-			bonus.elements[key].forEach(bonus => {
-				displayBonus += `<img src="images/${bonus.img}" alt="" data-bonus="${bonus.points}">`;
-				document.getElementById(`${key}`).innerHTML = displayBonus;
-			});
-		}
+		board.displayTokens(board.goodsTokens);
+		board.displayTokens(board.bonusTokens);
 
 		player.setBtnListeners();
 
 		document.getElementById('confirm-btn').addEventListener('click', () => {
-			if (player.activeSell && board.validateSell()) {
-				board.cardSell();
+			if (player.activeSell && player.validateSell()) {
+				player.cardSell();
 				board.gamePlay();
 			}
 			if (player.activeTake) {
 				if (
 					player.pickedCards.length === 1 &&
-					player.pickedCards[0].parentElement.parentNode.id !== 'player-hand'
+					player.pickedCards[0].parentElement.parentNode.id !== 'player-hand' &&
+					board.playerHand.children.length < 7
 				) {
-					board.cardTake();
+					player.cardTake();
 					board.gamePlay();
 				}
 				if (player.pickedCards.length >= 2) {
 					player.prepareExchange();
 					if (player.cardsToSell.length === player.cardsToTake.length && player.cardsToSell.length >= 2) {
-						board.cardExchange();
+						player.cardExchange();
 						board.gamePlay();
 					} else {
 						player.cardsToSell = [];
