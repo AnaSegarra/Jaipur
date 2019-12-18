@@ -1,7 +1,6 @@
 class Player {
 	constructor() {
 		this.pickedCards = [];
-
 		this.eligibleCards;
 
 		this.activeSell = false;
@@ -132,6 +131,92 @@ class Player {
 			} else {
 				return false;
 			}
+		}
+	}
+
+	cardSell() {
+		let cards = [];
+
+		let discardPile = document.getElementById('discard-pile');
+
+		this.eligibleCards.forEach(card => {
+			if (card.classList.contains('card-chosen')) cards.push(card);
+		});
+
+		board.tokenExchange(this.pickedCards, board.playerTokens);
+
+		if (cards.length >= 3) {
+			cards.length === 3
+				? board.bonusRetrieval('threeCards', board.playerTokens)
+				: cards.length === 4
+					? board.bonusRetrieval('fourCards', board.playerTokens)
+					: board.bonusRetrieval('fiveCards', board.playerTokens);
+		}
+
+		cards.forEach(card => {
+			discardPile.appendChild(card);
+			card.classList.remove('card-chosen');
+			this.pickedCards = [];
+		});
+
+		this.removeCardsListeners();
+	}
+
+	cardExchange() {
+		let tempArr = this.cardsToSell;
+		this.cardsToSell = this.cardsToTake;
+		this.cardsToTake = tempArr;
+
+		this.cardsToSell.forEach(card => {
+			board.playerHand.appendChild(card);
+			card.classList.remove('card-chosen');
+			this.removeCardsListeners();
+		});
+
+		this.cardsToTake.forEach(card => {
+			board.market.appendChild(card);
+			card.classList.remove('card-chosen');
+			this.removeCardsListeners();
+		});
+
+		this.pickedCards = [];
+		this.cardsToSell = [];
+		this.cardsToTake = [];
+	}
+
+	cardTake() {
+		let chosenCard;
+		this.eligibleCards.forEach(card => {
+			if (card.classList.contains('card-chosen') && card.parentNode.id === 'market') chosenCard = card;
+		});
+
+		if (board.playerHand.children.length + 1 <= 7 && chosenCard) {
+			board.playerHand.appendChild(chosenCard);
+			this.removeCardsListeners();
+			chosenCard.classList.remove('card-chosen');
+			this.pickedCards = [];
+
+			let cardType = board.deckPile.lastElementChild.getAttribute('data-card');
+			board.deckPile.lastElementChild.children[0].style.backgroundImage = `url(images/goodsCards/${cardType}.png)`;
+			board.deckPile.lastElementChild.classList.replace('back', 'card-container');
+			board.deckPile.lastElementChild.firstElementChild.setAttribute('data-card', cardType);
+			board.market.appendChild(board.deckPile.lastChild);
+		}
+	}
+
+	validateSell() {
+		this.pickedCards = this.pickedCards.filter(card => !card.classList.contains('card-container'));
+		if (this.pickedCards.length === 0) return false;
+
+		if (
+			(this.pickedCards[0].getAttribute('data-card') === 'diamonds' ||
+				this.pickedCards[0].getAttribute('data-card') === 'gold' ||
+				this.pickedCards[0].getAttribute('data-card') === 'silver') &&
+			this.pickedCards.length < 2
+		) {
+			return false;
+		} else {
+			return true;
 		}
 	}
 }
