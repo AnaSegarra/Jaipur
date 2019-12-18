@@ -99,7 +99,9 @@ button:hover {
 #machine {
 	display: flex;
 	margin-top: 1.4em;
-	width: fit-content;
+}
+.full-hand {
+	width: 80vw;
 }
 #player {
 	margin-top: 2em;
@@ -112,7 +114,6 @@ button:hover {
 }
 #machine-hand {
 	display: flex;
-	/* margin-top: 1em; */
 }
 #player-hand {
 	display: flex;
@@ -263,6 +264,7 @@ button:hover {
 .tokens {
 	display: flex;
 	margin: 1em;
+	width: 10%;
 }
 .tokens > img {
 	width: 3.2em;

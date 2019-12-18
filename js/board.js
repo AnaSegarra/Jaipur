@@ -72,6 +72,14 @@ class Board {
 				tokens.lastElementChild.style.width = '2.5em';
 				destination.appendChild(tokens.lastElementChild);
 			}
+			if (destination.children.length === 10) {
+				destination.lastElementChild.style.transform = `translateX(-${18}em)`;
+			}
+			if (destination.children.length > 10) {
+				let transformProperty = destination.lastElementChild.previousSibling.style.transform;
+				let transformValue = Number(transformProperty.match(/\d+/)[0]) + 2;
+				destination.lastElementChild.style.transform = `translateX(-${transformValue}em)`;
+			}
 		}
 	}
 
@@ -80,6 +88,14 @@ class Board {
 		if (token.children.length > 0) {
 			token.lastElementChild.style.width = '2.5em';
 			player.appendChild(token.lastElementChild);
+		}
+		if (player.children.length === 10) {
+			player.lastElementChild.style.transform = `translateX(-${18}em)`;
+		}
+		if (player.children.length > 10) {
+			let transformProperty = player.lastElementChild.previousSibling.style.transform;
+			let transformValue = Number(transformProperty.match(/\d+/)[0]) + 2;
+			player.lastElementChild.style.transform = `translateX(-${transformValue}em)`;
 		}
 	}
 
@@ -111,6 +127,10 @@ class Board {
 
 			document.getElementById('machine').classList.add('active-player');
 			document.getElementById('player').classList.remove('active-player');
+
+			this.playerHand.children.length > 5
+				? document.getElementById('player').classList.add('full-hand')
+				: document.getElementById('player').classList.remove('full-hand');
 		} else {
 			player.activePlayer = true;
 			machine.activePlayer = false;
@@ -118,6 +138,10 @@ class Board {
 			playerBtns.style.visibility = 'visible';
 			document.getElementById('player').classList.add('active-player');
 			document.getElementById('machine').classList.remove('active-player');
+
+			this.machineHand.children.length > 5
+				? document.getElementById('machine').classList.add('full-hand')
+				: document.getElementById('machine').classList.remove('full-hand');
 		}
 	}
 
@@ -131,6 +155,11 @@ class Board {
 				: (document.getElementById('draw-msg').style.display = 'block');
 	}
 
+	displayScore() {
+		document.getElementById('game-board').classList.replace('game-played', 'game-stopped');
+		document.getElementById('final-msg').style.display = 'flex';
+	}
+
 	gamePlay() {
 		[ ...document.getElementById('player-btns').children ].forEach(btn => {
 			btn.classList.remove('btn-clicked');
@@ -139,23 +168,19 @@ class Board {
 			player.activeTake = false;
 		});
 
-		board.changeActivePlayer();
+		this.changeActivePlayer();
 
-		if (board.checkGameOver()) {
-			document.getElementById('game-board').classList.replace('game-played', 'game-stopped');
-			document.getElementById('final-msg').style.display = 'flex';
-
-			board.checkWinner();
+		if (this.checkGameOver()) {
+			this.displayScore();
+			this.checkWinner();
 		} else {
 			setTimeout(() => {
 				machine.chooseAction(machine.actions);
-				if (board.checkGameOver()) {
-					document.getElementById('game-board').classList.replace('game-played', 'game-stopped');
-					document.getElementById('final-msg').style.display = 'flex';
-
-					board.checkWinner();
+				if (this.checkGameOver()) {
+					this.displayScore();
+					this.checkWinner();
 				} else {
-					board.changeActivePlayer();
+					this.changeActivePlayer();
 				}
 			}, 5000);
 		}
