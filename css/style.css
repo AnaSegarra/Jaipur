@@ -53,10 +53,21 @@ button:hover {
 /* FINAL MESSAGES */
 #final-msg {
 	font-size: 6rem;
-	height: 100vh;
+	margin: 1em auto .5em;
+	width: 60%;
+	text-align: center;
 	display: none;
-	justify-content: center;
-	align-items: center;
+	animation: fadeIn;
+	animation-duration: 1s;
+	animation-timing-function: ease-in;
+}
+@keyframes fadeIn {
+	0% {
+		opacity: 0;
+	}
+	100% {
+		opacity: 1;
+	}
 }
 #final-msg span {
 	text-shadow: none;
@@ -89,6 +100,9 @@ button:hover {
 }
 .game-played {
 	display: flex;
+	animation-name: fadeIn;
+	animation-duration: 1s;
+	animation-timing-function: ease-in;
 }
 .active-player {
 	border: .05em solid #ff9f9f;
@@ -349,4 +363,9 @@ button:hover {
 .card-chosen {
 	transform: translateY(-1em);
 	background-color: #ff0;
+}
+
+/* TESTING ANIMATION */
+.animate {
+	transition: 1s;
 }
