@@ -168,6 +168,7 @@ class Board {
 		document.getElementById('game-board').classList.replace('game-played', 'game-stopped');
 		document.getElementById('final-msg').style.display = 'block';
 		document.querySelector('.table').style.display = 'flex';
+		document.getElementById('help').style.display = 'none';
 	}
 
 	retrievePoints(type, tokens) {
