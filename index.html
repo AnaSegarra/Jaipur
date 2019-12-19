@@ -7,7 +7,7 @@
         <meta http-equiv="X-UA-Compatible" content="ie=edge">
         <title>Jaipur</title>
         <link rel="icon" type="image/png" href="images/favicon.ico">
-        <link href="https://fonts.googleapis.com/css?family=Work+Sans:400,800&display=swap"
+        <link href="https://fonts.googleapis.com/css?family=Work+Sans:400,600,800&display=swap"
             rel="stylesheet">
         <link rel="stylesheet" href="./css/style.css">
     </head>
@@ -22,7 +22,37 @@
             <div id="lose-msg">You lose! <span>😿</span> </div>
             <div id="draw-msg">Draw! <span>🙀</span> </div>
         </div>
-
+        <div class="table">
+            <div class="scoreboard table-header">
+                <p>Tokens</p>
+                <p>Your Score</p>
+                <p>Machine's Score</p>
+            </div>
+            <div class="scoreboard table-row" id="diamonds-row">
+                <p><img src="/images/tokensScore/diamond-tokenwn.png" alt=""></p>
+            </div>
+            <div class="scoreboard table-row" id="gold-row">
+                <p><img src="/images/tokensScore/gold-tokenwn.png" alt=""></p>
+            </div>
+            <div class="scoreboard table-row" id="silver-row">
+                <p><img src="/images/tokensScore/silver-tokenwn.png" alt=""></p>
+            </div>
+            <div class="scoreboard table-row" id="cloth-row">
+                <p><img src="/images/tokensScore/cloth-tokenwn.png" alt=""></p>
+            </div>
+            <div class="scoreboard table-row" id="spice-row">
+                <p><img src="/images/tokensScore/spice-tokenwn.png" alt=""></p>
+            </div>
+            <div class="scoreboard table-row" id="leather-row">
+                <p><img src="/images/tokensScore/leather-table.png" alt=""></p>
+            </div>
+            <div class="scoreboard table-row" id="bonus-row">
+                <p><img src="/images/tokensScore/token-bonus.png" alt=""></p>
+            </div>
+            <div class="scoreboard" id="total">
+                <p>Total</p>
+            </div>
+        </div>
         <div id="game-board" class="game-stopped">
             <div id="token-container">
                 <div id="threeCards" class="tokens bonus"></div>

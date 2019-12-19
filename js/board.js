@@ -88,6 +88,7 @@ class Board {
 		let token = document.getElementById(bonusType);
 		if (token.children.length > 0) {
 			token.lastElementChild.style.width = '2.5em';
+			token.lastElementChild.setAttribute('data-type', 'bonus');
 			player.appendChild(token.lastElementChild);
 		}
 		if (player.children.length === 10) {
@@ -137,11 +138,13 @@ class Board {
 			document.getElementById('machine').classList.remove('active-player');
 		}
 
-		this.machineHand.children.length > 5
+		this.machineHand.children.length > 5 ||
+		(this.machineHand.children.length === 5 && this.machineTokens.children.length > 0)
 			? document.getElementById('machine').classList.add('full-hand')
 			: document.getElementById('machine').classList.remove('full-hand');
 
-		this.playerHand.children.length > 5
+		this.playerHand.children.length > 5 ||
+		(this.playerHand.children.length === 5 && this.playerTokens.children.length > 0)
 			? document.getElementById('player').classList.add('full-hand')
 			: document.getElementById('player').classList.remove('full-hand');
 	}
@@ -149,14 +152,43 @@ class Board {
 	checkWinner() {
 		this.calculateScore(player, this.playerTokens);
 		this.calculateScore(machine, this.machineTokens);
+
+		this.displayScore([ ...this.playerTokens.children ], player);
+		this.displayScore([ ...this.machineTokens.children ], machine);
+
 		player.score > machine.score
-			? (document.getElementById('win-msg').style.display = 'block')
+			? ((document.getElementById('win-msg').style.display = 'block'),
+				document.getElementById('total').children[1].classList.add('win-points'))
 			: player.score < machine.score
-				? (document.getElementById('lose-msg').style.display = 'block')
-				: (document.getElementById('draw-msg').style.display = 'block');
+				? ((document.getElementById('lose-msg').style.display = 'block'),
+					document.getElementById('total').children[1].classList.add('lose-points'))
+				: ((document.getElementById('draw-msg').style.display = 'block'),
+					document.getElementById('total').children[1].classList.add('draw-points'));
 
 		document.getElementById('game-board').classList.replace('game-played', 'game-stopped');
 		document.getElementById('final-msg').style.display = 'block';
+		document.querySelector('.table').style.display = 'flex';
+	}
+
+	retrievePoints(type, tokens) {
+		return tokens
+			.filter(token => token.getAttribute('data-type') === type)
+			.map(token => token.getAttribute('data-points'));
+	}
+
+	displayScore(tokens, player) {
+		let types = [ 'diamonds', 'gold', 'silver', 'cloth', 'spice', 'leather', 'bonus' ];
+		types.forEach(good => {
+			let points = document.createElement('p');
+			points.innerHTML =
+				this.retrievePoints(good, tokens).length === 0 ? '0' : this.retrievePoints(good, tokens).join(' + ');
+			document.getElementById(`${good}-row`).appendChild(points);
+		});
+
+		let finalScore = document.createElement('p');
+		finalScore.innerHTML = player.score;
+
+		document.getElementById('total').appendChild(finalScore);
 	}
 
 	gamePlay() {
@@ -170,7 +202,6 @@ class Board {
 		this.changeActivePlayer();
 
 		if (this.checkGameOver()) {
-			this.displayScore();
 			this.checkWinner();
 		} else {
 			setTimeout(() => {
