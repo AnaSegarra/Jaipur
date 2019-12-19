@@ -3,7 +3,6 @@ class Machine {
 		this.actions = [ 'takeCard', 'cardsExchange', 'sell' ];
 
 		this.sellingGoods;
-		this.cards;
 
 		this.cardsToTake;
 		this.cardsToSell;
@@ -13,11 +12,11 @@ class Machine {
 	}
 
 	checkCards() {
-		this.cards = [ ...document.getElementById('machine-hand').children ];
+		let cards = [ ...document.getElementById('machine-hand').children ];
 		let diamonds = [];
 		let gold = [];
 		let silver = [];
-		this.cards.forEach(card => {
+		cards.forEach(card => {
 			if (card.getAttribute('data-card') === 'gold') {
 				gold.push(card);
 			}
@@ -29,16 +28,12 @@ class Machine {
 			}
 		});
 
-		if (diamonds.length >= 2 || gold.length >= 2 || silver.length >= 2) {
-			if (silver.length > gold.length && silver.length > diamonds.length) {
-				this.sellingGoods = silver;
-			} else if (gold.length > silver.length && gold.length > diamonds.length) {
-				this.sellingGoods = gold;
-			} else {
-				this.sellingGoods = diamonds;
-			}
+		if (diamonds.length >= 2) {
+			this.sellingGoods = diamonds;
+		} else if (silver.length >= 2 || gold.length >= 2) {
+			this.sellingGoods = gold.length >= silver.length ? gold : silver;
 		} else {
-			let filteredGoods = this.cards.filter(card => {
+			let filteredGoods = [ ...document.getElementById('machine-hand').children ].filter(card => {
 				return (
 					card.getAttribute('data-card') === 'cloth' ||
 					card.getAttribute('data-card') === 'spice' ||
@@ -144,7 +139,6 @@ class Machine {
 				marketDisplay.appendChild(card);
 			});
 		}
-
 		this.cardsToTake = [];
 		this.cardsToSell = [];
 	}
@@ -191,7 +185,6 @@ class Machine {
 
 	chooseAction(choices) {
 		let randomAction = choices[Math.floor(Math.random() * choices.length)];
-
 		if (choices.length === 0) {
 			return;
 		}
@@ -205,7 +198,7 @@ class Machine {
 			}
 		} else if (randomAction === 'cardsExchange') {
 			this.prepareExchange();
-			if (this.cardsToTake.length === this.cardsToSell.length && this.cardsToTake.length !== 0) {
+			if (this.cardsToTake.length === this.cardsToSell.length && this.cardsToTake.length >= 2) {
 				this.cardsExchange();
 			} else {
 				let tempArr = choices.filter(choice => choice !== 'cardsExchange');
