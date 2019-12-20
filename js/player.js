@@ -191,16 +191,28 @@ class Player {
 		});
 
 		if (board.playerHand.children.length + 1 <= 7 && chosenCard) {
-			board.playerHand.appendChild(chosenCard);
-			this.removeCardsListeners();
+			board.animate(chosenCard, board.playerHand);
+			board.animateDraw();
 			chosenCard.classList.remove('card-chosen');
-			this.pickedCards = [];
 
-			let cardType = board.deckPile.lastElementChild.getAttribute('data-card');
-			board.deckPile.lastElementChild.children[0].style.backgroundImage = `url(images/goodsCards/${cardType}.png)`;
-			board.deckPile.lastElementChild.classList.replace('back', 'card-container');
-			board.deckPile.lastElementChild.firstElementChild.setAttribute('data-card', cardType);
-			board.market.appendChild(board.deckPile.lastChild);
+			setTimeout(() => {
+				board.playerHand.appendChild(chosenCard);
+
+				chosenCard.style.transform = '';
+				board.market.lastElementChild.transform = '';
+
+				chosenCard.classList.remove('animate');
+				board.market.removeChild(board.market.lastElementChild);
+
+				let cardType = board.deckPile.lastElementChild.getAttribute('data-card');
+				board.deckPile.lastElementChild.children[0].style.backgroundImage = `url(images/goodsCards/${cardType}.png)`;
+				board.deckPile.lastElementChild.classList.replace('back', 'card-container');
+				board.deckPile.lastElementChild.firstElementChild.setAttribute('data-card', cardType);
+
+				board.market.appendChild(board.deckPile.lastChild);
+			}, 1500);
+			this.removeCardsListeners();
+			this.pickedCards = [];
 		}
 	}
 

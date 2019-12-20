@@ -76,11 +76,11 @@ class Machine {
 	}
 
 	takeCard() {
-		let machineDisplay = document.getElementById('machine-hand');
-		let marketDisplay = document.getElementById('market');
-		let deckPile = document.getElementById('deck');
+		// let machineDisplay = document.getElementById('machine-hand');
+		// let marketDisplay = document.getElementById('market');
+		// let deckPile = document.getElementById('deck');
 
-		let marketCards = [ ...marketDisplay.children ];
+		let marketCards = [ ...board.market.children ];
 		let randomGood;
 
 		let bestGoods = marketCards.filter(card => {
@@ -90,29 +90,45 @@ class Machine {
 				card.getAttribute('data-card') === 'silver'
 			);
 		});
-		if (machineDisplay.children.length + 1 <= 7) {
+		if (board.machineHand.children.length + 1 <= 7) {
 			if (bestGoods.length !== 0) {
 				randomGood = bestGoods[Math.floor(Math.random() * bestGoods.length)];
 
 				randomGood.firstElementChild.style.backgroundImage = 'url(images/card-back.png)';
 				randomGood.classList.add('back');
-				machineDisplay.appendChild(randomGood);
+				this.animateTaking(randomGood);
 			} else {
 				randomGood = marketCards[Math.floor(Math.random() * bestGoods.length)];
 
 				randomGood.firstElementChild.style.backgroundImage = 'url(images/card-back.png)';
 				randomGood.classList.add('back');
-				machineDisplay.appendChild(randomGood);
-			}
-			if (deckPile.children.length > 0) {
-				let cardType = deckPile.lastElementChild.getAttribute('data-card');
-
-				deckPile.lastElementChild.children[0].style.backgroundImage = `url(images/goodsCards/${cardType}.png)`;
-				deckPile.lastElementChild.classList.remove('back');
-				deckPile.lastElementChild.firstElementChild.setAttribute('data-card', cardType);
-				marketDisplay.appendChild(deckPile.lastChild);
+				this.animateTaking(randomGood);
 			}
 		}
+	}
+
+	animateTaking(card) {
+		board.animate(card, board.machineHand);
+		board.animateDraw();
+
+		setTimeout(() => {
+			board.machineHand.appendChild(card);
+
+			card.style.transform = '';
+			board.market.lastElementChild.transform = '';
+
+			board.market.removeChild(board.market.lastElementChild);
+			card.classList.remove('animate');
+
+			if (board.deckPile.children.length > 0) {
+				let cardType = board.deckPile.lastElementChild.getAttribute('data-card');
+				board.deckPile.lastElementChild.children[0].style.backgroundImage = `url(images/goodsCards/${cardType}.png)`;
+				board.deckPile.lastElementChild.classList.remove('back');
+				board.deckPile.lastElementChild.firstElementChild.setAttribute('data-card', cardType);
+
+				board.market.appendChild(board.deckPile.lastChild);
+			}
+		}, 1500);
 	}
 
 	cardsExchange() {
