@@ -10,6 +10,7 @@ class Board {
 		this.machineTokens = document.getElementById('machine-tokens');
 		this.market = document.getElementById('market');
 		this.deckPile = document.getElementById('deck');
+		this.discardPile = document.getElementById('discard-pile');
 	}
 
 	shuffle(arr) {
@@ -218,7 +219,10 @@ class Board {
 
 	animate(card, destination) {
 		let originCoords = card.getBoundingClientRect();
-		let endCoords = destination.lastElementChild.getBoundingClientRect();
+		let endCoords =
+			destination.children.length === 0
+				? destination.getBoundingClientRect()
+				: destination.lastElementChild.getBoundingClientRect();
 
 		let finalX = endCoords.x - originCoords.x + originCoords.width;
 		let finalY = endCoords.y - originCoords.y;

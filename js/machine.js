@@ -51,15 +51,20 @@ class Machine {
 	}
 
 	sell() {
-		let discardPile = document.getElementById('discard-pile');
-
 		this.sellingGoods.forEach(card => {
 			let cardType = card.getAttribute('data-card');
 
 			card.firstElementChild.style.backgroundImage = `url(images/goodsCards/${cardType}.png)`;
 			card.classList.remove('back');
 
-			discardPile.appendChild(card);
+			board.animate(card, board.discardPile);
+
+			setTimeout(() => {
+				card.style.transform = '';
+				card.classList.remove('animate');
+
+				board.discardPile.appendChild(card);
+			}, 1500);
 		});
 
 		board.tokenExchange(this.sellingGoods, board.machineTokens);

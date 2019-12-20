@@ -137,8 +137,6 @@ class Player {
 	cardSell() {
 		let cards = [];
 
-		let discardPile = document.getElementById('discard-pile');
-
 		this.eligibleCards.forEach(card => {
 			if (card.classList.contains('card-chosen')) cards.push(card);
 		});
@@ -154,8 +152,16 @@ class Player {
 		}
 
 		cards.forEach(card => {
-			discardPile.appendChild(card);
-			card.classList.remove('card-chosen');
+			board.animate(card, board.discardPile);
+
+			setTimeout(() => {
+				card.style.transform = '';
+				card.classList.remove('animate');
+
+				board.discardPile.appendChild(card);
+				card.classList.remove('card-chosen');
+			}, 1500);
+
 			this.pickedCards = [];
 		});
 
