@@ -51,15 +51,20 @@ class Machine {
 	}
 
 	sell() {
-		let discardPile = document.getElementById('discard-pile');
-
 		this.sellingGoods.forEach(card => {
 			let cardType = card.getAttribute('data-card');
 
 			card.firstElementChild.style.backgroundImage = `url(images/goodsCards/${cardType}.png)`;
 			card.classList.remove('back');
 
-			discardPile.appendChild(card);
+			board.animate(card, board.discardPile);
+
+			setTimeout(() => {
+				card.style.transform = '';
+				card.classList.remove('animate');
+
+				board.discardPile.appendChild(card);
+			}, 1500);
 		});
 
 		board.tokenExchange(this.sellingGoods, board.machineTokens);
@@ -76,11 +81,7 @@ class Machine {
 	}
 
 	takeCard() {
-		let machineDisplay = document.getElementById('machine-hand');
-		let marketDisplay = document.getElementById('market');
-		let deckPile = document.getElementById('deck');
-
-		let marketCards = [ ...marketDisplay.children ];
+		let marketCards = [ ...board.market.children ];
 		let randomGood;
 
 		let bestGoods = marketCards.filter(card => {
@@ -90,53 +91,80 @@ class Machine {
 				card.getAttribute('data-card') === 'silver'
 			);
 		});
-		if (machineDisplay.children.length + 1 <= 7) {
+		if (board.machineHand.children.length + 1 <= 7) {
 			if (bestGoods.length !== 0) {
 				randomGood = bestGoods[Math.floor(Math.random() * bestGoods.length)];
 
 				randomGood.firstElementChild.style.backgroundImage = 'url(images/card-back.png)';
 				randomGood.classList.add('back');
-				machineDisplay.appendChild(randomGood);
+				this.animateTaking(randomGood);
 			} else {
 				randomGood = marketCards[Math.floor(Math.random() * bestGoods.length)];
 
 				randomGood.firstElementChild.style.backgroundImage = 'url(images/card-back.png)';
 				randomGood.classList.add('back');
-				machineDisplay.appendChild(randomGood);
-			}
-			if (deckPile.children.length > 0) {
-				let cardType = deckPile.lastElementChild.getAttribute('data-card');
-
-				deckPile.lastElementChild.children[0].style.backgroundImage = `url(images/goodsCards/${cardType}.png)`;
-				deckPile.lastElementChild.classList.remove('back');
-				deckPile.lastElementChild.firstElementChild.setAttribute('data-card', cardType);
-				marketDisplay.appendChild(deckPile.lastChild);
+				this.animateTaking(randomGood);
 			}
 		}
 	}
 
-	cardsExchange() {
-		let marketDisplay = document.getElementById('market');
-		let machineDisplay = document.getElementById('machine-hand');
+	animateTaking(card) {
+		board.animate(card, board.machineHand);
+		board.animateDraw();
 
+		setTimeout(() => {
+			board.machineHand.appendChild(card);
+
+			card.style.transform = '';
+			board.market.lastElementChild.transform = '';
+
+			board.market.removeChild(board.market.lastElementChild);
+			card.classList.remove('animate');
+
+			if (board.deckPile.children.length > 0) {
+				let cardType = board.deckPile.lastElementChild.getAttribute('data-card');
+				board.deckPile.lastElementChild.children[0].style.backgroundImage = `url(images/goodsCards/${cardType}.png)`;
+				board.deckPile.lastElementChild.classList.remove('back');
+				board.deckPile.lastElementChild.firstElementChild.setAttribute('data-card', cardType);
+
+				board.market.appendChild(board.deckPile.lastChild);
+			}
+		}, 1500);
+	}
+
+	cardsExchange() {
 		if (this.cardsToSell.length === this.cardsToTake.length && this.cardsToSell.length >= 2) {
 			let tempArr = this.cardsToSell;
 			this.cardsToSell = this.cardsToTake;
 			this.cardsToTake = tempArr;
 
 			this.cardsToSell.forEach(card => {
-				card.firstElementChild.style.backgroundImage = 'url(images/card-back.png)';
-				card.classList.add('back');
+				board.animate(card, board.machineHand);
 
-				machineDisplay.appendChild(card);
+				setTimeout(() => {
+					card.style.transform = '';
+					card.classList.remove('animate');
+
+					card.firstElementChild.style.backgroundImage = 'url(images/card-back.png)';
+					card.classList.add('back');
+
+					board.machineHand.appendChild(card);
+				}, 1500);
 			});
 
 			this.cardsToTake.forEach(card => {
-				let cardType = card.getAttribute('data-card');
-				card.firstElementChild.style.backgroundImage = `url(images/goodsCards/${cardType}.png)`;
-				card.classList.remove('back');
+				board.animate(card, board.market);
 
-				marketDisplay.appendChild(card);
+				setTimeout(() => {
+					card.style.transform = '';
+					card.classList.remove('animate');
+
+					let cardType = card.getAttribute('data-card');
+					card.firstElementChild.style.backgroundImage = `url(images/goodsCards/${cardType}.png)`;
+					card.classList.remove('back');
+
+					board.market.appendChild(card);
+				}, 1500);
 			});
 		}
 		this.cardsToTake = [];
@@ -144,10 +172,8 @@ class Machine {
 	}
 
 	prepareExchange() {
-		let marketDisplay = document.getElementById('market');
-		let machineDisplay = document.getElementById('machine-hand');
-		let marketCards = [ ...marketDisplay.children ];
-		let machineCards = [ ...machineDisplay.children ];
+		let marketCards = [ ...board.market.children ];
+		let machineCards = [ ...board.machineHand.children ];
 
 		this.cardsToTake = marketCards.filter(card => {
 			return (

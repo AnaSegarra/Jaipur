@@ -472,3 +472,13 @@ button:hover {
 	transform: translateY(-1em);
 	background-color: #ff0;
 }
+
+/* ANIMATION */
+.animate {
+	transition: 1s;
+}
+
+.card-draw {
+	position: absolute;
+	z-index: 2;
+}

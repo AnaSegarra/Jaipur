@@ -10,6 +10,7 @@ class Board {
 		this.machineTokens = document.getElementById('machine-tokens');
 		this.market = document.getElementById('market');
 		this.deckPile = document.getElementById('deck');
+		this.discardPile = document.getElementById('discard-pile');
 	}
 
 	shuffle(arr) {
@@ -214,5 +215,43 @@ class Board {
 				}
 			}, 5000);
 		}
+	}
+
+	animate(card, destination) {
+		let originCoords = card.getBoundingClientRect();
+		let endCoords =
+			destination.children.length === 0
+				? destination.getBoundingClientRect()
+				: destination.lastElementChild.getBoundingClientRect();
+
+		let finalX = endCoords.x - originCoords.x + originCoords.width;
+		let finalY = endCoords.y - originCoords.y;
+
+		card.classList.add('animate');
+		card.style.transform = `translate(${finalX}px, ${finalY}px)`;
+	}
+
+	createCard() {
+		let originCoords = this.deckPile.lastElementChild.getBoundingClientRect();
+		let newCard = this.deckPile.lastElementChild.cloneNode(true);
+		let cardType = board.deckPile.lastElementChild.getAttribute('data-card');
+		newCard.classList.replace('back', 'card-container');
+		newCard.children[0].style.backgroundImage = `url(images/goodsCards/${cardType}.png)`;
+
+		newCard.classList.add('card-draw');
+		newCard.style.top = `${originCoords.y - 20}px`;
+		newCard.style.left = `${originCoords.x - 20}px`;
+
+		this.market.appendChild(newCard);
+	}
+
+	animateDraw() {
+		this.createCard();
+		let originCoords = this.market.lastElementChild.getBoundingClientRect();
+		let endCoords = this.market.children[4].getBoundingClientRect();
+		let finalX = endCoords.x - originCoords.x;
+		let finalY = endCoords.y - originCoords.y;
+		this.market.lastElementChild.classList.add('animate');
+		this.market.lastElementChild.style.transform = `translate(${finalX}px, ${finalY}px)`;
 	}
 }

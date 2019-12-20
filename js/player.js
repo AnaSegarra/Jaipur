@@ -137,8 +137,6 @@ class Player {
 	cardSell() {
 		let cards = [];
 
-		let discardPile = document.getElementById('discard-pile');
-
 		this.eligibleCards.forEach(card => {
 			if (card.classList.contains('card-chosen')) cards.push(card);
 		});
@@ -154,8 +152,16 @@ class Player {
 		}
 
 		cards.forEach(card => {
-			discardPile.appendChild(card);
-			card.classList.remove('card-chosen');
+			board.animate(card, board.discardPile);
+
+			setTimeout(() => {
+				card.style.transform = '';
+				card.classList.remove('animate');
+
+				board.discardPile.appendChild(card);
+				card.classList.remove('card-chosen');
+			}, 1500);
+
 			this.pickedCards = [];
 		});
 
@@ -168,14 +174,30 @@ class Player {
 		this.cardsToTake = tempArr;
 
 		this.cardsToSell.forEach(card => {
-			board.playerHand.appendChild(card);
-			card.classList.remove('card-chosen');
+			board.animate(card, board.playerHand);
+
+			setTimeout(() => {
+				card.style.transform = '';
+				card.classList.remove('animate');
+
+				board.playerHand.appendChild(card);
+				card.classList.remove('card-chosen');
+			}, 1500);
+
 			this.removeCardsListeners();
 		});
 
 		this.cardsToTake.forEach(card => {
-			board.market.appendChild(card);
-			card.classList.remove('card-chosen');
+			board.animate(card, board.market);
+
+			setTimeout(() => {
+				card.style.transform = '';
+				card.classList.remove('animate');
+
+				board.market.appendChild(card);
+				card.classList.remove('card-chosen');
+			}, 1500);
+
 			this.removeCardsListeners();
 		});
 
@@ -191,16 +213,28 @@ class Player {
 		});
 
 		if (board.playerHand.children.length + 1 <= 7 && chosenCard) {
-			board.playerHand.appendChild(chosenCard);
-			this.removeCardsListeners();
+			board.animate(chosenCard, board.playerHand);
+			board.animateDraw();
 			chosenCard.classList.remove('card-chosen');
-			this.pickedCards = [];
 
-			let cardType = board.deckPile.lastElementChild.getAttribute('data-card');
-			board.deckPile.lastElementChild.children[0].style.backgroundImage = `url(images/goodsCards/${cardType}.png)`;
-			board.deckPile.lastElementChild.classList.replace('back', 'card-container');
-			board.deckPile.lastElementChild.firstElementChild.setAttribute('data-card', cardType);
-			board.market.appendChild(board.deckPile.lastChild);
+			setTimeout(() => {
+				board.playerHand.appendChild(chosenCard);
+
+				chosenCard.style.transform = '';
+				board.market.lastElementChild.transform = '';
+
+				chosenCard.classList.remove('animate');
+				board.market.removeChild(board.market.lastElementChild);
+
+				let cardType = board.deckPile.lastElementChild.getAttribute('data-card');
+				board.deckPile.lastElementChild.children[0].style.backgroundImage = `url(images/goodsCards/${cardType}.png)`;
+				board.deckPile.lastElementChild.classList.replace('back', 'card-container');
+				board.deckPile.lastElementChild.firstElementChild.setAttribute('data-card', cardType);
+
+				board.market.appendChild(board.deckPile.lastChild);
+			}, 1500);
+			this.removeCardsListeners();
+			this.pickedCards = [];
 		}
 	}
 
