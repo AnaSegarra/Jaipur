@@ -160,7 +160,7 @@ class Player {
 
 				board.discardPile.appendChild(card);
 				card.classList.remove('card-chosen');
-			}, 1500);
+			}, 1200);
 
 			this.pickedCards = [];
 		});
@@ -182,7 +182,7 @@ class Player {
 
 				board.playerHand.appendChild(card);
 				card.classList.remove('card-chosen');
-			}, 1500);
+			}, 1200);
 
 			this.removeCardsListeners();
 		});
@@ -196,7 +196,7 @@ class Player {
 
 				board.market.appendChild(card);
 				card.classList.remove('card-chosen');
-			}, 1500);
+			}, 1200);
 
 			this.removeCardsListeners();
 		});
@@ -231,8 +231,9 @@ class Player {
 				board.deckPile.lastElementChild.classList.replace('back', 'card-container');
 				board.deckPile.lastElementChild.firstElementChild.setAttribute('data-card', cardType);
 
+				board.deckPile.lastElementChild.style.visibility = 'visible';
 				board.market.appendChild(board.deckPile.lastChild);
-			}, 1500);
+			}, 1200);
 			this.removeCardsListeners();
 			this.pickedCards = [];
 		}

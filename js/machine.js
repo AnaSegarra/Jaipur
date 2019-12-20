@@ -64,7 +64,7 @@ class Machine {
 				card.classList.remove('animate');
 
 				board.discardPile.appendChild(card);
-			}, 1500);
+			}, 1200);
 		});
 
 		board.tokenExchange(this.sellingGoods, board.machineTokens);
@@ -127,9 +127,10 @@ class Machine {
 				board.deckPile.lastElementChild.classList.remove('back');
 				board.deckPile.lastElementChild.firstElementChild.setAttribute('data-card', cardType);
 
+				board.deckPile.lastElementChild.style.visibility = 'visible';
 				board.market.appendChild(board.deckPile.lastChild);
 			}
-		}, 1500);
+		}, 1200);
 	}
 
 	cardsExchange() {
@@ -149,7 +150,7 @@ class Machine {
 					card.classList.add('back');
 
 					board.machineHand.appendChild(card);
-				}, 1500);
+				}, 1200);
 			});
 
 			this.cardsToTake.forEach(card => {
@@ -164,7 +165,7 @@ class Machine {
 					card.classList.remove('back');
 
 					board.market.appendChild(card);
-				}, 1500);
+				}, 1200);
 			});
 		}
 		this.cardsToTake = [];
