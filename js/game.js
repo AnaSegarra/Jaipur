@@ -44,7 +44,9 @@ window.addEventListener('load', () => {
 		document.getElementById('confirm-btn').addEventListener('click', () => {
 			if (player.activeSell && player.validateSell()) {
 				player.cardSell();
-				board.gamePlay();
+				setTimeout(() => {
+					board.gamePlay();
+				}, 1200);
 			}
 			if (player.activeTake) {
 				if (
@@ -53,13 +55,17 @@ window.addEventListener('load', () => {
 					board.playerHand.children.length < 7
 				) {
 					player.cardTake();
-					board.gamePlay();
+					setTimeout(() => {
+						board.gamePlay();
+					}, 1200);
 				}
 				if (player.pickedCards.length >= 2) {
 					player.prepareExchange();
 					if (player.cardsToSell.length === player.cardsToTake.length && player.cardsToSell.length >= 2) {
 						player.cardExchange();
-						board.gamePlay();
+						setTimeout(() => {
+							board.gamePlay();
+						}, 1200);
 					} else {
 						player.cardsToSell = [];
 						player.cardsToTake = [];

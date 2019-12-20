@@ -116,13 +116,13 @@ class Board {
 				empty++;
 			}
 		}
-		let deck = document.getElementById('deck').children.length;
 
-		return empty === 3 || deck === 0;
+		return empty === 3 || board.deckPile.children.length === 0;
 	}
 
 	changeActivePlayer() {
 		let playerBtns = document.getElementById('player-btns');
+
 		if (player.activePlayer) {
 			player.activePlayer = false;
 			machine.activePlayer = true;
@@ -208,12 +208,10 @@ class Board {
 		} else {
 			setTimeout(() => {
 				machine.chooseAction(machine.actions);
-				if (this.checkGameOver()) {
-					this.checkWinner();
-				} else {
-					this.changeActivePlayer();
-				}
-			}, 5000);
+				setTimeout(() => {
+					this.checkGameOver() ? this.checkWinner() : this.changeActivePlayer();
+				}, 1500);
+			}, 3000);
 		}
 	}
 
@@ -237,6 +235,8 @@ class Board {
 		let cardType = board.deckPile.lastElementChild.getAttribute('data-card');
 		newCard.classList.replace('back', 'card-container');
 		newCard.children[0].style.backgroundImage = `url(images/goodsCards/${cardType}.png)`;
+
+		board.deckPile.lastElementChild.style.visibility = 'hidden';
 
 		newCard.classList.add('card-draw');
 		newCard.style.top = `${originCoords.y - 20}px`;

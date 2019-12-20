@@ -64,7 +64,7 @@ class Machine {
 				card.classList.remove('animate');
 
 				board.discardPile.appendChild(card);
-			}, 1500);
+			}, 1200);
 		});
 
 		board.tokenExchange(this.sellingGoods, board.machineTokens);
@@ -127,9 +127,10 @@ class Machine {
 				board.deckPile.lastElementChild.classList.remove('back');
 				board.deckPile.lastElementChild.firstElementChild.setAttribute('data-card', cardType);
 
+				board.deckPile.lastElementChild.style.visibility = 'visible';
 				board.market.appendChild(board.deckPile.lastChild);
 			}
-		}, 1500);
+		}, 1200);
 	}
 
 	cardsExchange() {
@@ -149,7 +150,7 @@ class Machine {
 					card.classList.add('back');
 
 					board.machineHand.appendChild(card);
-				}, 1500);
+				}, 1200);
 			});
 
 			this.cardsToTake.forEach(card => {
@@ -164,7 +165,7 @@ class Machine {
 					card.classList.remove('back');
 
 					board.market.appendChild(card);
-				}, 1500);
+				}, 1200);
 			});
 		}
 		this.cardsToTake = [];
@@ -193,19 +194,15 @@ class Machine {
 
 		if (this.cardsToSell.length >= 2) {
 			if (this.cardsToTake.length === 1) {
-				if (marketCards[0] !== this.cardsToTake[0]) {
-					this.cardsToTake.push(marketCards[0]);
-				} else {
-					this.cardsToTake.push(marketCards[1]);
-				}
+				marketCards[0] !== this.cardsToTake[0]
+					? this.cardsToTake.push(marketCards[0])
+					: this.cardsToTake.push(marketCards[1]);
 			}
-			if (this.cardsToSell.length > this.cardsToTake.length) {
-				let num = this.cardsToSell.length - this.cardsToTake.length;
-				this.cardsToSell.splice(0, num);
-			} else {
-				let num = this.cardsToTake.length - this.cardsToSell.length;
-				this.cardsToTake.splice(0, num);
-			}
+
+			let num;
+			this.cardsToSell.length > this.cardsToTake.length
+				? ((num = this.cardsToSell.length - this.cardsToTake.length), this.cardsToSell.splice(0, num))
+				: ((num = this.cardsToTake.length - this.cardsToSell.length), this.cardsToTake.splice(0, num));
 		}
 	}
 
