@@ -110,6 +110,7 @@ button:hover {
 	margin-top: 2.5em;
 	list-style: upper-latin;
 }
+
 /* FINAL MESSAGES */
 #final-msg {
 	font-size: 4rem;
@@ -155,6 +156,7 @@ button:hover {
 	color: #a71010;
 	text-shadow: -.02em .02em 0 #ff4747;
 }
+/* SCOREBOARD */
 .table {
 	display: none;
 	align-items: center;
@@ -173,10 +175,10 @@ button:hover {
 	width: 50%;
 }
 .table-header,
-#total {
+.total-row {
 	color: white;
 	font-weight: 600;
-	font-size: 1.2rem;
+	font-size: 1.3rem;
 }
 .table-header,
 .table-row p:nth-child(2),
@@ -193,7 +195,10 @@ button:hover {
 .win-points,
 .lose-points,
 .draw-points {
-	font-size: 1.4rem;
+	font-weight: 800;
+}
+#total p:last-of-type {
+	font-weight: 400;
 }
 
 /* CARDS */
