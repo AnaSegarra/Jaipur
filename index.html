@@ -6,8 +6,10 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta http-equiv="X-UA-Compatible" content="ie=edge">
         <title>Jaipur</title>
-        <link href="https://fonts.googleapis.com/css?family=Work+Sans:400,800&display=swap"
+        <link rel="icon" type="image/png" href="images/favicon.ico">
+        <link href="https://fonts.googleapis.com/css?family=Work+Sans:400,600,800&display=swap"
             rel="stylesheet">
+        <script src="https://kit.fontawesome.com/067e9870dd.js" crossorigin="anonymous"></script>
         <link rel="stylesheet" href="./css/style.css">
     </head>
 
@@ -16,12 +18,54 @@
             <h1>Let's play <span>jaipur</span></h1>
             <button id="start-btn">Start</button>
         </div>
+        <i id="help" class="far fa-question-circle"></i>
+        <div id="how-to" class="first-showed">
+            <span id="cross">&#215</span>
+            <p class="heading">How to Play</p>
+            <p class="text">Each turn you can:</p>
+            <ol>
+                <li>Take one single good from the market</li>
+                <li>Exchange at least two cards at the market</li>
+                <li>Sell as many cards as you want of one type of good</li>
+            </ol>
+            <p class="text" id="luck">Good luck! 😄</p>
+        </div>
         <div id="final-msg">
             <div id="win-msg">You win! <span>😸</span></div>
             <div id="lose-msg">You lose! <span>😿</span> </div>
             <div id="draw-msg">Draw! <span>🙀</span> </div>
         </div>
-
+        <div class="table">
+            <div class="scoreboard table-header">
+                <p>Tokens</p>
+                <p>Your Score</p>
+                <p>Machine's Score</p>
+            </div>
+            <div class="scoreboard table-row" id="diamonds-row">
+                <p><img src="/images/tokensScore/diamond-tokenwn.png" alt=""></p>
+            </div>
+            <div class="scoreboard table-row" id="gold-row">
+                <p><img src="/images/tokensScore/gold-tokenwn.png" alt=""></p>
+            </div>
+            <div class="scoreboard table-row" id="silver-row">
+                <p><img src="/images/tokensScore/silver-tokenwn.png" alt=""></p>
+            </div>
+            <div class="scoreboard table-row" id="cloth-row">
+                <p><img src="/images/tokensScore/cloth-tokenwn.png" alt=""></p>
+            </div>
+            <div class="scoreboard table-row" id="spice-row">
+                <p><img src="/images/tokensScore/spice-tokenwn.png" alt=""></p>
+            </div>
+            <div class="scoreboard table-row" id="leather-row">
+                <p><img src="/images/tokensScore/leather-table.png" alt=""></p>
+            </div>
+            <div class="scoreboard table-row" id="bonus-row">
+                <p><img src="/images/tokensScore/token-bonus.png" alt=""></p>
+            </div>
+            <div class="scoreboard total-row" id="total">
+                <p>Total</p>
+            </div>
+        </div>
         <div id="game-board" class="game-stopped">
             <div id="token-container">
                 <div id="threeCards" class="tokens bonus"></div>
@@ -64,7 +108,6 @@
         <script src="js/player.js"></script>
         <script src="js/machine.js"></script>
         <script src="js/board.js"></script>
-        <script src="js/deck.js"></script>
         <script src="js/game.js"></script>
     </body>
 
