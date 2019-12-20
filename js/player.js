@@ -32,4 +32,47 @@ class Player {
 			}, 1200);
 		});
 	}
+
+	cardExchange(playerCards) {
+		let tempArr = this.cardsToSell;
+		this.cardsToSell = this.cardsToTake;
+		this.cardsToTake = tempArr;
+		console.log('calling cardexchange from parent class', playerCards);
+
+		this.cardsToSell.forEach(card => {
+			board.animate(card, playerCards);
+
+			setTimeout(() => {
+				card.style.transform = '';
+				card.classList.remove('animate');
+
+				if (playerCards === board.machineHand) {
+					card.firstElementChild.style.backgroundImage = 'url(images/card-back.png)';
+					card.classList.add('back');
+				}
+
+				playerCards.appendChild(card);
+			}, 1200);
+		});
+
+		this.cardsToTake.forEach(card => {
+			board.animate(card, board.market);
+
+			setTimeout(() => {
+				card.style.transform = '';
+				card.classList.remove('animate');
+
+				if (playerCards === board.machineHand) {
+					let cardType = card.getAttribute('data-card');
+					card.firstElementChild.style.backgroundImage = `url(images/goodsCards/${cardType}.png)`;
+					card.classList.remove('back');
+				}
+
+				board.market.appendChild(card);
+			}, 1200);
+		});
+
+		this.cardsToSell = [];
+		this.cardsToTake = [];
+	}
 }

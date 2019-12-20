@@ -1,7 +1,7 @@
 class Machine extends Player {
 	constructor() {
 		super();
-		this.actions = [ 'takeCard', 'cardsExchange', 'sell' ];
+		this.actions = [ 'takeCard', 'cardExchange', 'sell' ];
 
 		this.sellingGoods;
 
@@ -117,43 +117,10 @@ class Machine extends Player {
 		}, 1200);
 	}
 
-	cardsExchange() {
+	cardExchange(playerCards) {
 		if (this.cardsToSell.length === this.cardsToTake.length && this.cardsToSell.length >= 2) {
-			let tempArr = this.cardsToSell;
-			this.cardsToSell = this.cardsToTake;
-			this.cardsToTake = tempArr;
-
-			this.cardsToSell.forEach(card => {
-				board.animate(card, board.machineHand);
-
-				setTimeout(() => {
-					card.style.transform = '';
-					card.classList.remove('animate');
-
-					// card.firstElementChild.style.backgroundImage = 'url(images/card-back.png)';
-					// card.classList.add('back');
-
-					board.machineHand.appendChild(card);
-				}, 1200);
-			});
-
-			this.cardsToTake.forEach(card => {
-				board.animate(card, board.market);
-
-				setTimeout(() => {
-					card.style.transform = '';
-					card.classList.remove('animate');
-
-					let cardType = card.getAttribute('data-card');
-					card.firstElementChild.style.backgroundImage = `url(images/goodsCards/${cardType}.png)`;
-					card.classList.remove('back');
-
-					board.market.appendChild(card);
-				}, 1200);
-			});
+			super.cardExchange(playerCards);
 		}
-		this.cardsToTake = [];
-		this.cardsToSell = [];
 	}
 
 	prepareExchange() {
@@ -203,10 +170,10 @@ class Machine extends Player {
 				let tempArr = choices.filter(choice => choice !== 'sell');
 				this.chooseAction(tempArr);
 			}
-		} else if (randomAction === 'cardsExchange') {
+		} else if (randomAction === 'cardExchange') {
 			this.prepareExchange();
 			if (this.cardsToTake.length === this.cardsToSell.length && this.cardsToTake.length >= 2) {
-				this.cardsExchange();
+				this.cardExchange(board.machineHand);
 			} else {
 				let tempArr = choices.filter(choice => choice !== 'cardsExchange');
 				this.chooseAction(tempArr);

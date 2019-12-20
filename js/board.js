@@ -150,10 +150,10 @@ class Board {
 	}
 
 	checkWinner() {
-		this.calculateScore(player, this.playerTokens);
+		this.calculateScore(user, this.playerTokens);
 		this.calculateScore(machine, this.machineTokens);
 
-		this.displayScore([ ...this.playerTokens.children ], player);
+		this.displayScore([ ...this.playerTokens.children ], user);
 		this.displayScore([ ...this.machineTokens.children ], machine);
 
 		user.score > machine.score

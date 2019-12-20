@@ -62,7 +62,7 @@ window.addEventListener('load', () => {
 				if (user.pickedCards.length >= 2) {
 					user.prepareExchange();
 					if (user.cardsToSell.length === user.cardsToTake.length && user.cardsToSell.length >= 2) {
-						user.cardExchange();
+						user.cardExchange(board.playerHand);
 						setTimeout(() => {
 							board.gamePlay();
 						}, 1200);

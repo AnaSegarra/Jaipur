@@ -124,42 +124,12 @@ class User extends Player {
 		this.removeCardsListeners();
 	}
 
-	cardExchange() {
-		let tempArr = this.cardsToSell;
-		this.cardsToSell = this.cardsToTake;
-		this.cardsToTake = tempArr;
+	cardExchange(playerCards) {
+		super.cardExchange(playerCards);
 
-		this.cardsToSell.forEach(card => {
-			board.animate(card, board.playerHand);
-
-			setTimeout(() => {
-				card.style.transform = '';
-				card.classList.remove('animate');
-
-				board.playerHand.appendChild(card);
-				card.classList.remove('card-chosen');
-			}, 1200);
-
-			this.removeCardsListeners();
-		});
-
-		this.cardsToTake.forEach(card => {
-			board.animate(card, board.market);
-
-			setTimeout(() => {
-				card.style.transform = '';
-				card.classList.remove('animate');
-
-				board.market.appendChild(card);
-				card.classList.remove('card-chosen');
-			}, 1200);
-
-			this.removeCardsListeners();
-		});
+		this.removeCardsListeners();
 
 		this.pickedCards = [];
-		this.cardsToSell = [];
-		this.cardsToTake = [];
 	}
 
 	prepareExchange() {
