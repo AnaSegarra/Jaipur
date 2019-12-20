@@ -1,4 +1,4 @@
-const player = new Player();
+const user = new User();
 const machine = new Machine();
 const board = new Board();
 
@@ -39,36 +39,36 @@ window.addEventListener('load', () => {
 		board.displayTokens(board.goodsTokens);
 		board.displayTokens(board.bonusTokens);
 
-		player.setBtnListeners();
+		user.setBtnListeners();
 
 		document.getElementById('confirm-btn').addEventListener('click', () => {
-			if (player.activeSell && player.validateSell()) {
-				player.cardSell();
+			if (user.activeSell && user.validateSell()) {
+				user.cardSell(board.playerTokens);
 				setTimeout(() => {
 					board.gamePlay();
 				}, 1200);
 			}
-			if (player.activeTake) {
+			if (user.activeTake) {
 				if (
-					player.pickedCards.length === 1 &&
-					player.pickedCards[0].parentElement.parentNode.id !== 'player-hand' &&
+					user.pickedCards.length === 1 &&
+					user.pickedCards[0].parentElement.parentNode.id !== 'player-hand' &&
 					board.playerHand.children.length < 7
 				) {
-					player.cardTake();
+					user.cardTake();
 					setTimeout(() => {
 						board.gamePlay();
 					}, 1200);
 				}
-				if (player.pickedCards.length >= 2) {
-					player.prepareExchange();
-					if (player.cardsToSell.length === player.cardsToTake.length && player.cardsToSell.length >= 2) {
-						player.cardExchange();
+				if (user.pickedCards.length >= 2) {
+					user.prepareExchange();
+					if (user.cardsToSell.length === user.cardsToTake.length && user.cardsToSell.length >= 2) {
+						user.cardExchange();
 						setTimeout(() => {
 							board.gamePlay();
 						}, 1200);
 					} else {
-						player.cardsToSell = [];
-						player.cardsToTake = [];
+						user.cardsToSell = [];
+						user.cardsToTake = [];
 					}
 				}
 			}

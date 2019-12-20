@@ -38,6 +38,9 @@ class Board {
 		let display = '';
 		let imgSrc, backClass;
 		cards.forEach(card => {
+			// display += `<div class="card-container" data-card="${card.name}">
+			// 							<div class="card-frame" data-card="${card.name}" style="background-image: url('images/goodsCards/${card.img}')"></div>
+			// 					  </div>`;
 			player !== this.machineHand && player !== this.deckPile
 				? ((imgSrc = `goodsCards/${card.img}`), (backClass = ''))
 				: ((imgSrc = `card-back.png`), (backClass = 'back'));
@@ -63,10 +66,6 @@ class Board {
 
 	tokenExchange(playerChoice, destination) {
 		let tokens = document.getElementById(playerChoice[0].getAttribute('data-card'));
-
-		if (destination === this.playerTokens) {
-			playerChoice = playerChoice.filter(card => !card.classList.contains('card-container'));
-		}
 
 		for (let i = 0; i < playerChoice.length; i++) {
 			if (tokens.children.length > 0) {
@@ -123,15 +122,15 @@ class Board {
 	changeActivePlayer() {
 		let playerBtns = document.getElementById('player-btns');
 
-		if (player.activePlayer) {
-			player.activePlayer = false;
+		if (user.activePlayer) {
+			user.activePlayer = false;
 			machine.activePlayer = true;
 			playerBtns.style.visibility = 'hidden';
 
 			document.getElementById('machine').classList.add('active-player');
 			document.getElementById('player').classList.remove('active-player');
 		} else {
-			player.activePlayer = true;
+			user.activePlayer = true;
 			machine.activePlayer = false;
 
 			playerBtns.style.visibility = 'visible';
@@ -157,10 +156,10 @@ class Board {
 		this.displayScore([ ...this.playerTokens.children ], player);
 		this.displayScore([ ...this.machineTokens.children ], machine);
 
-		player.score > machine.score
+		user.score > machine.score
 			? ((document.getElementById('win-msg').style.display = 'block'),
 				document.getElementById('total').children[1].classList.add('win-points'))
-			: player.score < machine.score
+			: user.score < machine.score
 				? ((document.getElementById('lose-msg').style.display = 'block'),
 					document.getElementById('total').children[1].classList.add('lose-points'))
 				: ((document.getElementById('draw-msg').style.display = 'block'),
@@ -197,8 +196,8 @@ class Board {
 		[ ...document.getElementById('player-btns').children ].forEach(btn => {
 			btn.classList.remove('btn-clicked');
 			btn.style.pointerEvents = 'auto';
-			player.activeSell = false;
-			player.activeTake = false;
+			user.activeSell = false;
+			user.activeTake = false;
 		});
 
 		this.changeActivePlayer();

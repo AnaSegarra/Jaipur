@@ -1,5 +1,6 @@
-class Machine {
+class Machine extends Player {
 	constructor() {
+		super();
 		this.actions = [ 'takeCard', 'cardsExchange', 'sell' ];
 
 		this.sellingGoods;
@@ -50,32 +51,15 @@ class Machine {
 		}
 	}
 
-	sell() {
+	cardSell(playerTokens) {
 		this.sellingGoods.forEach(card => {
 			let cardType = card.getAttribute('data-card');
 
 			card.firstElementChild.style.backgroundImage = `url(images/goodsCards/${cardType}.png)`;
 			card.classList.remove('back');
-
-			board.animate(card, board.discardPile);
-
-			setTimeout(() => {
-				card.style.transform = '';
-				card.classList.remove('animate');
-
-				board.discardPile.appendChild(card);
-			}, 1200);
 		});
 
-		board.tokenExchange(this.sellingGoods, board.machineTokens);
-
-		if (this.sellingGoods.length >= 3) {
-			this.sellingGoods.length === 3
-				? board.bonusRetrieval('threeCards', board.machineTokens)
-				: this.sellingGoods.length === 4
-					? board.bonusRetrieval('fourCards', board.machineTokens)
-					: board.bonusRetrieval('fiveCards', board.machineTokens);
-		}
+		super.cardSell(playerTokens);
 
 		this.sellingGoods = undefined;
 	}
@@ -146,8 +130,8 @@ class Machine {
 					card.style.transform = '';
 					card.classList.remove('animate');
 
-					card.firstElementChild.style.backgroundImage = 'url(images/card-back.png)';
-					card.classList.add('back');
+					// card.firstElementChild.style.backgroundImage = 'url(images/card-back.png)';
+					// card.classList.add('back');
 
 					board.machineHand.appendChild(card);
 				}, 1200);
@@ -214,7 +198,7 @@ class Machine {
 		if (randomAction === 'sell') {
 			this.checkCards();
 			if (this.sellingGoods.length !== 0) {
-				this.sell();
+				this.cardSell(board.machineTokens);
 			} else {
 				let tempArr = choices.filter(choice => choice !== 'sell');
 				this.chooseAction(tempArr);
