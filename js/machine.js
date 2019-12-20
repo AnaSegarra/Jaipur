@@ -194,19 +194,15 @@ class Machine {
 
 		if (this.cardsToSell.length >= 2) {
 			if (this.cardsToTake.length === 1) {
-				if (marketCards[0] !== this.cardsToTake[0]) {
-					this.cardsToTake.push(marketCards[0]);
-				} else {
-					this.cardsToTake.push(marketCards[1]);
-				}
+				marketCards[0] !== this.cardsToTake[0]
+					? this.cardsToTake.push(marketCards[0])
+					: this.cardsToTake.push(marketCards[1]);
 			}
-			if (this.cardsToSell.length > this.cardsToTake.length) {
-				let num = this.cardsToSell.length - this.cardsToTake.length;
-				this.cardsToSell.splice(0, num);
-			} else {
-				let num = this.cardsToTake.length - this.cardsToSell.length;
-				this.cardsToTake.splice(0, num);
-			}
+
+			let num;
+			this.cardsToSell.length > this.cardsToTake.length
+				? ((num = this.cardsToSell.length - this.cardsToTake.length), this.cardsToSell.splice(0, num))
+				: ((num = this.cardsToTake.length - this.cardsToSell.length), this.cardsToTake.splice(0, num));
 		}
 	}
 

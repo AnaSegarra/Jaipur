@@ -116,13 +116,13 @@ class Board {
 				empty++;
 			}
 		}
-		let deck = document.getElementById('deck').children.length;
 
-		return empty === 3 || deck === 0;
+		return empty === 3 || board.deckPile.children.length === 0;
 	}
 
 	changeActivePlayer() {
 		let playerBtns = document.getElementById('player-btns');
+
 		if (player.activePlayer) {
 			player.activePlayer = false;
 			machine.activePlayer = true;
@@ -209,11 +209,7 @@ class Board {
 			setTimeout(() => {
 				machine.chooseAction(machine.actions);
 				setTimeout(() => {
-					if (this.checkGameOver()) {
-						this.checkWinner();
-					} else {
-						this.changeActivePlayer();
-					}
+					this.checkGameOver() ? this.checkWinner() : this.changeActivePlayer();
 				}, 1500);
 			}, 3000);
 		}

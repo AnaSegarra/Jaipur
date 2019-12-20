@@ -13,18 +13,6 @@ class Player {
 
 		this.score;
 	}
-	prepareExchange() {
-		this.eligibleCards.forEach(card => {
-			if (card.classList.contains('card-chosen')) {
-				if (card.parentNode.id === 'player-hand') {
-					this.cardsToSell.push(card);
-				} else {
-					this.cardsToTake.push(card);
-				}
-			}
-		});
-	}
-
 	setBtnListeners() {
 		let sellBtn = document.getElementById('sell-btn');
 		let takeBtn = document.getElementById('take-btn');
@@ -94,7 +82,7 @@ class Player {
 
 	sellCards() {
 		if (this.activeSell) {
-			this.eligibleCards = document.querySelectorAll('#player-hand > div');
+			this.eligibleCards = [ ...board.playerHand.children ];
 			this.setCardsListeners();
 		} else {
 			this.removeCardsListeners();
@@ -103,10 +91,7 @@ class Player {
 
 	takeCards() {
 		if (this.activeTake) {
-			this.eligibleCards = [
-				...document.querySelectorAll('#market > div'),
-				...document.querySelectorAll('#player-hand > div')
-			];
+			this.eligibleCards = [ ...board.market.children, ...board.playerHand.children ];
 			this.setCardsListeners();
 		} else {
 			this.removeCardsListeners();
@@ -128,9 +113,8 @@ class Player {
 					? this.pickedCards.push(card.children[0])
 					: this.pickedCards.push(card);
 				return true;
-			} else {
-				return false;
 			}
+			return false;
 		}
 	}
 
@@ -206,10 +190,20 @@ class Player {
 		this.cardsToTake = [];
 	}
 
+	prepareExchange() {
+		this.eligibleCards.forEach(card => {
+			if (card.classList.contains('card-chosen')) {
+				card.parentNode.id === 'player-hand' ? this.cardsToSell.push(card) : this.cardsToTake.push(card);
+			}
+		});
+	}
+
 	cardTake() {
 		let chosenCard;
 		this.eligibleCards.forEach(card => {
-			if (card.classList.contains('card-chosen') && card.parentNode.id === 'market') chosenCard = card;
+			card.classList.contains('card-chosen') && card.parentNode.id === 'market'
+				? (chosenCard = card)
+				: chosenCard;
 		});
 
 		if (board.playerHand.children.length + 1 <= 7 && chosenCard) {
@@ -234,6 +228,7 @@ class Player {
 				board.deckPile.lastElementChild.style.visibility = 'visible';
 				board.market.appendChild(board.deckPile.lastChild);
 			}, 1200);
+
 			this.removeCardsListeners();
 			this.pickedCards = [];
 		}
@@ -241,17 +236,13 @@ class Player {
 
 	validateSell() {
 		this.pickedCards = this.pickedCards.filter(card => !card.classList.contains('card-container'));
-		if (this.pickedCards.length === 0) return false;
 
-		if (
-			(this.pickedCards[0].getAttribute('data-card') === 'diamonds' ||
+		return !(
+			this.pickedCards.length === 0 ||
+			((this.pickedCards[0].getAttribute('data-card') === 'diamonds' ||
 				this.pickedCards[0].getAttribute('data-card') === 'gold' ||
 				this.pickedCards[0].getAttribute('data-card') === 'silver') &&
-			this.pickedCards.length < 2
-		) {
-			return false;
-		} else {
-			return true;
-		}
+				this.pickedCards.length < 2)
+		);
 	}
 }
