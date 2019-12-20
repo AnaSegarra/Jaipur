@@ -168,14 +168,30 @@ class Player {
 		this.cardsToTake = tempArr;
 
 		this.cardsToSell.forEach(card => {
-			board.playerHand.appendChild(card);
-			card.classList.remove('card-chosen');
+			board.animate(card, board.playerHand);
+
+			setTimeout(() => {
+				card.style.transform = '';
+				card.classList.remove('animate');
+
+				board.playerHand.appendChild(card);
+				card.classList.remove('card-chosen');
+			}, 1500);
+
 			this.removeCardsListeners();
 		});
 
 		this.cardsToTake.forEach(card => {
-			board.market.appendChild(card);
-			card.classList.remove('card-chosen');
+			board.animate(card, board.market);
+
+			setTimeout(() => {
+				card.style.transform = '';
+				card.classList.remove('animate');
+
+				board.market.appendChild(card);
+				card.classList.remove('card-chosen');
+			}, 1500);
+
 			this.removeCardsListeners();
 		});
 

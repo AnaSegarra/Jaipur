@@ -76,10 +76,6 @@ class Machine {
 	}
 
 	takeCard() {
-		// let machineDisplay = document.getElementById('machine-hand');
-		// let marketDisplay = document.getElementById('market');
-		// let deckPile = document.getElementById('deck');
-
 		let marketCards = [ ...board.market.children ];
 		let randomGood;
 
@@ -132,27 +128,38 @@ class Machine {
 	}
 
 	cardsExchange() {
-		let marketDisplay = document.getElementById('market');
-		let machineDisplay = document.getElementById('machine-hand');
-
 		if (this.cardsToSell.length === this.cardsToTake.length && this.cardsToSell.length >= 2) {
 			let tempArr = this.cardsToSell;
 			this.cardsToSell = this.cardsToTake;
 			this.cardsToTake = tempArr;
 
 			this.cardsToSell.forEach(card => {
-				card.firstElementChild.style.backgroundImage = 'url(images/card-back.png)';
-				card.classList.add('back');
+				board.animate(card, board.machineHand);
 
-				machineDisplay.appendChild(card);
+				setTimeout(() => {
+					card.style.transform = '';
+					card.classList.remove('animate');
+
+					card.firstElementChild.style.backgroundImage = 'url(images/card-back.png)';
+					card.classList.add('back');
+
+					board.machineHand.appendChild(card);
+				}, 1500);
 			});
 
 			this.cardsToTake.forEach(card => {
-				let cardType = card.getAttribute('data-card');
-				card.firstElementChild.style.backgroundImage = `url(images/goodsCards/${cardType}.png)`;
-				card.classList.remove('back');
+				board.animate(card, board.market);
 
-				marketDisplay.appendChild(card);
+				setTimeout(() => {
+					card.style.transform = '';
+					card.classList.remove('animate');
+
+					let cardType = card.getAttribute('data-card');
+					card.firstElementChild.style.backgroundImage = `url(images/goodsCards/${cardType}.png)`;
+					card.classList.remove('back');
+
+					board.market.appendChild(card);
+				}, 1500);
 			});
 		}
 		this.cardsToTake = [];
@@ -160,10 +167,8 @@ class Machine {
 	}
 
 	prepareExchange() {
-		let marketDisplay = document.getElementById('market');
-		let machineDisplay = document.getElementById('machine-hand');
-		let marketCards = [ ...marketDisplay.children ];
-		let machineCards = [ ...machineDisplay.children ];
+		let marketCards = [ ...board.market.children ];
+		let machineCards = [ ...board.machineHand.children ];
 
 		this.cardsToTake = marketCards.filter(card => {
 			return (

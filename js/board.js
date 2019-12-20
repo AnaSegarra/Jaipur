@@ -219,8 +219,10 @@ class Board {
 	animate(card, destination) {
 		let originCoords = card.getBoundingClientRect();
 		let endCoords = destination.lastElementChild.getBoundingClientRect();
+
 		let finalX = endCoords.x - originCoords.x + originCoords.width;
 		let finalY = endCoords.y - originCoords.y;
+
 		card.classList.add('animate');
 		card.style.transform = `translate(${finalX}px, ${finalY}px)`;
 	}
