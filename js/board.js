@@ -208,12 +208,14 @@ class Board {
 		} else {
 			setTimeout(() => {
 				machine.chooseAction(machine.actions);
-				if (this.checkGameOver()) {
-					this.checkWinner();
-				} else {
-					this.changeActivePlayer();
-				}
-			}, 5000);
+				setTimeout(() => {
+					if (this.checkGameOver()) {
+						this.checkWinner();
+					} else {
+						this.changeActivePlayer();
+					}
+				}, 1500);
+			}, 3000);
 		}
 	}
 
@@ -237,6 +239,8 @@ class Board {
 		let cardType = board.deckPile.lastElementChild.getAttribute('data-card');
 		newCard.classList.replace('back', 'card-container');
 		newCard.children[0].style.backgroundImage = `url(images/goodsCards/${cardType}.png)`;
+
+		board.deckPile.lastElementChild.style.visibility = 'hidden';
 
 		newCard.classList.add('card-draw');
 		newCard.style.top = `${originCoords.y - 20}px`;
