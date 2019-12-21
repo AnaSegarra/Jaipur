@@ -16,7 +16,7 @@ class Player {
 		if (this.sellingGoods.length >= 3) {
 			this.sellingGoods.length === 3
 				? board.bonusRetrieval('threeCards', playerTokens)
-				: sellingGoods.length === 4
+				: this.sellingGoods.length === 4
 					? board.bonusRetrieval('fourCards', playerTokens)
 					: board.bonusRetrieval('fiveCards', playerTokens);
 		}
