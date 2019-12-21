@@ -37,7 +37,6 @@ class Player {
 		let tempArr = this.cardsToSell;
 		this.cardsToSell = this.cardsToTake;
 		this.cardsToTake = tempArr;
-		console.log('calling cardexchange from parent class', playerCards);
 
 		this.cardsToSell.forEach(card => {
 			board.animate(card, playerCards);

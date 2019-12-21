@@ -38,9 +38,6 @@ class Board {
 		let display = '';
 		let imgSrc, backClass;
 		cards.forEach(card => {
-			// display += `<div class="card-container" data-card="${card.name}">
-			// 							<div class="card-frame" data-card="${card.name}" style="background-image: url('images/goodsCards/${card.img}')"></div>
-			// 					  </div>`;
 			player !== this.machineHand && player !== this.deckPile
 				? ((imgSrc = `goodsCards/${card.img}`), (backClass = ''))
 				: ((imgSrc = `card-back.png`), (backClass = 'back'));
