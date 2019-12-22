@@ -21,6 +21,15 @@ Live version: [https://anasegarra.github.io/Jaipur/](https://anasegarra.github.i
 
 ![Win message and scoreboard](images/win-screen.png)
 
+**User's actions:**
+
+On each turn player can click take or sell buttons and confirm their chosen action by clicking ok button.
+* Take button:
+  - Choose one single card from the market
+  - Choose same number of cards from the market and from your hand to exchange
+* Sell button:
+  - Choose as many cards as you want of one type of good to sell 
+
 **To do:**
 * Improve machine's intelligence
 * Include camels from the original board game
