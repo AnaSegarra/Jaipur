@@ -33,5 +33,11 @@ Live version: [https://anasegarra.github.io/Jaipur/](https://anasegarra.github.i
 This is the first of three projects to be made during the Ironhack Web Development Bootcamp. It has been a great opportunity to develop a game from the ground up, not following any kind of guideline or tutorial whatsoever. 
 This project is heavily based on manipulation of the DOM using vanilla JavaScript to get the movements of the cards and handling user's interaction. The game logic has been implemented following the principles of Object Oriented Programmnig. Images of the game have been cut out and edited from [this image](https://cdn.shopify.com/s/files/1/1402/8033/products/jaipur-cards-and-tokens_597x700.jpg?v=1519748183) of the board version. As stated above, HTML5 was used to set up the structure of the game and its layout was built using CSS flexbox.
 
+## Contributing
+If you wish to contribute to this project, you may add yourself to [CONTRIBUTING.md](https://github.com/AnaSegarra/Jaipur/blob/master/CONTRIBUTING.md).
+
+## License
+Please refer to [LICENSE.md](https://github.com/AnaSegarra/Jaipur/blob/master/LICENSE.md).
+
 ## Author
 This game was built by [@AnaSegarra](https://github.com/AnaSegarra) for the Ironhack Web Dev Bootcamp in December of 2019.
